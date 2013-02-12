@@ -1,15 +1,12 @@
 from google.appengine.ext import webapp
-from google.appengine.api import images
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
-import wsgiref.handlers
-from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
-import os,cgi,sys, urlparse
+import os
 from google.appengine.ext import db
 from google.appengine.ext import blobstore
 from google.appengine.api import files
-import urllib
+from google.appengine.api import images
 
 
 global global_blobkey
@@ -64,8 +61,18 @@ class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
         
         if not blobstore.get(global_blobkey):
             self.error(404)
-        else:  
-            self.send_blob(global_blobkey)
+        else:
+            img = images.Image(blob_key=global_blobkey)
+            img.resize(width=32, height=32)
+            img.horizontal_flip()
+            thumbnail = img.execute_transforms(output_encoding=images.JPEG)
+            file_name = files.blobstore.create(mime_type='image/jpeg')#file to write to
+            with files.open(file_name, 'a') as f: 
+                f.write(thumbnail)
+            files.finalize(file_name)
+            blob_key = files.blobstore.get_blob_key(file_name)
+                
+            self.send_blob(blob_key)
 
 
 
