@@ -1,4 +1,4 @@
-from google.appengine.ext import webapp
+import webapp2
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import blobstore_handlers
@@ -15,7 +15,7 @@ class blobImages(db.Model):
     blob = blobstore.BlobReferenceProperty(required=True)
 
 
-class BaseRequestHandler(webapp.RequestHandler):
+class BaseRequestHandler(webapp2.RequestHandler):
     def render_template(self, filename, template_args=None):
         self.response.out.write("base request reached")
         self.response.out.write(template_args)
@@ -79,11 +79,14 @@ class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 
 
+
+
+app = webapp2.WSGIApplication([('/', startpage),('/upload', upload),('/canvas.jpg',ViewPhotoHandler)], debug=True)
+
+"""
 def main():
-
-    application = webapp.WSGIApplication([('/', startpage),('/upload', upload),('/canvas.jpg',ViewPhotoHandler)], debug=True)
-
     run_wsgi_app(application)
 
 if __name__ == "__main__":
     main()
+"""

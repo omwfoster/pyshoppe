@@ -1,8 +1,8 @@
 application: pyshoppe
 version: 1
-runtime: python
+runtime: python27
 api_version: 1
-
+threadsafe:  true
 handlers:
 
 - url: /content
@@ -10,4 +10,4 @@ handlers:
 
 
 - url: /.*
-  script: pyshoppe.py
+  script: pyshoppe.app
