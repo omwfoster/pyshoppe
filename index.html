@@ -2,7 +2,7 @@
 <html lang="en-US" >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>HTML5 Drag and Drop File Upload with Canvas Example</title>
+<title>Python web based image editor</title>
 <meta name="description" content="HTML5 drag and drop file upload with canvas example and demonstration by inWebson.com"/>
 <meta name="keywords" content="demonstration,demo,html5,file upload,canvas,inwebson"/>
 <link rel="stylesheet" media="all" href="style.css" />
@@ -37,7 +37,6 @@ $(document).ready(function() {
 
 <!-- Header -->
 <header id="header">
-	<div class="clearfix"></div>
 </header>
 
 <!-- Content -->
@@ -45,7 +44,6 @@ $(document).ready(function() {
 
 <hgroup>
 	<h2>HTML5 <span>Drag and Drop</span> File Upload</h2> 
-	<h3>Showcase for HTML5 drag and drop file upload through canvas</h3>
 </hgroup>
 
 <div id="droparea">
@@ -63,24 +61,18 @@ $(document).ready(function() {
 			<input type="radio" id="grayscale" name="effect" value="grayscale" /><label for="grayscale">Grayscale Effect</label>
 			<input type="radio" id="blurry" name="effect" value="blurry" /><label for="blurry">Blur Effect</label>
 		</p>
-		<p id="err">Wait there! You must ENABLE Javascript to have this works!</p>
+		<p id="err">please enable javascript</p>
 	</div>
 	<input id="upload" type="file" multiple />
 </div>
-<p class="message">Please take note that all uploaded images would <strong>NOT</strong> be saved on server.</p>
 <div id="result">
 	
 </div>
 
-<form enctype="multipart/form-data" action="/" method="post">
-  <input type="file" name="file" multiple="true" />
-  <input type="submit" />
-</form>
 </section>
 
 <!-- Footer -->
 <footer id="footer">
-	<span>&copy; 2012 <a href="http://www.inwebson.com">inWebson.com</a>. Design by <a href="http://www.inwebson.com/contactus">Kenny Ooi</a>. Powered by <a href="http://www.inwebson.com/html5/">HTML5</a> and <a href="http://www.inwebson.com/jquery/">jQuery</a>.</span>
 </footer>
 
 </body>

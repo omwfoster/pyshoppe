@@ -71,7 +71,6 @@ class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
                 f.write(thumbnail)
             files.finalize(file_name)
             blob_key = files.blobstore.get_blob_key(file_name)
-                
             self.send_blob(blob_key)
 
 
@@ -84,6 +83,8 @@ class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
 app = webapp2.WSGIApplication([('/', startpage),('/upload', upload),('/canvas.jpg',ViewPhotoHandler)], debug=True)
 
 """
+
+this is a random change
 def main():
     run_wsgi_app(application)
 
