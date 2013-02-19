@@ -118,8 +118,8 @@ a:hover, a:active{
 	position:absolute;
 }
 #droparea{
-	width:700px;
-	height:800px;
+	width:670px;
+	height:740px;
 	border:7px dashed #ccc;
 	border-radius:10px;
 	vertical-align:baseline;
