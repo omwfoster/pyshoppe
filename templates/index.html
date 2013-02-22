@@ -38,7 +38,6 @@ $(document).ready(function() {
 
 <!-- Header -->
 <header id="header">
-	<div class="clearfix"></div>
 </header>
 
 <!-- Content -->
@@ -50,21 +49,20 @@ $(document).ready(function() {
 
 <div id="droparea">
 	<div class="dropareainner">
-		<img id="target" src="" width="500" height="450"></img>
+		<img id="target" src="" width="500" height="500"></img>
 		<p>or</p>
 		<p><input id="downloadbtn" class="downloadbtn" type="button" value="apply filters and transorms"/></p>
 		<p class="extra">
 			<input type="radio" id="nocrop" name="croping" value="nocrop" checked /><label for="nocrop">No Crop</label>
 			<input type="radio" id="crop" name="croping" value="crop" /><label for="crop">Crop Image</label>
 		</p>
-		<p class="extra">
-			<input type="radio" id="normal" name="effect" value="normal" checked /><label for="normal">No Effect</label>
-			<input type="radio" id="grayscale" name="effect" value="grayscale" /><label for="grayscale">Grayscale Effect</label>
-			<input type="radio" id="blurry" name="effect" value="blurry" /><label for="blurry">Blur Effect</label>
-		</p>
 		<p id="err">please enable javascript</p>
 	</div>
+	<div class="pinboard">
+		<canvas id="canvasbag" width="400" height="200"></canvas>
+	</div>
 </div>
+
 <div id="result">
 	
 </div>

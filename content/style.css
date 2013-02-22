@@ -119,7 +119,7 @@ a:hover, a:active{
 }
 #droparea{
 	width:670px;
-	height:740px;
+	height:940px;
 	border:7px dashed #ccc;
 	border-radius:10px;
 	vertical-align:baseline;
@@ -128,7 +128,7 @@ a:hover, a:active{
 	text-shadow:1px 1px 0 #fff;
 }
 
-#target{
+.target{
 	border:7px dashed #ccc;
 	border-radius:10px;
 	margin:0 auto;
@@ -140,6 +140,12 @@ a:hover, a:active{
 }
 #droparea .dropareainner{
 	margin-top:35px;
+}
+
+.pinboard #canvasbag{
+	border:7px dashed #ccc;
+	border-radius:10px;
+	margin:0 auto;
 }
 #droparea .dropfiletext{
 	font-size:18px;

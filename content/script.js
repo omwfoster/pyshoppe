@@ -274,6 +274,14 @@ $(document).ready(function () {
       var displayfile = function(file)
 	   {
 	    document.getElementById('target').src=URL.createObjectURL(file);
+	    var canvas=document.getElementById('canvasbag');
+	    ctx=canvas.getContext('2d')
 	    
+	    var img = new Image;
+		img.src = URL.createObjectURL(file);
+		img.onload = function() {
+    		ctx.drawImage(img, 20,20);
+    		alert('the image is drawn');
+    		}
 	   }  
 })
