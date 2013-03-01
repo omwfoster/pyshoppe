@@ -5,18 +5,8 @@
     
     // initialize an array of rectangles that provide
     // rectangular paths and properties for the images
-    var rectangles = [{
-        name: "darthVader",
-        image: null,
-        x: 100,
-        y: 40,
-        width: 200,
-        height: 137,
-        dragging: false,
-        offsetX: 0,
-        offsetY: 0,
-    }, {
-        name: "yoda",
+    var rectangles = [ {
+        name: "startpoint",
         image: null,
         x: 350,
         y: 55,
@@ -27,7 +17,7 @@
         offsetY: 0,
     }];
     
-    function loadImages(sources, callback){
+  /*  function loadImages(sources, callback){
         var loadedImages = 0;
         var numImages = 0;
         for (var src in sources) {
@@ -41,7 +31,7 @@
             images[src].src = sources[src];
         }
     }
-    
+*/    
     function initStage(){
         // map images to rectangles array
         counter = 0;
@@ -102,18 +92,7 @@
         });
     }
     
-    window.onload = function(){
-        canvas = document.getElementById("myCanvas");
-        context = canvas.getContext("2d");
-        
-        var sources = {
-            darthVader: "darth-vader.jpg",
-            yoda: "yoda.jpg"
-        };
-        
-        loadImages(sources, function(){
-            initStage();
-        });
+   
     }
 
 
@@ -148,7 +127,10 @@
     		ctx.drawImage(img, 20,20);
     		alert('the image is drawn');
     		}
+    		loadImages(img.src, function(){initStage();});
 	   }  
+	   
+	   
 /*
 function Car (desc) {
     this.desc = desc;
