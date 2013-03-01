@@ -1,11 +1,11 @@
- 
-    var canvas = null;
-    var context = null;
-    var images = {};
+$(document).ready(function () {
+ //   var canvas = null;
+ //   var context = null;
+ //   var images = {};
     
     // initialize an array of rectangles that provide
     // rectangular paths and properties for the images
-    var rectangles = [ {
+ /*   var rectangles = [ {
         name: "startpoint",
         image: null,
         x: 350,
@@ -16,7 +16,7 @@
         offsetX: 0,
         offsetY: 0,
     }];
-    
+  */  
   /*  function loadImages(sources, callback){
         var loadedImages = 0;
         var numImages = 0;
@@ -32,7 +32,7 @@
         }
     }
 */    
-    function initStage(){
+  /*  function initStage(){
         // map images to rectangles array
         counter = 0;
         for (var img in images) {
@@ -94,7 +94,7 @@
     
    
     }
-
+*/
 
 	var downloadImage = function ()
     	{
@@ -149,3 +149,4 @@ Car.prototype = {
     }
 };
 */
+})
