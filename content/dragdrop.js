@@ -116,3 +116,54 @@
         });
     }
 
+
+ var downloadImage = function ()
+    {
+        var xhr_get = new XMLHttpRequest();
+        xhr_get.open('GET', '/canvas.jpg', true);
+        xhr_get.responseType = 'blob';
+
+        xhr_get.onload = function(e) {
+            if (this.status == 200) {
+                var blob = new Blob([this.response], {type: 'image/jpg'});
+                displayfile(blob);
+				
+            }
+        };
+
+        xhr_get.send();
+    }
+    
+    
+    
+      var displayfile = function(file)
+	   {
+	    document.getElementById('target').src=URL.createObjectURL(file);
+	    var canvas=document.getElementById('canvasbag');
+	    ctx=canvas.getContext('2d')
+	    
+	    var img = new Image;
+		img.src = URL.createObjectURL(file);
+		img.onload = function() {
+    		ctx.drawImage(img, 20,20);
+    		alert('the image is drawn');
+    		}
+	   }  
+/*
+function Car (desc) {
+    this.desc = desc;
+    this.color = "red";
+}
+ 
+Car.prototype = {
+    getInfo: function() {
+      return 'A ' + this.color + ' ' + this.desc + '.';
+    },
+    drive: function() {
+      //DO SOMETHING
+    },
+    stop: function() {
+      //DO SOMETHING
+    }
+};
+*/
