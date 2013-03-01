@@ -96,8 +96,8 @@
     }
 
 
- var downloadImage = function ()
-    {
+	var downloadImage = function ()
+    	{
         var xhr_get = new XMLHttpRequest();
         xhr_get.open('GET', '/canvas.jpg', true);
         xhr_get.responseType = 'blob';
@@ -111,11 +111,11 @@
         };
 
         xhr_get.send();
-    }
+    	}
     
     
     
-      var displayfile = function(file)
+	var displayfile = function(file)
 	   {
 	    document.getElementById('target').src=URL.createObjectURL(file);
 	    var canvas=document.getElementById('canvasbag');
@@ -127,7 +127,7 @@
     		ctx.drawImage(img, 20,20);
     		alert('the image is drawn');
     		}
-    		loadImages(img.src, function(){initStage();});
+  //  	loadImages(img.src, function(){initStage();});
 	   }  
 	   
 	   
