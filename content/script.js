@@ -1,5 +1,67 @@
 $(document).ready(function () {
+
+
+   /****************************
+     server communication
+     ****************************/
+function servercom() {}
+    
+servercom.protoype.uploadToServer=function (file) {
+        	var xhr_post = new XMLHttpRequest();
+        	xhr_post.open("post", "/upload", true);
+        	xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
+	        xhr_post.setRequestHeader("X-File-Name", file.name);
+	        xhr_post.setRequestHeader("X-File-Type", file.type);
+	        xhr_post.send(file);
+	
+	        if (typeof FileReader === "undefined") {
+	            //$('.extra').hide();
+	            $('#err').html('Hey! Your browser does not support <strong>HTML5 File API</strong> <br/>Try using Chrome or Firefox to have it works!');
+	        } else if (!Modernizr.draganddrop) {
+	            $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
+	        } else {
+	            $('#err').text('');
+	        };
+servercom.protoype.downloadImage=function () {
+	        var xhr_get = new XMLHttpRequest();
+	        xhr_get.open('GET', '/canvas.jpg', true);
+	        xhr_get.responseType = 'blob';
+	
+	        xhr_get.onload = function(e) {
+	            if (this.status == 200) {
+	                var blob = new Blob([this.response], {type: 'image/jpg'});
+	                displayfile(blob);
+					
+	            }
+	        };
+	
+	        xhr_get.send();
+	  };
+	    
+    
+    
+	servercom.protoype.displayfile=function(file)
+	   		{
+		    document.getElementById('target').src=URL.createObjectURL(file);
+		    var canvas=document.getElementById('canvasbag');
+		    ctx=canvas.getContext('2d')
+		    
+		    var img = new Image;
+			img.src = URL.createObjectURL(file);
+			img.onload = function() {
+	    		ctx.drawImage(img, 20,20);
+	    		alert('the image is drawn');
+	    	};
+  //  	loadImages(img.src, function(){initStage();});
+	   } 
+	   
+
+
+
+
+
     var imgWidth = 180,
+    var servercom = new servercom();
         imgHeight = 180,
         zindex = 0;
     //	targetContext = $("#target").getContext('2d')
@@ -28,7 +90,7 @@ $(document).ready(function () {
     });
 
     downloadbtn.on('click', function (e) {
-        downloadImage()
+        servercom.downloadImage()
     });
 
 
@@ -138,8 +200,8 @@ $(document).ready(function () {
                     .load(function () {
                         var newimageurl = getCanvasImage(this);
                         createPreview(file, newimageurl);
-                        uploadToServer(file);
-						displayfile(file);
+                        servercom.uploadToServer(file);
+						servercom.displayfile(file);
                     })
                     .attr('src', e.target.result);
             };
@@ -229,30 +291,8 @@ $(document).ready(function () {
     }
 
 
-    /****************************
-     Upload Image to Server
-     ****************************/
-    var uploadToServer = function (file) {
-        var xhr_post = new XMLHttpRequest();
-        xhr_post.open("post", "/upload", true);
-        xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
-        xhr_post.setRequestHeader("X-File-Name", file.name);
-        xhr_post.setRequestHeader("X-File-Type", file.type);
-        xhr_post.send(file);
-
-        if (typeof FileReader === "undefined") {
-            //$('.extra').hide();
-            $('#err').html('Hey! Your browser does not support <strong>HTML5 File API</strong> <br/>Try using Chrome or Firefox to have it works!');
-        } else if (!Modernizr.draganddrop) {
-            $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
-        } else {
-            $('#err').text('');
-        }
-    }
-
-
-
-
+ 
+	   
 
      
 })

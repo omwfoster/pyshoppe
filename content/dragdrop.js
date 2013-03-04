@@ -96,7 +96,7 @@ $(document).ready(function () {
    }
 */
 
-	var downloadImage = function ()
+	downloadImage = function ()
     	{
         var xhr_get = new XMLHttpRequest();
         xhr_get.open('GET', '/canvas.jpg', true);
