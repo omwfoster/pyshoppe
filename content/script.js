@@ -1,9 +1,3 @@
-$(document).ready(function () {
-
-
-   /****************************
-     server communication
-     ****************************/
 function servercom() {}
     
 servercom.protoype.uploadToServer=function (file) {
@@ -21,7 +15,11 @@ servercom.protoype.uploadToServer=function (file) {
 	            $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
 	        } else {
 	            $('#err').text('');
-	        };
+	        }
+};
+
+
+
 servercom.protoype.downloadImage=function () {
 	        var xhr_get = new XMLHttpRequest();
 	        xhr_get.open('GET', '/canvas.jpg', true);
@@ -40,28 +38,38 @@ servercom.protoype.downloadImage=function () {
 	    
     
     
-	servercom.protoype.displayfile=function(file)
+servercom.protoype.displayfile=function(file)
 	   		{
 		    document.getElementById('target').src=URL.createObjectURL(file);
 		    var canvas=document.getElementById('canvasbag');
-		    ctx=canvas.getContext('2d')
+		    ctx=canvas.getContext('2d');
 		    
 		    var img = new Image;
 			img.src = URL.createObjectURL(file);
 			img.onload = function() {
 	    		ctx.drawImage(img, 20,20);
 	    		alert('the image is drawn');
+	    		};
 	    	};
-  //  	loadImages(img.src, function(){initStage();});
-	   } 
 	   
+
+
+
+
+$(document).ready(function () {
+
+
+   /****************************
+     server communication
+     ****************************/
+
 
 
 
 
 
     var imgWidth = 180,
-    var servercom = new servercom();
+    var global_servercom = new servercom();
         imgHeight = 180,
         zindex = 0;
     //	targetContext = $("#target").getContext('2d')
@@ -90,7 +98,7 @@ servercom.protoype.downloadImage=function () {
     });
 
     downloadbtn.on('click', function (e) {
-        servercom.downloadImage()
+        global_servercom.downloadImage()
     });
 
 
@@ -200,8 +208,8 @@ servercom.protoype.downloadImage=function () {
                     .load(function () {
                         var newimageurl = getCanvasImage(this);
                         createPreview(file, newimageurl);
-                        servercom.uploadToServer(file);
-						servercom.displayfile(file);
+                        global_servercom.uploadToServer(file);
+						global_servercom.displayfile(file);
                     })
                     .attr('src', e.target.result);
             };
