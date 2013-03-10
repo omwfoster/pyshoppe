@@ -23,11 +23,11 @@ a {
 a:hover, a:active{
 	color:#91DCFF;
 }
-
+/*move to pycharm */
 /* Header */
 #header{
 	width:100%;
-	background:#000;
+	background:#001;
 	background:rgba(0, 0, 0, 0.8);
 	padding:5px 0;
 	letter-spacing:1px;
@@ -119,7 +119,7 @@ a:hover, a:active{
 }
 #droparea{
 	width:670px;
-	height:940px;
+	height:200px;
 	border:7px dashed #ccc;
 	border-radius:10px;
 	vertical-align:baseline;
@@ -140,6 +140,12 @@ a:hover, a:active{
 }
 #droparea .dropareainner{
 	margin-top:35px;
+}
+
+.dropareainner #target{
+	
+	width:650px;
+	height:180px;
 }
 
 .pinboard #canvasbag{
