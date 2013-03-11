@@ -1,8 +1,16 @@
+   /****************************
+     server communication
+     ****************************/
+
+
+
 function servercom() {}
-    
-servercom.protoype.uploadToServer=function (file) {
+   
+   
+
+servercom.prototype.uploadToServer=function(file) {
         	var xhr_post = new XMLHttpRequest();
-        	xhr_post.open("post", "/upload", true);
+         	xhr_post.open("post", "/upload", true);
         	xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
 	        xhr_post.setRequestHeader("X-File-Name", file.name);
 	        xhr_post.setRequestHeader("X-File-Type", file.type);
@@ -16,31 +24,33 @@ servercom.protoype.uploadToServer=function (file) {
 	        } else {
 	            $('#err').text('');
 	        }
-};
+}
 
+/* random change */
 
-
-servercom.protoype.downloadImage=function () {
+servercom.prototype.downloadImage=function () {
+	        
 	        var xhr_get = new XMLHttpRequest();
 	        xhr_get.open('GET', '/canvas.jpg', true);
 	        xhr_get.responseType = 'blob';
-	
+	        var filename = xhr_post.getRequestHeader("X-File-Name");
+	        var filetype = xhr_post.getRequestHeader("X-File-Type");
+			
 	        xhr_get.onload = function(e) {
 	            if (this.status == 200) {
-	                var blob = new Blob([this.response], {type: 'image/jpg'});
-	                displayfile(blob);
-					
+	                blob = new Blob([this.response], {type: 'image/jpg'});
+					displayfile(blob);
 	            }
 	        };
 	
 	        xhr_get.send();
 	  };
-	    
-    
-    
-servercom.protoype.displayfile=function(file)
+ 
+ 
+ 	  
+function displayfile(file)
 	   		{
-		    document.getElementById('target').src=URL.createObjectURL(file);
+//document.getElementById('target').src=URL.createObjectURL(file);
 		    var canvas=document.getElementById('canvasbag');
 		    ctx=canvas.getContext('2d');
 		    
@@ -50,7 +60,7 @@ servercom.protoype.displayfile=function(file)
 	    		ctx.drawImage(img, 20,20);
 	    		alert('the image is drawn');
 	    		};
-	    	};
+	    	}
 	   
 
 
@@ -59,17 +69,8 @@ servercom.protoype.displayfile=function(file)
 $(document).ready(function () {
 
 
-   /****************************
-     server communication
-     ****************************/
-
-
-
-
-
 
     var imgWidth = 180,
-    var global_servercom = new servercom();
         imgHeight = 180,
         zindex = 0;
     //	targetContext = $("#target").getContext('2d')
@@ -96,9 +97,10 @@ $(document).ready(function () {
         processFiles(files);
         return false;
     });
+    var global_servercom = new servercom();
 
     downloadbtn.on('click', function (e) {
-        global_servercom.downloadImage()
+        global_servercom.downloadImage();
     });
 
 
@@ -121,6 +123,8 @@ $(document).ready(function () {
         }
         return diff;
     }
+	
+	
 
     //convert datauri to blob
     function dataURItoBlob(dataURI) {
@@ -209,7 +213,7 @@ $(document).ready(function () {
                         var newimageurl = getCanvasImage(this);
                         createPreview(file, newimageurl);
                         global_servercom.uploadToServer(file);
-						global_servercom.displayfile(file);
+						displayfile(file);
                     })
                     .attr('src', e.target.result);
             };
