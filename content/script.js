@@ -1,84 +1,77 @@
-   /****************************
-     server communication
-     ****************************/
+/****************************
+ server communication
+ ****************************/
 
 
 
-function servercom() {}
-   
-   
+function servercom() {
+}
 
-servercom.prototype.uploadToServer=function(file) {
-        	var xhr_post = new XMLHttpRequest();
-         	xhr_post.open("post", "/upload", true);
-        	xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
-	        xhr_post.setRequestHeader("X-File-Name", file.name);
-	        xhr_post.setRequestHeader("X-File-Type", file.type);
-	        xhr_post.send(file);
-	
-	        if (typeof FileReader === "undefined") {
-	            //$('.extra').hide();
-	            $('#err').html('Hey! Your browser does not support <strong>HTML5 File API</strong> <br/>Try using Chrome or Firefox to have it works!');
-	        } else if (!Modernizr.draganddrop) {
-	            $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
-	        } else {
-	            $('#err').text('');
-	        }
+
+servercom.prototype.uploadToServer = function (file) {
+    var xhr_post = new XMLHttpRequest();
+    xhr_post.open("post", "/upload", true);
+    xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
+    xhr_post.setRequestHeader("X-File-Name", file.name);
+    xhr_post.setRequestHeader("X-File-Type", file.type);
+    xhr_post.send(file);
+
+    if (typeof FileReader === "undefined") {
+        //$('.extra').hide();
+        $('#err').html('Hey! Your browser does not support <strong>HTML5 File API</strong> <br/>Try using Chrome or Firefox to have it works!');
+    } else if (!Modernizr.draganddrop) {
+        $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
+    } else {
+        $('#err').text('');
+    }
 }
 
 /* random change */
 
-servercom.prototype.downloadImage=function () {
-	        
-	        var xhr_get = new XMLHttpRequest();
-	        xhr_get.open('GET', '/canvas.jpg', true);
-	        xhr_get.responseType = 'blob';
-	        var filename = xhr_post.getRequestHeader("X-File-Name");
-	        var filetype = xhr_post.getRequestHeader("X-File-Type");
-			
-	        xhr_get.onload = function(e) {
-	            if (this.status == 200) {
-	                blob = new Blob([this.response], {type: 'image/jpg'});
-					displayfile(blob);
-	            }
-	        };
-	
-	        xhr_get.send();
-	  };
- 
- 
- 	  
-function displayfile(file)
-	   		{
+servercom.prototype.downloadImage = function () {
+
+    var xhr_get = new XMLHttpRequest();
+    xhr_get.open('GET', '/canvas.jpg', true);
+    xhr_get.responseType = 'blob';
+    var filename = xhr_post.getRequestHeader("X-File-Name");
+    var filetype = xhr_post.getRequestHeader("X-File-Type");
+
+    xhr_get.onload = function (e) {
+        if (this.status == 200) {
+            blob = new Blob([this.response], {type:'image/jpg'});
+            displayfile(blob);
+        }
+    };
+
+    xhr_get.send();
+};
+
+
+function displayfile(file) {
 //document.getElementById('target').src=URL.createObjectURL(file);
-		    var canvas=document.getElementById('canvasbag');
-		    ctx=canvas.getContext('2d');
-		    
-		    var img = new Image;
-			img.src = URL.createObjectURL(file);
-			img.onload = function() {
-	    		ctx.drawImage(img, 20,20);
-	    		alert('the image is drawn');
-	    		};
-	    	}
-	   
+    var canvas = document.getElementById('canvasbag');
+    ctx = canvas.getContext('2d');
 
-
+    var img = new Image;
+    img.src = URL.createObjectURL(file);
+    img.onload = function () {
+        ctx.drawImage(img, 20, 20);
+    };
+}
 
 
 $(document).ready(function () {
-
 
 
     var imgWidth = 180,
         imgHeight = 180,
         zindex = 0;
     //	targetContext = $("#target").getContext('2d')
-        dropzone = $('#target'),
+    dropzone = $('#canvasbag'),
         downloadbtn = $('#downloadbtn'),
         defaultdownloadbtn = $('#download');
-		globalblob = "";
-    	dropzone.on('dragover', function () {
+    globalblob = "";
+    dropzone.on('dragover', function () {
         //add hover class when drag over
         dropzone.addClass('hover');
         return false;
@@ -123,8 +116,7 @@ $(document).ready(function () {
         }
         return diff;
     }
-	
-	
+
 
     //convert datauri to blob
     function dataURItoBlob(dataURI) {
@@ -195,7 +187,7 @@ $(document).ready(function () {
     var processFiles = function (files) {
         if (files && typeof FileReader !== "undefined") {
             for (var i = 0; i < files.length; i++) {
-                readFile(files[i]);				           
+                readFile(files[i]);
             }
         } else {
 
@@ -208,12 +200,12 @@ $(document).ready(function () {
             var reader = new FileReader();
             //init reader onload event handlers
             reader.onload = function (e) {
-            var image = $('<img/>')
+                var image = $('<img/>')
                     .load(function () {
                         var newimageurl = getCanvasImage(this);
                         createPreview(file, newimageurl);
                         global_servercom.uploadToServer(file);
-						displayfile(file);
+                        displayfile(file);
                     })
                     .attr('src', e.target.result);
             };
@@ -282,7 +274,7 @@ $(document).ready(function () {
             imageObj.fileName += " (Grayscale)";
         } else if (effect == 'blurry') {
             imageObj.fileName += " (Blurry)";
-      	}
+        }
         //append new image through jQuery Template
         var randvalue = Math.floor(Math.random() * 31) - 15;  //random number
         var img = $("#imageTemplate").tmpl(imageObj).prependTo("#result")
@@ -303,8 +295,4 @@ $(document).ready(function () {
     }
 
 
- 
-	   
-
-     
 })

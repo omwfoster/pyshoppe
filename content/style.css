@@ -23,11 +23,11 @@ a {
 a:hover, a:active{
 	color:#91DCFF;
 }
-/*move to pycharm */
+
 /* Header */
 #header{
 	width:100%;
-	background:#001;
+	background:#000;
 	background:rgba(0, 0, 0, 0.8);
 	padding:5px 0;
 	letter-spacing:1px;
@@ -117,36 +117,13 @@ a:hover, a:active{
 	opacity:0;
 	position:absolute;
 }
-#droparea{
-	width:670px;
-	height:200px;
-	border:7px dashed #ccc;
-	border-radius:10px;
-	vertical-align:baseline;
-	margin:0 auto;
-	text-align:center;
-	text-shadow:1px 1px 0 #fff;
-}
-
-.target{
-	border:7px dashed #ccc;
-	border-radius:10px;
-	margin:0 auto;
-}
 
 
-#droparea p{
-	margin:7px 0;
-}
-#droparea .dropareainner{
-	margin-top:35px;
-}
 
-.dropareainner #target{
-	
-	width:650px;
-	height:180px;
-}
+
+
+
+
 
 .pinboard #canvasbag{
 	border:7px dashed #ccc;
@@ -177,7 +154,7 @@ a:hover, a:active{
 	background-color:#fff;
 }
 #err{
-	color: #3553db;
+	color:#DB0000;
 	padding-top:3px;
 	font-size:13px;
 	line-height:1.5;
