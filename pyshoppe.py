@@ -17,14 +17,14 @@ class blobImages(db.Model):
 
 class BaseRequestHandler(webapp2.RequestHandler):
     def render_template(self, filename, template_args=None):
-        self.response.out.write("base request reached")
-        self.response.out.write(template_args)
+# "       self.response.out.write("base request reached")"
+#        self.response.out.write(template_args)
         if not template_args:
             template_args = {}
     
     
         path = os.path.join(os.path.dirname(__file__), 'templates', filename)
-        self.response.out.write(path)
+  #      self.response.out.write(path)
         self.response.out.write(template.render(path, template_args))
 
 

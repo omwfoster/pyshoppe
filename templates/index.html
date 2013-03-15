@@ -1,38 +1,39 @@
 <!DOCTYPE html>
-<html lang="en-US" >
+<html lang="en-US">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>virtual pinboard</title>
-<meta name="description" content=virtual pinboard"/>
-<meta name="keywords" content="demonstration,demo,html5,file upload,canvas"/>
-<link rel="stylesheet" media="all" href="../content/style.css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-<!--[if lt IE 9]>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>virtual pinboard</title>
+    <meta name="description" content="virtual pinboard"/>
+    <meta name="keywords" content="demonstration,demo,html5,file upload,canvas"/>
+    <link rel="stylesheet" media="all" href="../content/base.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    <script src="../content/kineticjs.js"></script>
+    <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script id="imageTemplate" type="text/x-jquery-tmpl"> 
-    <div class="imageholder">
-		<figure>
-			<img src="${filePath}" alt="${fileName}"/>
-			<figcaption>
-				${fileName} <br/>
-				<span>Original Size: ${fileOriSize} KB</span><br/>
-				<span>Upload Size: ${fileUploadSize} KB</span>
-			</figcaption>
-		</figure>
-	</div>
-</script>
-<script src="../content/modernizr.custom.js"></script>
-<script type="text/javascript" src="/_ah/channel/jsapi"></script>
-<script src="../content/script.js"></script>
-<script>
-//position fixed
-$(document).ready(function() {
-	var windowHeight = $(window).height()-$('#header').outerHeight(true)-$('#footer').outerHeight(true)-100;
-	$('#wrapper').css('minHeight', windowHeight);
-});
-</script>
+    <script id="imageTemplate" type="text/x-jquery-tmpl">
+        <div class="imageholder">
+            <figure>
+                <img src="${filePath}" alt="${fileName}"/>
+                <figcaption>
+                    ${fileName} <br/>
+                    <span>Original Size: ${fileOriSize} KB</span><br/>
+                    <span>Upload Size: ${fileUploadSize} KB</span>
+                </figcaption>
+            </figure>
+        </div>
+    </script>
+    <script src="../content/modernizr.custom.js"></script>
+    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+    <script src="../content/script.js"></script>
+    <script>
+        //position fixed
+        $(document).ready(function () {
+//	var windowHeight = $(window).height()-$('#header').outerHeight(true)-$('#footer').outerHeight(true)-100;
+//	$('#wrapper').css('minHeight', windowHeight);
+        });
+    </script>
 </head>
 <body>
 
@@ -41,28 +42,38 @@ $(document).ready(function() {
 </header>
 
 <!-- Content -->
-<section id="wrapper">
 
 
+<div class="colmask threecol">
+    <div class="colmid">
+        <div class="colleft">
 
+            <div class="col1">
 
-		<p><input id="downloadbtn" class="downloadbtn" type="button" value="apply filters and transorms"/></p>
-		<p class="extra">
-			<input type="radio" id="nocrop" name="croping" value="nocrop" checked /><label for="nocrop">No Crop</label>
-			<input type="radio" id="crop" name="croping" value="crop" /><label for="crop">Crop Image</label>
-		</p>
-		<p id="err">please enable javascript</p>
+                <div class="pinboard">
+                    <div id="canvasbag" ></div>
+                </div>
+{#                <p><input id="downloadbtn" class="downloadbtn" type="button" value="apply filters and transorms"/></p>#}
 
-	<div class="pinboard">
-		<canvas id="canvasbag" width="1000" height="600"></canvas>
-	</div>
-    <div id="result">
+{#                <p class="extra">#}
+{#                    <input type="radio" id="nocrop" name="croping" value="nocrop" checked/><label for="nocrop">No#}
+{#                    Crop</label>#}
+{#                    <input type="radio" id="crop" name="croping" value="crop"/><label for="crop">Crop Image</label>#}
+{#                </p>#}
 
+                <p id="err">please enable javascript</p>
+            </div>
+            <div class="col2">
+
+            </div>
+
+            <div class="col3">
+                <div id="result">
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
-
+</div>
 
 <!-- Footer -->
 <footer id="footer">
