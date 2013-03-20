@@ -3,7 +3,6 @@
  ****************************/
 
 
-
 function servercom() {
 }
 
@@ -48,21 +47,77 @@ servercom.prototype.downloadImage = function () {
 
 
 
+
+
     $(document).ready(function () {
 
+//     Kinetic js  stage initialisation
 
         var imgWidth = 180,
             imgHeight = 180,
             zindex = 0;
 
-        var stage = new Kinetic.Stage({
-            container:'canvasbag',
-            width:578,
-            height:200
+        var stage;
+        stage = new Kinetic.Stage({
+            container: 'canvasbag',
+            width: 578,
+            height: 200,
+            draggable: true
         });
 
-        var layer = new Kinetic.Layer();
-        //	targetContext = $("#target").getContext('2d')
+        function displayfile(file) {
+            var imageObj = new Image();
+            imageObj.src = URL.createObjectURL(file);
+
+            imageObj.onload = function () {
+                var note = new Kinetic.Image({
+                    x:140,
+                    //    y:stage.getHeight() / 2 - 59,
+                    image:imageObj,
+                    width:106,
+                    height:118
+                });
+                // add the shape to the layer
+                var layer = new Kinetic.Layer();
+                stage.add(layer);
+                layer.add(note);
+
+                // add the layer to the stage
+            };
+        };
+
+
+
+
+
+
+        //    appengine channels api
+
+        channel = new goog.appengine.Channel(token);
+        socket = channel.open();
+        socket.onopen = function() {
+            add_message('Channel established.');
+        };
+        socket.onmessage = function(message) {
+            var data = jQuery.parseJSON(message.data)
+//            var row = $('<tr />');
+//            for(var i = 0; i < columns.length; i++) {
+//                $('<td />', {
+//                    'text': data.data[columns[i]],
+//                }).appendTo(row);
+//            }
+//            row.appendTo('#results');
+        };
+        socket.onerror = function(error) {
+            add_message('Channel error: ' + error.description);
+        };
+        socket.onclose = function() {
+            add_message('Channel closed.');
+        };
+
+        // appengine channels api
+
+
         dropzone = $('#canvasbag'),
             downloadbtn = $('#downloadbtn'),
             defaultdownloadbtn = $('#download');
@@ -96,44 +151,6 @@ servercom.prototype.downloadImage = function () {
         /*****************************
          internal functions
          *****************************/
-
-
-        function displayfile(file) {
-//document.getElementById('target').src=URL.createObjectURL(file);
-//    var canvas = document.getElementById('canvasbag');
-//    ctx = canvas.getContext('2d');
-//
-//    var img = new Image;
-//    img.src = URL.createObjectURL(file);
-//    img.onload = function () {
-//        ctx.drawImage(img, 20, 20);
-//    };
-
-
-            var imageObj = new Image();
-            imageObj.src = URL.createObjectURL(file);
-
-            imageObj.onload = function () {
-                var note = new Kinetic.Image({
-                    x:140,
-                    //    y:stage.getHeight() / 2 - 59,
-                    image:imageObj,
-                    width:106,
-                    height:118
-                });
-
-
-                // add the shape to the layer
-                layer.add(note);
-
-                // add the layer to the stage
-                stage.add(layer);
-
-
-            };
-        };
-
-
 
 
         //Bytes to KiloBytes conversion

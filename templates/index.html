@@ -9,6 +9,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
     <script src="../content/kineticjs.js"></script>
+    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+    <script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
     <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
@@ -25,17 +27,18 @@
         </div>
     </script>
     <script src="../content/modernizr.custom.js"></script>
-    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script src="../content/script.js"></script>
+    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script>
-        //position fixed
-        $(document).ready(function () {
-//	var windowHeight = $(window).height()-$('#header').outerHeight(true)-$('#footer').outerHeight(true)-100;
-//	$('#wrapper').css('minHeight', windowHeight);
-        });
+        var token = "{{ token }}";
     </script>
 </head>
 <body>
+
+<script>
+
+</script>
+
 
 <!-- Header -->
 <header id="header">
@@ -51,17 +54,8 @@
             <div class="col1">
 
                 <div class="pinboard">
-                    <div id="canvasbag" ></div>
+                    <div id="canvasbag"></div>
                 </div>
-{#                <p><input id="downloadbtn" class="downloadbtn" type="button" value="apply filters and transorms"/></p>#}
-
-{#                <p class="extra">#}
-{#                    <input type="radio" id="nocrop" name="croping" value="nocrop" checked/><label for="nocrop">No#}
-{#                    Crop</label>#}
-{#                    <input type="radio" id="crop" name="croping" value="crop"/><label for="crop">Crop Image</label>#}
-{#                </p>#}
-
-                <p id="err">please enable javascript</p>
             </div>
             <div class="col2">
 
