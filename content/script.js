@@ -49,6 +49,8 @@ servercom.prototype.downloadImage = function () {
 
 
 
+
+
     $(document).ready(function () {
 
 //     Kinetic js  stage initialisation
@@ -57,38 +59,14 @@ servercom.prototype.downloadImage = function () {
             imgHeight = 180,
             zindex = 0;
 
-        var stage;
+
         stage = new Kinetic.Stage({
             container: 'canvasbag',
-            width: 578,
-            height: 200,
-            draggable: true
+            width: 800,
+            height: 538
         });
-
-        function displayfile(file) {
-            var imageObj = new Image();
-            imageObj.src = URL.createObjectURL(file);
-
-            imageObj.onload = function () {
-                var note = new Kinetic.Image({
-                    x:140,
-                    //    y:stage.getHeight() / 2 - 59,
-                    image:imageObj,
-                    width:106,
-                    height:118
-                });
-                // add the shape to the layer
-                var layer = new Kinetic.Layer();
-                stage.add(layer);
-                layer.add(note);
-
-                // add the layer to the stage
-            };
-        };
-
-
-
-
+        var layer = new Kinetic.Layer();
+        stage.add(layer);
 
 
         //    appengine channels api
@@ -96,7 +74,7 @@ servercom.prototype.downloadImage = function () {
         channel = new goog.appengine.Channel(token);
         socket = channel.open();
         socket.onopen = function() {
-            add_message('Channel established.');
+  //          add_message('Channel established.');
         };
         socket.onmessage = function(message) {
             var data = jQuery.parseJSON(message.data)
@@ -109,10 +87,10 @@ servercom.prototype.downloadImage = function () {
 //            row.appendTo('#results');
         };
         socket.onerror = function(error) {
-            add_message('Channel error: ' + error.description);
+     //       add_message('Channel error: ' + error.description);
         };
         socket.onclose = function() {
-            add_message('Channel closed.');
+     //       add_message('Channel closed.');
         };
 
         // appengine channels api
@@ -151,6 +129,30 @@ servercom.prototype.downloadImage = function () {
         /*****************************
          internal functions
          *****************************/
+
+        function displayfile(file) {
+            var imageObj = new Image();
+            imageObj.src = URL.createObjectURL(file);
+
+            imageObj.onload = function () {
+                var note = new Kinetic.Image({
+                    x:140,
+                    y:stage.getHeight() / 2 - 59,
+                    image:imageObj,
+                    width:106,
+                    height:118,
+                    draggable: true
+                });
+                // add the shape to the layer
+
+                layer.add(note);
+                layer.draw();
+                note = null;
+
+                // add the layer to the stage
+            };
+        };
+
 
 
         //Bytes to KiloBytes conversion

@@ -6,6 +6,7 @@ body {
     min-width:600px;		/* Minimum width of layout - remove line if not required */
     /* The min-width property does not work in old versions of Internet Explorer */
     font-size:90%;
+
 }
 a {
     color:#369;
@@ -129,12 +130,12 @@ img {
     background:#fff;		/* center column background colour */
 }
 .threecol .colleft {
-    right:50%;			/* width of the middle column */
+    right:60%;			/* width of the middle column */
     background:#f4f4f4;	/* left column background colour */
 }
 .threecol .col1 {
     background:url(bg.jpg) no-repeat 0 0 #f7f5f5;
-    width:46%;			/* width of center column content (column width minus padding on either side) */
+    width:76%;			/* width of center column content (column width minus padding on either side) */
     left:102%;			/* 100% plus left padding of center column */
     min-height: 600px;
 }
@@ -147,6 +148,13 @@ img {
     left:85%;			/* Please make note of the brackets here:
 					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
 }
+
+
+.threecol .col3 #result {
+padding:25px;
+}
+
+
 /* Footer styles */
 #footer {
     clear:both;
@@ -346,10 +354,11 @@ a:hover, a:active{
 #result{
     margin-top:30px;
 }
+*/
 #result .imageholder{
     display:inline-block;
     background:#fff;
-    padding:10px;
+    padding:60px;
     margin:7px;
     text-align:center;
     box-shadow:0 0 4px #999;
@@ -369,7 +378,7 @@ a:hover, a:active{
 }
 #result .imageholder figcaption{
     font-style:italic;
-    width:180px;
+    width:60px;
     word-wrap:break-word;
     font-weight:bold;
 }
@@ -378,6 +387,6 @@ a:hover, a:active{
     color:#777;
 }
 #result .imageholder img{
-    width:180px;
-    height:180px;
-}*/
+    width:60px;
+    height:60px;
+}
