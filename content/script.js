@@ -29,15 +29,45 @@ servercom.prototype.uploadToServer = function (file) {
 
 servercom.prototype.downloadImage = function () {
 
+    var filetype;
+    var filename;
     var xhr_get = new XMLHttpRequest();
     xhr_get.open('GET', '/canvas.jpg', true);
     xhr_get.responseType = 'blob';
-    var filename = xhr_post.getRequestHeader("X-File-Name");
-    var filetype = xhr_post.getRequestHeader("X-File-Type");
+
 
     xhr_get.onload = function (e) {
         if (this.status == 200) {
             blob = new Blob([this.response], {type:'image/jpg'});
+            displayfile(blob);
+            filename = xhr_get.getResponseHeader("X-File-Name");
+            filetype = xhr_get.getResponseHeader("X-File-Type");
+        }
+    };
+
+    xhr_get.send();
+};
+
+servercom.prototype.downloadPinboard = function () {
+
+
+// download collection via datastore indices instead of directly from blobstore
+// allow blobstore searching by metadata
+// instead of content
+
+
+
+    var xhr_get = new XMLHttpRequest();
+    xhr_get.open('GET', '/pinboard', true);
+    xhr_get.responseType = 'blob';
+
+
+    xhr_get.onload = function (e) {
+        if (this.status == 200) {
+            blob = new Blob([this.response], {type:'image/jpg'});
+            var filename = xhr_post.getResponseHeader("X-File-Name");
+            var filetype = xhr_post.getResponseHeader("X-File-Type");
+
             displayfile(blob);
         }
     };
@@ -54,7 +84,7 @@ servercom.prototype.downloadImage = function () {
     $(document).ready(function () {
 
 //     Kinetic js  stage initialisation
-
+        var global_servercom = new servercom();
         var imgWidth = 180,
             imgHeight = 180,
             zindex = 0;
@@ -117,18 +147,20 @@ servercom.prototype.downloadImage = function () {
             dropzone.removeClass('hover');
             var files = e.originalEvent.dataTransfer.files;
             processFiles(files);
+            downloadfile = global_servercom.downloadImage()
+            displayfile(downloadfile);
             return false;
         });
-        var global_servercom = new servercom();
 
-        downloadbtn.on('click', function (e) {
-            global_servercom.downloadImage();
-        });
+
+
 
 
         /*****************************
          internal functions
          *****************************/
+
+        // add image as a kinetic image to the pinboard
 
         function displayfile(file) {
             var imageObj = new Image();
@@ -251,7 +283,10 @@ servercom.prototype.downloadImage = function () {
 
 
         var readFile = function (file) {
-            if ((/image/i).test(file.type)) {
+            if (!(/image/i).test(file.type)) {
+                //some message for wrong file format
+                $('#err').text('*Selected file format not supported!');
+            } else {
                 var reader = new FileReader();
                 //init reader onload event handlers
                 reader.onload = function (e) {
@@ -260,7 +295,7 @@ servercom.prototype.downloadImage = function () {
                             var newimageurl = getCanvasImage(this);
                             createPreview(file, newimageurl);
                             global_servercom.uploadToServer(file);
-                            displayfile(file);
+
                         })
                         .attr('src', e.target.result);
                 };
@@ -268,9 +303,6 @@ servercom.prototype.downloadImage = function () {
                 reader.readAsDataURL(file);
 
                 $('#err').text('');
-            } else {
-                //some message for wrong file format
-                $('#err').text('*Selected file format not supported!');
             }
         }
 
