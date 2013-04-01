@@ -9,7 +9,7 @@ from google.appengine.api import files
 from google.appengine.api import images
 from google.appengine.api import channel
 
-global global_blobkey
+
 
 class BaseRequestHandler(webapp2.RequestHandler):
     def render_template(self, filename, template_args=None):
@@ -30,6 +30,7 @@ class startpage(BaseRequestHandler):
         self.response.out.write('post request')
 
 class upload(BaseRequestHandler):
+    global global_blobkey
     def get(self):
         self.error(403)
 
@@ -48,8 +49,9 @@ class upload(BaseRequestHandler):
         pinned_item.put()
 
 class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
+    global global_blobkey
     def get(self):
-        if not blobstore.get(global_blobkey):
+#        if not blobstore.get(global_blobkey):
             self.error(404)
         else:
             self.send_blob(global_blobkey)
@@ -57,7 +59,10 @@ class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 class pinboardHandler(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self):
+        """
+        return the pinboards contents
 
+        """
         if not blobstore.get(global_blobkey):
             self.error(404)
         else:
@@ -83,5 +88,5 @@ def transform(blob_key):
 #    files.finalize(file_name)
 
 
-app = webapp2.WSGIApplication([('/', startpage),('/upload', upload),('/canvas.jpg',ViewPhotoHandler)], debug=True)
+app = webapp2.WSGIApplication([('/', startpage),('/upload', upload),('/canvas.jpg',ViewPhotoHandler),('/pinboard',pinboardHandler)], debug=True)
 

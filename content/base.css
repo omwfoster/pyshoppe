@@ -358,7 +358,7 @@ a:hover, a:active{
 #result .imageholder{
     display:inline-block;
     background:#fff;
-    padding:60px;
+    padding:6px;
     margin:7px;
     text-align:center;
     box-shadow:0 0 4px #999;
@@ -387,6 +387,6 @@ a:hover, a:active{
     color:#777;
 }
 #result .imageholder img{
-    width:60px;
-    height:60px;
+    width:80px;
+    height:80px;
 }
