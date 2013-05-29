@@ -3,111 +3,32 @@
  ****************************/
 
 
-function servercom() {
-}
-
-
-servercom.prototype.uploadToServer = function (file) {
-    var xhr_post = new XMLHttpRequest();
-    xhr_post.open("post", "/upload", true);
-    xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
-    xhr_post.setRequestHeader("X-File-Name", file.name);
-    xhr_post.setRequestHeader("X-File-Type", file.type);
-    xhr_post.send(file);
-
-    if (typeof FileReader === "undefined") {
-        //$('.extra').hide();
-        $('#err').html('Hey! Your browser does not support <strong>HTML5 File API</strong> <br/>Try using Chrome or Firefox to have it works!');
-    } else if (!Modernizr.draganddrop) {
-        $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
-    } else {
-        $('#err').text('');
-    }
-}
-
-/* random change */
-
-servercom.prototype.downloadImage = function () {
-
-    var filetype;
-    var filename;
-    var xhr_get = new XMLHttpRequest();
-    xhr_get.open('GET', '/canvas.jpg', true);
-    xhr_get.responseType = 'blob';
-
-
-    xhr_get.onload = function (e) {
-        if (this.status == 200) {
-            blob = new Blob([this.response], {type:'image/jpg'});
-            displayfile(blob);
-            filename = xhr_get.getResponseHeader("X-File-Name");
-            filetype = xhr_get.getResponseHeader("X-File-Type");
-        }
-    };
-
-    xhr_get.send();
-};
-
-servercom.prototype.downloadPinboard = function () {
-
-
-// download collection via datastore indices instead of directly from blobstore
-// allow blobstore searching by metadata
-// instead of content
-
-
-
-    var xhr_get = new XMLHttpRequest();
-    xhr_get.open('GET', '/pinboard', true);
-    xhr_get.responseType = 'blob';
-
-
-    xhr_get.onload = function (e) {
-        if (this.status == 200) {
-            blob = new Blob([this.response], {type:'image/jpg'});
-            var filename = xhr_post.getResponseHeader("X-File-Name");
-            var filetype = xhr_post.getResponseHeader("X-File-Type");
-
-            displayfile(blob);
-        }
-    };
-
-    xhr_get.send();
-};
-
-
-
-
-
-
-
-    $(document).ready(function () {
+$(document).ready(function () {
 
 //     Kinetic js  stage initialisation
-        var global_servercom = new servercom();
-        var imgWidth = 180,
-            imgHeight = 180,
-            zindex = 0;
+
+    var stage;
+    var imgWidth = 180,
+        imgHeight = 180,
+        zindex = 0;
+
+    stage = new Kinetic.Stage({
+        container: 'canvasbag',
+        width: 800,
+        height: 538
+    });
+    var layer = new Kinetic.Layer();
 
 
-        stage = new Kinetic.Stage({
-            container: 'canvasbag',
-            width: 800,
-            height: 538
-        });
-        var layer = new Kinetic.Layer();
-        stage.add(layer);
+    //    appengine channels api
 
-
-        //    appengine channels api
-
-        channel = new goog.appengine.Channel(token);
-        socket = channel.open();
-        socket.onopen = function() {
-  //          add_message('Channel established.');
-        };
-        socket.onmessage = function(message) {
-            var data = jQuery.parseJSON(message.data)
+    channel = new goog.appengine.Channel(token);
+    socket = channel.open();
+    socket.onopen = function () {
+        //          add_message('Channel established.');
+    };
+    socket.onmessage = function (message) {
+        var data = jQuery.parseJSON(message.data)
 //            var row = $('<tr />');
 //            for(var i = 0; i < columns.length; i++) {
 //                $('<td />', {
@@ -115,271 +36,319 @@ servercom.prototype.downloadPinboard = function () {
 //                }).appendTo(row);
 //            }
 //            row.appendTo('#results');
+    };
+    socket.onerror = function (error) {
+        //       add_message('Channel error: ' + error.description);
+    };
+    socket.onclose = function () {
+        //       add_message('Channel closed.');
+    };
+
+    // appengine channels api
+
+
+    dropzone = $('#canvasbag'),
+        downloadbtn = $('#downloadbtn'),
+        defaultdownloadbtn = $('#download');
+    globalblob = "";
+    dropzone.on('dragover', function () {
+        //add hover class when drag over
+        dropzone.addClass('hover');
+        return false;
+    });
+    dropzone.on('dragleave', function () {
+        //remove hover class when drag out
+        dropzone.removeClass('hover');
+        return false;
+    });
+    dropzone.on('drop', function (e) {
+        //prevent browser from open the file when drop off
+        e.stopPropagation();
+        e.preventDefault();
+        dropzone.removeClass('hover');
+        var files = e.originalEvent.dataTransfer.files;
+        processFiles(files);
+
+        return false;
+    });
+
+
+    var uploadToServer = function (file) {
+        var xhr_post = new XMLHttpRequest();
+        xhr_post.open("post", "/upload", true);
+        xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
+        xhr_post.setRequestHeader("X-File-Name", file.name);
+        xhr_post.setRequestHeader("X-File-Type", file.type);
+        xhr_post.send(file);
+
+        if (typeof FileReader === "undefined") {
+            //$('.extra').hide();
+            $('#err').html('Hey! Your browser does not support <strong>HTML5 File API</strong> <br/>Try using Chrome or Firefox to have it works!');
+        } else if (!Modernizr.draganddrop) {
+            $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
+        } else {
+            $('#err').text('');
+        }
+    };
+
+    /* random change */
+    var downloadImage = function () {
+        var myURL = window.URL || window.webkitURL;
+        var filetype;
+        var filename;
+        var xhr_get = new XMLHttpRequest();
+        xhr_get.open('GET', '/canvas', true);
+        xhr_get.responseType = 'blob';
+
+
+        xhr_get.onload = function (e) {
+            if (this.status == 200) {
+                blob = new Blob([this.response], {type: 'image/jpg'});
+                filename = xhr_get.getResponseHeader("X-File-Name");
+                filetype = xhr_get.getResponseHeader("X-File-Type");
+                var imageObj = new Image();
+
+                imageObj.onload = function() {
+                displayfile(this);
+                }
+
+                imageObj.src = myURL.createObjectURL(blob);
+
+            }
         };
-        socket.onerror = function(error) {
-     //       add_message('Channel error: ' + error.description);
-        };
-        socket.onclose = function() {
-     //       add_message('Channel closed.');
-        };
 
-        // appengine channels api
+        xhr_get.send();
 
 
-        dropzone = $('#canvasbag'),
-            downloadbtn = $('#downloadbtn'),
-            defaultdownloadbtn = $('#download');
-        globalblob = "";
-        dropzone.on('dragover', function () {
-            //add hover class when drag over
-            dropzone.addClass('hover');
-            return false;
-        });
-        dropzone.on('dragleave', function () {
-            //remove hover class when drag out
-            dropzone.removeClass('hover');
-            return false;
-        });
-        dropzone.on('drop', function (e) {
-            //prevent browser from open the file when drop off
-            e.stopPropagation();
-            e.preventDefault();
-            dropzone.removeClass('hover');
-            var files = e.originalEvent.dataTransfer.files;
-            processFiles(files);
-            downloadfile = global_servercom.downloadImage()
-            displayfile(downloadfile);
-            return false;
-        });
+    };
+
+
+    var displayfile;
+    displayfile = function (Image) {
 
 
 
+            var note = new Kinetic.Image({
+                x: 140,
+                y: stage.getHeight() / 2 - 59,
+                image: Image,
+                width: 100,
+                height: 100,
+                draggable: true
+            });
+
+            // add cursor styling
+
+            note.on('mouseover', function () {
+                document.body.style.cursor = 'pointer';
+            });
+            note.on('mouseout', function () {
+                document.body.style.cursor = 'default';
+            });
+            // add the shape to the layer
+
+            layer.add(note);
+            stage.add(layer);
+
+            // add the layer to the stage
+
+    };
 
 
-        /*****************************
-         internal functions
-         *****************************/
+    var processFiles = function (files) {
+        if (files && typeof FileReader !== "undefined") {
+            for (var i = 0; i < files.length; i++) {
+                readFile(files[i]);
+            }
+        } else {
 
-        // add image as a kinetic image to the pinboard
+        }
+    };
 
-        function displayfile(file) {
-            var imageObj = new Image();
-            imageObj.src = URL.createObjectURL(file);
 
-            imageObj.onload = function () {
-                var note = new Kinetic.Image({
-                    x:140,
-                    y:stage.getHeight() / 2 - 59,
-                    image:imageObj,
-                    width:106,
-                    height:118,
-                    draggable: true
-                });
-                // add the shape to the layer
+    var readFile = function (file) {
+        if (!(/image/i).test(file.type)) {
+            //some message for wrong file format
+            $('#err').text('*Selected file format not supported!');
+        } else {
+            var reader = new FileReader();
+            //init reader onload event handlers
+            reader.onload = function (e) {
+                var image = $('<img/>')
+                    .load(function () {
+                        var newimageurl = getCanvasImage(this);
+                        createPreview(file, newimageurl);
+                        uploadToServer(file);
+                        downloadImage();
 
-                layer.add(note);
-                layer.draw();
-                note = null;
 
-                // add the layer to the stage
+                    })
+                    .attr('src', e.target.result);
             };
-        };
+            //begin reader read operation
+            reader.readAsDataURL(file);
+
+            $('#err').text('');
+        }
+    };
+
+    //Bytes to KiloBytes conversion
+    function convertToKBytes(number) {
+        return (number / 1024).toFixed(1);
+    }
+
+    function compareWidthHeight(width, height) {
+        var diff = [];
+        if (width > height) {
+            diff[0] = width - height;
+            diff[1] = 0;
+        } else {
+            diff[0] = 0;
+            diff[1] = height - width;
+        }
+        return diff;
+    }
 
 
+    //convert datauri to blob
+    function dataURItoBlob(dataURI) {
+        var BlobBuilder = window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder;
 
-        //Bytes to KiloBytes conversion
-        function convertToKBytes(number) {
-            return (number / 1024).toFixed(1);
+        //skip if browser doesn't support BlobBuilder object
+        if (typeof BlobBuilder === "undefined") {
+            $('#err').html('Ops! There have some limited with your browser! <br/>New image produced from canvas can\'t be upload to the server...');
+            return dataURI;
         }
 
-        function compareWidthHeight(width, height) {
-            var diff = [];
-            if (width > height) {
-                diff[0] = width - height;
-                diff[1] = 0;
-            } else {
-                diff[0] = 0;
-                diff[1] = height - width;
-            }
-            return diff;
+        // convert base64 to raw binary data held in a string
+        // doesn't handle URLEncoded DataURIs
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteSmnmtring = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+        // write the bytes of the string to an ArrayBuffer
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
         }
 
+        // write the ArrayBuffer to a blob, and you're done
+        var bb = new BlobBuilder();
+        bb.append(ab);
+        return bb.getBlob(mimeString);
+    }
 
-        //convert datauri to blob
-        function dataURItoBlob(dataURI) {
-            var BlobBuilder = window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder;
-
-            //skip if browser doesn't support BlobBuilder object
-            if (typeof BlobBuilder === "undefined") {
-                $('#err').html('Ops! There have some limited with your browser! <br/>New image produced from canvas can\'t be upload to the server...');
-                return dataURI;
-            }
-
-            // convert base64 to raw binary data held in a string
-            // doesn't handle URLEncoded DataURIs
-            var byteString;
-            if (dataURI.split(',')[0].indexOf('base64') >= 0)
-                byteSmnmtring = atob(dataURI.split(',')[1]);
-            else
-                byteString = unescape(dataURI.split(',')[1]);
-
-            // separate out the mime component
-            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-            // write the bytes of the string to an ArrayBuffer
-            var ab = new ArrayBuffer(byteString.length);
-            var ia = new Uint8Array(ab);
-            for (var i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-
-            // write the ArrayBuffer to a blob, and you're done
-            var bb = new BlobBuilder();
-            bb.append(ab);
-            return bb.getBlob(mimeString);
+    //Black & White image effect
+    //by Marco Lisci - http://badsharkco.com/
+    var grayscale = function (context) {
+        var imgd = context.getImageData(0, 0, imgWidth, imgHeight);
+        var pix = imgd.data;
+        for (var i = 0, n = pix.length; i < n; i += 4) {
+            var grayscale = pix[i  ] * .3 + pix[i + 1] * .59 + pix[i + 2] * .11;
+            pix[i  ] = grayscale;
+            pix[i + 1] = grayscale;
+            pix[i + 2] = grayscale;
         }
+        context.putImageData(imgd, 0, 0);
+    }
 
-        //Black & White image effect
-        //by Marco Lisci - http://badsharkco.com/
-        var grayscale = function (context) {
-            var imgd = context.getImageData(0, 0, imgWidth, imgHeight);
-            var pix = imgd.data;
-            for (var i = 0, n = pix.length; i < n; i += 4) {
-                var grayscale = pix[i  ] * .3 + pix[i + 1] * .59 + pix[i + 2] * .11;
-                pix[i  ] = grayscale;
-                pix[i + 1] = grayscale;
-                pix[i + 2] = grayscale;
-            }
-            context.putImageData(imgd, 0, 0);
-        }
+    //canvas-blur effect
+    //by Matt Riggott - http://www.flother.com/
+    var blurry = function (context, image, diff) {
+        var i, x, y,
+            blureffect = 4;
 
-        //canvas-blur effect
-        //by Matt Riggott - http://www.flother.com/
-        var blurry = function (context, image, diff) {
-            var i, x, y,
-                blureffect = 4;
-
-            context.globalAlpha = 0.1;
-            for (i = 1; i <= blureffect; i++) {
-                for (y = -blureffect / 2; y <= blureffect / 2; y++) {
-                    for (x = -blureffect / 2; x <= blureffect / 2; x++) {
-                        context.drawImage(image, diff[0] / 2, diff[1] / 2, image.width - diff[0], image.height - diff[1], x, y, imgWidth, imgHeight);
-                    }
+        context.globalAlpha = 0.1;
+        for (i = 1; i <= blureffect; i++) {
+            for (y = -blureffect / 2; y <= blureffect / 2; y++) {
+                for (x = -blureffect / 2; x <= blureffect / 2; x++) {
+                    context.drawImage(image, diff[0] / 2, diff[1] / 2, image.width - diff[0], image.height - diff[1], x, y, imgWidth, imgHeight);
                 }
             }
-            context.globalAlpha = 1.0;
+        }
+        context.globalAlpha = 1.0;
+    }
+
+
+    /*****************************
+     Get New Canvas Image URL
+     *****************************/
+    var getCanvasImage = function (image) {
+        //get selected effect
+        var effect = $('input[name=effect]:checked').val();
+        var croping = $('input[name=croping]:checked').val();
+
+        //define canvas
+        var canvas = document.createElement('canvas');
+        canvas.width = imgWidth;
+        canvas.height = imgHeight;
+        var ctx = canvas.getContext('2d');
+
+        //default resize variable
+        var diff = [0, 0];
+        if (croping == 'crop') {
+            //get resized width and height
+            diff = compareWidthHeight(image.width, image.height);
         }
 
+        //draw canvas image
+        ctx.drawImage(image, diff[0] / 2, diff[1] / 2, image.width - diff[0], image.height - diff[1], 0, 0, imgWidth, imgHeight);
 
-        var processFiles = function (files) {
-            if (files && typeof FileReader !== "undefined") {
-                for (var i = 0; i < files.length; i++) {
-                    readFile(files[i]);
-                }
-            } else {
-
-            }
+        //apply effects if any
+        if (effect == 'grayscale') {
+            grayscale(ctx);
+        } else if (effect == 'blurry') {
+            blurry(ctx, image, diff);
+        } else {
         }
 
+        //convert canvas to jpeg url
+        return canvas.toDataURL("image/jpeg");
+    }
 
-        var readFile = function (file) {
-            if (!(/image/i).test(file.type)) {
-                //some message for wrong file format
-                $('#err').text('*Selected file format not supported!');
-            } else {
-                var reader = new FileReader();
-                //init reader onload event handlers
-                reader.onload = function (e) {
-                    var image = $('<img/>')
-                        .load(function () {
-                            var newimageurl = getCanvasImage(this);
-                            createPreview(file, newimageurl);
-                            global_servercom.uploadToServer(file);
 
-                        })
-                        .attr('src', e.target.result);
-                };
-                //begin reader read operation
-                reader.readAsDataURL(file);
+    /*****************************
+     Draw Image Preview
+     *****************************/
+    var createPreview = function (file, newURL) {
+        //populate jQuery Template binding object
+        var imageObj = {};
+        imageObj.filePath = newURL;
+        imageObj.fileName = file.name.substr(0, file.name.lastIndexOf('.')); //subtract file extension
+        imageObj.fileOriSize = convertToKBytes(file.size);
+        imageObj.fileUploadSize = convertToKBytes(dataURItoBlob(newURL).size); //convert new image URL to blob to get file.size
 
-                $('#err').text('');
-            }
+        //extend filename
+        var effect = $('input[name=effect]:checked').val();
+        if (effect == 'grayscale') {
+            imageObj.fileName += " (Grayscale)";
+        } else if (effect == 'blurry') {
+            imageObj.fileName += " (Blurry)";
         }
+        //append new image through jQuery Template
+        var randvalue = Math.floor(Math.random() * 31) - 15;  //random number
+        var img = $("#imageTemplate").tmpl(imageObj).prependTo("#result")
+            .hide()
+            .css({
+                'Transform': 'scale(1) rotate(' + randvalue + 'deg)',
+                'msTransform': 'scale(1) rotate(' + randvalue + 'deg)',
+                'MozTransform': 'scale(1) rotate(' + randvalue + 'deg)',
+                'webkitTransform': 'scale(1) rotate(' + randvalue + 'deg)',
+                'OTransform': 'scale(1) rotate(' + randvalue + 'deg)',
+                'z-index': zindex++
+            })
+            .show();
 
-
-        /*****************************
-         Get New Canvas Image URL
-         *****************************/
-        var getCanvasImage = function (image) {
-            //get selected effect
-            var effect = $('input[name=effect]:checked').val();
-            var croping = $('input[name=croping]:checked').val();
-
-            //define canvas
-            var canvas = document.createElement('canvas');
-            canvas.width = imgWidth;
-            canvas.height = imgHeight;
-            var ctx = canvas.getContext('2d');
-
-            //default resize variable
-            var diff = [0, 0];
-            if (croping == 'crop') {
-                //get resized width and height
-                diff = compareWidthHeight(image.width, image.height);
-            }
-
-            //draw canvas image
-            ctx.drawImage(image, diff[0] / 2, diff[1] / 2, image.width - diff[0], image.height - diff[1], 0, 0, imgWidth, imgHeight);
-
-            //apply effects if any
-            if (effect == 'grayscale') {
-                grayscale(ctx);
-            } else if (effect == 'blurry') {
-                blurry(ctx, image, diff);
-            } else {
-            }
-
-            //convert canvas to jpeg url
-            return canvas.toDataURL("image/jpeg");
+        if (isNaN(imageObj.fileUploadSize)) {
+            $('.imageholder span').last().hide();
         }
+    }
 
 
-        /*****************************
-         Draw Image Preview
-         *****************************/
-        var createPreview = function (file, newURL) {
-            //populate jQuery Template binding object
-            var imageObj = {};
-            imageObj.filePath = newURL;
-            imageObj.fileName = file.name.substr(0, file.name.lastIndexOf('.')); //subtract file extension
-            imageObj.fileOriSize = convertToKBytes(file.size);
-            imageObj.fileUploadSize = convertToKBytes(dataURItoBlob(newURL).size); //convert new image URL to blob to get file.size
-
-            //extend filename
-            var effect = $('input[name=effect]:checked').val();
-            if (effect == 'grayscale') {
-                imageObj.fileName += " (Grayscale)";
-            } else if (effect == 'blurry') {
-                imageObj.fileName += " (Blurry)";
-            }
-            //append new image through jQuery Template
-            var randvalue = Math.floor(Math.random() * 31) - 15;  //random number
-            var img = $("#imageTemplate").tmpl(imageObj).prependTo("#result")
-                .hide()
-                .css({
-                    'Transform':'scale(1) rotate(' + randvalue + 'deg)',
-                    'msTransform':'scale(1) rotate(' + randvalue + 'deg)',
-                    'MozTransform':'scale(1) rotate(' + randvalue + 'deg)',
-                    'webkitTransform':'scale(1) rotate(' + randvalue + 'deg)',
-                    'OTransform':'scale(1) rotate(' + randvalue + 'deg)',
-                    'z-index':zindex++
-                })
-                .show();
-
-            if (isNaN(imageObj.fileUploadSize)) {
-                $('.imageholder span').last().hide();
-            }
-        }
-
-
-    })
+})
