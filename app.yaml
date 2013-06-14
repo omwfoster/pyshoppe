@@ -11,3 +11,10 @@ handlers:
 
 - url: /.*
   script: pyshoppe.app
+
+inbound_services:
+- channel_presence
+- xmpp_message
+- xmpp_presence
+- xmpp_subscribe
+- warmup

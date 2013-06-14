@@ -14,9 +14,9 @@
     <script src="../content/kineticjs.js"></script>
     <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
-    <!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
     <script id="imageTemplate" type="text/x-jquery-tmpl">
         <div class="imageholder">
             <figure>
@@ -24,7 +24,6 @@
                 <figcaption>
                     ${fileName} <br/>
                     <span>Original Size: ${fileOriSize} KB</span><br/>
-                    <span>Upload Size: ${fileUploadSize} KB</span>
                 </figcaption>
             </figure>
         </div>
@@ -34,6 +33,8 @@
     <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script>
         var token = "{{ token }}";
+        var pinboard ="{{ pinboard }}"
+        var me ="{{ me }}"
         var stage;
     </script>
 </head>

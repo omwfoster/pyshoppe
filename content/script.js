@@ -7,12 +7,12 @@ $(document).ready(function () {
 
 //     Kinetic js  stage initialisation
 
-    var stage;
+
     var imgWidth = 180,
         imgHeight = 180,
         zindex = 0;
 
-    stage = new Kinetic.Stage({
+    var stage = new Kinetic.Stage({
         container: 'canvasbag',
         width: 800,
         height: 538
@@ -21,13 +21,13 @@ $(document).ready(function () {
 
 
     //    appengine channels api
-
-    channel = new goog.appengine.Channel(token);
+    channel = new goog.appengine.Channel('{{ token }}');
     socket = channel.open();
     socket.onopen = function () {
         //          add_message('Channel established.');
     };
     socket.onmessage = function (message) {
+        console.log(message);
         var data = jQuery.parseJSON(message.data)
 //            var row = $('<tr />');
 //            for(var i = 0; i < columns.length; i++) {
@@ -74,12 +74,19 @@ $(document).ready(function () {
 
 
     var uploadToServer = function (file) {
+        var filename = null;
         var xhr_post = new XMLHttpRequest();
         xhr_post.open("post", "/upload", true);
         xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
         xhr_post.setRequestHeader("X-File-Name", file.name);
         xhr_post.setRequestHeader("X-File-Type", file.type);
         xhr_post.send(file);
+
+        xhr_post.onreadystatechange = function(e) {
+                if ( 4 == this.readyState ) {
+                    return file.name;
+                }
+            };
 
         if (typeof FileReader === "undefined") {
             //$('.extra').hide();
@@ -92,25 +99,25 @@ $(document).ready(function () {
     };
 
     /* random change */
-    var downloadImage = function () {
+    var downloadImage = function (arg_filename) {
         var myURL = window.URL || window.webkitURL;
         var filetype;
         var filename;
         var xhr_get = new XMLHttpRequest();
-        xhr_get.open('GET', '/canvas', true);
+        xhr_get.open('GET', '/canvas'+"?"+arg_filename, true);
         xhr_get.responseType = 'blob';
 
 
         xhr_get.onload = function (e) {
             if (this.status == 200) {
-                blob = new Blob([this.response], {type: 'image/jpg'});
-                filename = xhr_get.getResponseHeader("X-File-Name");
                 filetype = xhr_get.getResponseHeader("X-File-Type");
+                blob = new Blob([this.response], {type: filetype});
+                filename = xhr_get.getResponseHeader("X-File-Name");
                 var imageObj = new Image();
 
                 imageObj.onload = function() {
-                displayfile(this);
-                }
+                    displayfile(this,filename,filetype);
+                    }
 
                 imageObj.src = myURL.createObjectURL(blob);
 
@@ -124,13 +131,13 @@ $(document).ready(function () {
 
 
     var displayfile;
-    displayfile = function (Image) {
+    displayfile = function (Image,filename,filetype) {
 
 
-
+            layer.clear();
             var note = new Kinetic.Image({
-                x: 140,
-                y: stage.getHeight() / 2 - 59,
+                x: stage.getWidth() / 2 - 200 / 2,
+                y: stage.getHeight() / 2 - 137 / 2,
                 image: Image,
                 width: 100,
                 height: 100,
@@ -149,7 +156,7 @@ $(document).ready(function () {
 
             layer.add(note);
             stage.add(layer);
-
+            layer.draw();
             // add the layer to the stage
 
     };
@@ -165,6 +172,11 @@ $(document).ready(function () {
         }
     };
 
+    var outputtoconsole = function() {
+
+
+        console.log("test console output");
+    };
 
     var readFile = function (file) {
         if (!(/image/i).test(file.type)) {
@@ -178,10 +190,8 @@ $(document).ready(function () {
                     .load(function () {
                         var newimageurl = getCanvasImage(this);
                         createPreview(file, newimageurl);
-                        uploadToServer(file);
-                        downloadImage();
-
-
+                        var local_filename = uploadToServer(file);
+                        downloadImage(local_filename);
                     })
                     .attr('src', e.target.result);
             };
