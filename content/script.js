@@ -84,7 +84,7 @@ $(document).ready(function () {
 
         xhr_post.onreadystatechange = function(e) {
                 if ( 4 == this.readyState ) {
-                    return file.name;
+
                 }
             };
 
@@ -96,6 +96,7 @@ $(document).ready(function () {
         } else {
             $('#err').text('');
         }
+        return file.name;
     };
 
     /* random change */
@@ -104,7 +105,7 @@ $(document).ready(function () {
         var filetype;
         var filename;
         var xhr_get = new XMLHttpRequest();
-        xhr_get.open('GET', '/canvas'+"?"+arg_filename, true);
+        xhr_get.open('GET', '/canvas'+"?" + "filename=" +arg_filename, true);
         xhr_get.responseType = 'blob';
 
 

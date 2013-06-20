@@ -9,51 +9,46 @@ from google.appengine.api import files
 from google.appengine.api import images
 from google.appengine.api import channel
 from google.appengine.api import users
-from imagedb import pinboard
-from imagedb import pinned_item
+from imagedb import Pinboard
+from imagedb import Pinned_Item
 
 
 class BaseRequestHandler(webapp2.RequestHandler):
-    pinboard
+    pinboard = None
 
-    def __init__(self):
+    def render_template2(self, filename, template_args=None):
         global pinboard
-        user_pinboard = pinboard
-        token = 3
         #@global_blobkey
         user = users.get_current_user()
-        pinboard = self.request.get('pinboard')
-
-        game = None
+        pinboard_key = self.request.get('pinboard_key')
+        pinboard = None
         if user:
-            if not pinboard:
-                pinboard = user_pinboard(pinboard=user.user_id())
-                game.put()
+            if not pinboard_key:
+                pinboard_key = user.user_id()
+                pinboard = Pinboard(name=pinboard_key)
+                pinboard.put()
             else:
+                pinboard = Pinboard.get_by_key_name(pinboard_key)
+                if not pinboard.owner:
+                    pinboard.owner = user
+                    pinboard.put()
 
-                pinboard = pinboard
-                if not game.userO:
-                    game.userO = user
-                    game.put()
+            pinboard_link = 'http://localhost:8080/?pinboard_key=' + pinboard.name
 
-            pinboard_link = 'http://localhost:8080/?pinboard=' + pinboard
-
-            if game:
-                token = channel.create_channel(user.user_id() + pinboard)
+            if pinboard:
+                token = channel.create_channel(os.urandom(16).encode('hex'))
+                ###token = channel.create_channel(user.user_id() + pinboard)
                 template_values = {'token': token,
                                    'me': user.user_id(),
-                                   'pinboard': pinboard
+                                   'pinboard_key': pinboard_key
                 }
-                path = os.path.join(os.path.dirname(__file__), 'index.html')
 
+                path = os.path.join(os.path.dirname(__file__), 'templates', filename)
                 self.response.out.write(template.render(path, template_values))
             else:
                 self.response.out.write('No such game')
         else:
             self.redirect(users.create_login_url(self.request.uri))
-
-
-
 
     def render_template(self, filename, template_args=None):
         token = channel.create_channel(os.urandom(16).encode('hex'))
@@ -61,7 +56,7 @@ class BaseRequestHandler(webapp2.RequestHandler):
         user_pinboard = pinboard(name=token)
 
         if not template_args:
-            template_args = {'token': token , 'pinboard': user_pinboard}
+            template_args = {'token': token, 'pinboard': user_pinboard}
 
         user_pinboard.put()
         path = os.path.join(os.path.dirname(__file__), 'templates', filename)
@@ -70,7 +65,7 @@ class BaseRequestHandler(webapp2.RequestHandler):
 
 class startpage(BaseRequestHandler):
     def get(self):
-        self.render_template('index.html', template_args=None)
+        self.render_template2('index.html', template_args=None)
         self.response.out.write("")
 
     def post(self):
@@ -86,20 +81,17 @@ class upload(BaseRequestHandler):
 
 
         """
-
         mime_type = self.request.headers['X-File-Type']
         file_name = self.request.headers['X-File-Name']
         blob_name = files.blobstore.create(mime_type=mime_type, _blobinfo_uploaded_filename=file_name)
         with files.open(blob_name, 'a') as f:
             f.write(self.request.body)
         files.finalize(blob_name)
-        global user_pinboard
-        global global_blobkey
-        global_blobkey = files.blobstore.get_blob_key(blob_name)
-        pin1 = pinned_item(pinboard_container=user_pinboard,
+        blobkey = files.blobstore.get_blob_key(blob_name)
+        pin1 = Pinned_Item(pinboard_container=pinboard,
                            item_filename=file_name,
                            item_filetype=mime_type,
-                           content_index=global_blobkey)
+                           content_index=blobkey)
 
         pin1.put()
         channel.send_message(BaseRequestHandler.token, BaseRequestHandler.token)
@@ -124,21 +116,26 @@ class viewphotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 
 class getphotoHandler(BaseRequestHandler):
-    def get(self):
+    def get(self,file_name=None ):
         #global user_pinboard
         # dummy functionality should instead return a datastore entry
         # prototype will return global_blobstore key
         #
-        file_name = 'imgres.jpg'
 
-        q = pinned_item.gql("WHERE item_filename = :1 ", file_name)
+        file_name = self.request.get("filename")
+        q = Pinned_Item.gql("WHERE item_filename = :1 ", file_name)
+        content_index = q.get().content_index.key()
         file_data = blobstore.BlobReader(q.get().content_index.key()).read()
+        for item in q:
+            file_type = item.item_filetype
+
 
         #        if not pin_entry:
         #            self.abort(404)
-        self.response.headers['Content-Type'] = "image/jpg"
-        self.response.headers['File-Name'] = file_name
-        self.response.out.write(file_data)  #address.content_index)
+        self.response.headers['X-File-Type'] = file_type
+        self.response.headers['X-File-Type'] = str(file_name)
+        self.response.headers['Content-Index'] = str(content_index)
+        self.response.out.write(file_data)  # address.content_index)
 
 
 class pinboardHandler(blobstore_handlers.BlobstoreDownloadHandler):
