@@ -21,7 +21,7 @@ $(document).ready(function () {
 
 
     //    appengine channels api
-    channel = new goog.appengine.Channel('{{ token }}');
+    channel = new goog.appengine.Channel(token);
     socket = channel.open();
     socket.onopen = function () {
         //          add_message('Channel established.');
@@ -76,15 +76,18 @@ $(document).ready(function () {
     var uploadToServer = function (file) {
         var filename = null;
         var xhr_post = new XMLHttpRequest();
-        xhr_post.open("post", "/upload", true);
+        xhr_post.open("post", "/upload"  , true);
+  //     xhr_post.open("post", "/upload" + "?" + "token=" + token , true);
         xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
         xhr_post.setRequestHeader("X-File-Name", file.name);
         xhr_post.setRequestHeader("X-File-Type", file.type);
+        xhr_post.setRequestHeader("X-pinboard", pinboard_key);
+        xhr_post.setRequestHeader("X-token", token);
         xhr_post.send(file);
 
         xhr_post.onreadystatechange = function(e) {
                 if ( 4 == this.readyState ) {
-
+                downloadImage(file.name);
                 }
             };
 
@@ -104,6 +107,8 @@ $(document).ready(function () {
         var myURL = window.URL || window.webkitURL;
         var filetype;
         var filename;
+        var pinboard_key;
+        var token;
         var xhr_get = new XMLHttpRequest();
         xhr_get.open('GET', '/canvas'+"?" + "filename=" +arg_filename, true);
         xhr_get.responseType = 'blob';
@@ -111,6 +116,8 @@ $(document).ready(function () {
 
         xhr_get.onload = function (e) {
             if (this.status == 200) {
+                pinboard_key = xhr_get.getResponseHeader("X-pinboard");
+                token = xhr_get.getResponseHeader("X-token");
                 filetype = xhr_get.getResponseHeader("X-File-Type");
                 blob = new Blob([this.response], {type: filetype});
                 filename = xhr_get.getResponseHeader("X-File-Name");
@@ -189,10 +196,10 @@ $(document).ready(function () {
             reader.onload = function (e) {
                 var image = $('<img/>')
                     .load(function () {
-                        var newimageurl = getCanvasImage(this);
-                        createPreview(file, newimageurl);
+//                        var newimageurl = getCanvasImage(this);
+//                        createPreview(file, newimageurl);
                         var local_filename = uploadToServer(file);
-                        downloadImage(local_filename);
+
                     })
                     .attr('src', e.target.result);
             };

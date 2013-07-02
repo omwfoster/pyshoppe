@@ -15,6 +15,7 @@ from imagedb import Pinned_Item
 
 class BaseRequestHandler(webapp2.RequestHandler):
     pinboard = None
+    token = None
 
     def render_template2(self, filename, template_args=None):
         global pinboard
@@ -81,6 +82,10 @@ class upload(BaseRequestHandler):
 
 
         """
+
+
+        pinboard_key = self.request.headers['X-pinboard']
+        token = self.request.headers['X-token']
         mime_type = self.request.headers['X-File-Type']
         file_name = self.request.headers['X-File-Name']
         blob_name = files.blobstore.create(mime_type=mime_type, _blobinfo_uploaded_filename=file_name)
@@ -88,13 +93,19 @@ class upload(BaseRequestHandler):
             f.write(self.request.body)
         files.finalize(blob_name)
         blobkey = files.blobstore.get_blob_key(blob_name)
+
+
+        q = Pinboard.gql("WHERE name = :1 ", pinboard_key)
+        pinboard = q.get()
+
+
         pin1 = Pinned_Item(pinboard_container=pinboard,
                            item_filename=file_name,
                            item_filetype=mime_type,
                            content_index=blobkey)
 
         pin1.put()
-        channel.send_message(BaseRequestHandler.token, BaseRequestHandler.token)
+  #      channel.send_message(token, token)
 
     def sendupdateMsg(self):
         """
@@ -122,6 +133,11 @@ class getphotoHandler(BaseRequestHandler):
         # prototype will return global_blobstore key
         #
 
+        """
+
+        :param file_name:
+        """
+
         file_name = self.request.get("filename")
         q = Pinned_Item.gql("WHERE item_filename = :1 ", file_name)
         content_index = q.get().content_index.key()
@@ -134,8 +150,9 @@ class getphotoHandler(BaseRequestHandler):
         #            self.abort(404)
         self.response.headers['X-File-Type'] = file_type
         self.response.headers['X-File-Type'] = str(file_name)
-        self.response.headers['Content-Index'] = str(content_index)
-        self.response.out.write(file_data)  # address.content_index)
+  #      self.response.headers['X-pinboard'] = self.request.headers['X-pinboard']
+  #      self.response.headers['X-token'] =  self.request.headers['X-token']
+        self.response.out.write(file_data)# address.content_index)
 
 
 class pinboardHandler(blobstore_handlers.BlobstoreDownloadHandler):
