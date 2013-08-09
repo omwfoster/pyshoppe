@@ -1,16 +1,29 @@
+import os
+
 import webapp2
-from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import blobstore_handlers
-import os, urllib2
-from google.appengine.ext import db
 from google.appengine.ext import blobstore
 from google.appengine.api import files
 from google.appengine.api import images
 from google.appengine.api import channel
 from google.appengine.api import users
+import StringIO
+from contextlib import closing
+from zipfile import ZipFile, ZIP_DEFLATED
+from StringIO import StringIO
+
+from google.appengine.ext import webapp
+from google.appengine.api import urlfetch
+
+from zipfile import ZipFile, ZIP_DEFLATED
+
 from imagedb import Pinboard
 from imagedb import Pinned_Item
+from imagedb import User
+
+# class xhr_pinboard_zipper():
+
 
 
 class BaseRequestHandler(webapp2.RequestHandler):
@@ -20,54 +33,62 @@ class BaseRequestHandler(webapp2.RequestHandler):
     def render_template2(self, filename, template_args=None):
         global pinboard
         #@global_blobkey
+        pinboards = Pinboard.all()
+
         user = users.get_current_user()
-        pinboard_key = self.request.get('pinboard_key')
+        pinboard_url_id = self.request.get('pinboard_url_id')
         pinboard = None
         if user:
-            if not pinboard_key:
-                pinboard_key = user.user_id()
-                pinboard = Pinboard(name=pinboard_key)
+            if not pinboard_url_id:
+                pinboard_url_id = os.urandom(16).encode('hex')
+                pinboard = Pinboard(name=pinboard_url_id, owner=self.createUserentry())
                 pinboard.put()
             else:
-                pinboard = Pinboard.get_by_key_name(pinboard_key)
+                pinboard = Pinboard.get_by_key_name(pinboard_url_id)
+                pinboard = self.getPinboardfromurlkey(pinboard_url_id)
                 if not pinboard.owner:
-                    pinboard.owner = user
+                    pinboard.owner = self.createUserentry()
                     pinboard.put()
 
-            pinboard_link = 'http://localhost:8080/?pinboard_key=' + pinboard.name
+            pinboard_link = 'http://localhost:8080/?pinboard_url_id=' + pinboard.name
 
             if pinboard:
-                token = channel.create_channel(os.urandom(16).encode('hex'))
+            ##    token = channel.create_channel(os.urandom(16).encode('hex'))
                 ###token = channel.create_channel(user.user_id() + pinboard)
-                template_values = {'token': token,
+                template_values = {'token': "token",
                                    'me': user.user_id(),
-                                   'pinboard_key': pinboard_key
+                                   'pinboard_url_id': pinboard_url_id,
+                                   'pinboards': pinboards
                 }
 
                 path = os.path.join(os.path.dirname(__file__), 'templates', filename)
                 self.response.out.write(template.render(path, template_values))
             else:
-                self.response.out.write('No such game')
+                self.response.out.write('balls')
         else:
             self.redirect(users.create_login_url(self.request.uri))
 
-    def render_template(self, filename, template_args=None):
-        token = channel.create_channel(os.urandom(16).encode('hex'))
-        global user_pinboard
-        user_pinboard = pinboard(name=token)
 
-        if not template_args:
-            template_args = {'token': token, 'pinboard': user_pinboard}
+    def getPinboardfromurlkey(self, urlPinboardkey):
+        q = Pinboard.gql("WHERE name = :1 ", urlPinboardkey)
+        pinboard = q.get()
+        return pinboard
 
-        user_pinboard.put()
-        path = os.path.join(os.path.dirname(__file__), 'templates', filename)
-        self.response.out.write(template.render(path, template_args))
+    def getUserobjectfromID(self):
+        q = User.gql("WHERE name = :1 ", users.get_current_user().user_id())
+        u = q.get()
+        return u
+
+
+    def createUserentry(self):
+        user1 = User(user_id=users.get_current_user().user_id(), name="oliver")
+        user1.put()
+        return user1
 
 
 class startpage(BaseRequestHandler):
     def get(self):
         self.render_template2('index.html', template_args=None)
-        self.response.out.write("")
 
     def post(self):
         self.response.out.write('post request')
@@ -83,8 +104,7 @@ class upload(BaseRequestHandler):
 
         """
 
-
-        pinboard_key = self.request.headers['X-pinboard']
+        pinboard_url_id = self.request.headers['X-pinboard']
         token = self.request.headers['X-token']
         mime_type = self.request.headers['X-File-Type']
         file_name = self.request.headers['X-File-Name']
@@ -94,10 +114,8 @@ class upload(BaseRequestHandler):
         files.finalize(blob_name)
         blobkey = files.blobstore.get_blob_key(blob_name)
 
-
-        q = Pinboard.gql("WHERE name = :1 ", pinboard_key)
+        q = Pinboard.gql("WHERE name = :1 ", pinboard_url_id)
         pinboard = q.get()
-
 
         pin1 = Pinned_Item(pinboard_container=pinboard,
                            item_filename=file_name,
@@ -105,7 +123,7 @@ class upload(BaseRequestHandler):
                            content_index=blobkey)
 
         pin1.put()
-  #      channel.send_message(token, token)
+        channel.send_message(token, 'hOORAH')
 
     def sendupdateMsg(self):
         """
@@ -127,16 +145,7 @@ class viewphotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 
 class getphotoHandler(BaseRequestHandler):
-    def get(self,file_name=None ):
-        #global user_pinboard
-        # dummy functionality should instead return a datastore entry
-        # prototype will return global_blobstore key
-        #
-
-        """
-
-        :param file_name:
-        """
+    def get(self, file_name=None):
 
         file_name = self.request.get("filename")
         q = Pinned_Item.gql("WHERE item_filename = :1 ", file_name)
@@ -145,49 +154,84 @@ class getphotoHandler(BaseRequestHandler):
         for item in q:
             file_type = item.item_filetype
 
-
-        #        if not pin_entry:
-        #            self.abort(404)
-        self.response.headers['X-File-Type'] = file_type
-        self.response.headers['X-File-Type'] = str(file_name)
-  #      self.response.headers['X-pinboard'] = self.request.headers['X-pinboard']
-  #      self.response.headers['X-token'] =  self.request.headers['X-token']
-        self.response.out.write(file_data)# address.content_index)
+        self.response.headers['X-File-Type'] = str(file_type)
+        self.response.headers['X-File-Name'] = str(file_name)
+        self.response.out.write(file_data)
 
 
-class pinboardHandler(blobstore_handlers.BlobstoreDownloadHandler):
+class xhr_pinboardHandler(webapp2.RequestHandler):
+
+
+    def query_for_pinboard(self, url_key):
+        q = Pinboard.gql("WHERE name = :1 ", url_key)
+        pinboard = q.get()
+        return pinboard
+
+    def return_pinboard_contents(self, pinboard):
+        q = Pinned_Item.gql("WHERE pinboard_container = :1 ", pinboard)
+
+        return q
+
     def get(self):
-        """
-        return the pinboards contents
 
-        """
-        if not blobstore.get(global_blobkey):
-            self.error(404)
-        else:
 
-        # pinned_items = pinboard.get_contents()
-        # for pinned_item in pinned_items:
-        #     self.response.out(pinned_item.item_filename)
+                # Set up headers for browser to correctly recognize ZIP file
+        self.response.headers['Content-Type'] = 'application/zip'
+        self.response.headers['Content-Disposition'] = \
+            'attachment; filename="outfile.zip"'
 
-            #fallback to basic functionality (get something)
-            self.send_blob(global_blobkey)
+        pinboard_name = self.request.get("pinboard_url_id")
+        pinboard = self.query_for_pinboard(pinboard_name)
+
+
+
+
+
+        content_collection = self.return_pinboard_contents(pinboard)
+        #with closing(ZipFile(StringIO(self.response.out), "w", ZIP_DEFLATED)) as outfile:
+        #removed as doesn't work with contextmanager
+        f=StringIO()
+        file = ZipFile(f, "w")
+
+        for p in content_collection.run():
+                file_data = blobstore.BlobReader(p.content_index.key()).read()
+                file_type = p.item_filetype
+                file_name = p.item_filename
+                addResource2(file,file_data,p.item_filename.encode('utf-8'))
+        file.close()
+        f.seek(0)
+
+        while True:
+            buf=f.read(2048)
+            if buf=="" : break
+            self.response.out.write(buf)
+
+        f.close()
+
+def addResource2(zfile, data, fname):
+
+        # get the contents
+        #contents = urlfetch.fetch(url).content
+        # write the contents to the zip file
+        zfile.writestr(fname, data)
+
 
 
 def transform(blob_key):
     img = images.Image(blob_key=global_blobkey)
 
-#    img.resize(width=32, height=32)
-#    img.horizontal_flip()
-#    thumbnail = img.execute_transforms(output_encoding=images.JPEG)
-#    file_name = files.blobstore.create(mime_type='image/jpeg')#file to write to
-#    blob_key = files.blobstore.get_blob_key(file_name)
-#    with files.open(file_name, 'a') as f:
-#        f.write(thumbnail)
-#
-#    files.finalize(file_name)
+    #    img.resize(width=32, height=32)
+    #    img.horizontal_flip()
+    #    thumbnail = img.execute_transforms(output_encoding=images.JPEG)
+    #    file_name = files.blobstore.create(mime_type='image/jpeg')#file to write to
+    #    blob_key = files.blobstore.get_blob_key(file_name)
+    #    with files.open(file_name, 'a') as f:
+    #        f.write(thumbnail)
+    #
+    #    files.finalize(file_name)
 
 
 app = webapp2.WSGIApplication(
-    [('/', startpage), ('/upload', upload), ('/canvas', getphotoHandler), ('/pinboard', pinboardHandler)],
+    [('/', startpage), ('/upload', upload), ('/canvas', getphotoHandler), ('/pinboard', xhr_pinboardHandler)],
     debug=True)
 

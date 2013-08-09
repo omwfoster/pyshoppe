@@ -8,6 +8,7 @@ $(document).ready(function () {
 //     Kinetic js  stage initialisation
 
 
+    var pinboard_select, dropzone, downloadbtn, defaultdownloadbtn, globalblob;
     var imgWidth = 180,
         imgHeight = 180,
         zindex = 0;
@@ -46,11 +47,14 @@ $(document).ready(function () {
 
     // appengine channels api
 
+    pinboard_select = $('#pinboard_select');
+    pinboard_select.change(function () {
 
-    dropzone = $('#canvasbag'),
-        downloadbtn = $('#downloadbtn'),
-        defaultdownloadbtn = $('#download');
-    globalblob = "";
+        //change the pinboard context
+        downloadPinboard();
+    });
+    dropzone = $('#canvasbag');
+    downloadbtn = $('#downloadbtn');
     dropzone.on('dragover', function () {
         //add hover class when drag over
         dropzone.addClass('hover');
@@ -76,20 +80,20 @@ $(document).ready(function () {
     var uploadToServer = function (file) {
         var filename = null;
         var xhr_post = new XMLHttpRequest();
-        xhr_post.open("post", "/upload"  , true);
-  //     xhr_post.open("post", "/upload" + "?" + "token=" + token , true);
+        xhr_post.open("post", "/upload", true);
+        //     xhr_post.open("post", "/upload" + "?" + "token=" + token , true);
         xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
         xhr_post.setRequestHeader("X-File-Name", file.name);
         xhr_post.setRequestHeader("X-File-Type", file.type);
-        xhr_post.setRequestHeader("X-pinboard", pinboard_key);
+        xhr_post.setRequestHeader("X-pinboard", pinboard_url_id);
         xhr_post.setRequestHeader("X-token", token);
         xhr_post.send(file);
 
-        xhr_post.onreadystatechange = function(e) {
-                if ( 4 == this.readyState ) {
+        xhr_post.onreadystatechange = function (e) {
+            if (4 == this.readyState) {
                 downloadImage(file.name);
-                }
-            };
+            }
+        };
 
         if (typeof FileReader === "undefined") {
             //$('.extra').hide();
@@ -107,25 +111,25 @@ $(document).ready(function () {
         var myURL = window.URL || window.webkitURL;
         var filetype;
         var filename;
-        var pinboard_key;
+        var pinboard_url_id;
         var token;
         var xhr_get = new XMLHttpRequest();
-        xhr_get.open('GET', '/canvas'+"?" + "filename=" +arg_filename, true);
+        xhr_get.open('GET', '/canvas' + "?" + "filename=" + arg_filename, true);
         xhr_get.responseType = 'blob';
 
 
         xhr_get.onload = function (e) {
             if (this.status == 200) {
-                pinboard_key = xhr_get.getResponseHeader("X-pinboard");
+                pinboard_url_id = xhr_get.getResponseHeader("X-pinboard");
                 token = xhr_get.getResponseHeader("X-token");
                 filetype = xhr_get.getResponseHeader("X-File-Type");
                 blob = new Blob([this.response], {type: filetype});
                 filename = xhr_get.getResponseHeader("X-File-Name");
                 var imageObj = new Image();
 
-                imageObj.onload = function() {
-                    displayfile(this,filename,filetype);
-                    }
+                imageObj.onload = function () {
+                    displayfile(this, filename, filetype);
+                }
 
                 imageObj.src = myURL.createObjectURL(blob);
 
@@ -138,34 +142,94 @@ $(document).ready(function () {
     };
 
 
+    var downloadPinboard = function (arg_filename) {
+        var myURL = window.URL || window.webkitURL;
+        var filetype;
+        var filename;
+        var pinboard_url_id;
+        var token;
+        var xhr_get = new XMLHttpRequest();
+        xhr_get.open('GET', '/pinboard' + "?" + "pinboard_url_id=" + pinboard_select.val(), true);
+        xhr_get.responseType = 'blob';
+
+
+        xhr_get.onload = function (e) {
+            if (this.status == 200) {
+                filetype = xhr_get.getResponseHeader("X-File-Type");
+                blob = new Blob([this.response], {type: filetype});
+                filename = xhr_get.getResponseHeader("X-File-Name");
+
+
+
+
+                    // use a BlobReader to read the zip from a Blob object
+                    zip.createReader(new zip.BlobReader(blob), function (reader) {
+
+                        // get all entries from the zip
+                        reader.getEntries(function (entries) {
+                            if (entries.length) {
+
+                                // get first entry content as text
+                                entries[0].getData(new zip.TextWriter(), function (text) {
+                                    // text contains the entry data as a String
+                                    displayfile(this, filename, filetype);
+                                    console.log(text);
+
+                                    // close the zip reader
+                                    reader.close(function () {
+                                        // onclose callback
+                                    });
+
+                                }, function (current, total) {
+                                    // onprogress callback
+                                });
+                            }
+                        });
+                    }, function (error) {
+                        // onerror callback
+                    });
+
+
+
+
+
+            }
+        };
+
+        xhr_get.send();
+
+
+    };
+
+
     var displayfile;
-    displayfile = function (Image,filename,filetype) {
+    displayfile = function (Image, filename, filetype) {
 
 
-            layer.clear();
-            var note = new Kinetic.Image({
-                x: stage.getWidth() / 2 - 200 / 2,
-                y: stage.getHeight() / 2 - 137 / 2,
-                image: Image,
-                width: 100,
-                height: 100,
-                draggable: true
-            });
+        layer.clear();
+        var note = new Kinetic.Image({
+            x: stage.getWidth() / 2 - 200 / 2,
+            y: stage.getHeight() / 2 - 137 / 2,
+            image: Image,
+            width: 100,
+            height: 100,
+            draggable: true
+        });
 
-            // add cursor styling
+        // add cursor styling
 
-            note.on('mouseover', function () {
-                document.body.style.cursor = 'pointer';
-            });
-            note.on('mouseout', function () {
-                document.body.style.cursor = 'default';
-            });
-            // add the shape to the layer
+        note.on('mouseover', function () {
+            document.body.style.cursor = 'pointer';
+        });
+        note.on('mouseout', function () {
+            document.body.style.cursor = 'default';
+        });
+        // add the shape to the layer
 
-            layer.add(note);
-            stage.add(layer);
-            layer.draw();
-            // add the layer to the stage
+        layer.add(note);
+        stage.add(layer);
+        layer.draw();
+        // add the layer to the stage
 
     };
 
@@ -180,7 +244,7 @@ $(document).ready(function () {
         }
     };
 
-    var outputtoconsole = function() {
+    var outputtoconsole = function () {
 
 
         console.log("test console output");

@@ -8,7 +8,7 @@ from google.appengine.api import users
 
 
 class User(db.Model):
-    user_id = db.users.User
+    user_id = db.StringProperty()
     user_name = db.StringProperty
 
 
