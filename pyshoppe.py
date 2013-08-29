@@ -9,6 +9,7 @@ from google.appengine.api import images
 from google.appengine.api import channel
 from google.appengine.api import users
 import StringIO
+from google.appengine.api import images
 from contextlib import closing
 from zipfile import ZipFile, ZIP_DEFLATED
 from StringIO import StringIO
@@ -21,6 +22,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 from imagedb import Pinboard
 from imagedb import Pinned_Item
 from imagedb import User
+
 
 # class xhr_pinboard_zipper():
 
@@ -53,7 +55,7 @@ class BaseRequestHandler(webapp2.RequestHandler):
             pinboard_link = 'http://localhost:8080/?pinboard_url_id=' + pinboard.name
 
             if pinboard:
-            ##    token = channel.create_channel(os.urandom(16).encode('hex'))
+                token = channel.create_channel(os.urandom(16).encode('hex'))
                 ###token = channel.create_channel(user.user_id() + pinboard)
                 template_values = {'token': "token",
                                    'me': user.user_id(),
@@ -67,6 +69,10 @@ class BaseRequestHandler(webapp2.RequestHandler):
                 self.response.out.write('balls')
         else:
             self.redirect(users.create_login_url(self.request.uri))
+
+    def getMask(self):
+
+        return
 
 
     def getPinboardfromurlkey(self, urlPinboardkey):
@@ -146,7 +152,7 @@ class viewphotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 class getphotoHandler(BaseRequestHandler):
     def get(self, file_name=None):
-
+        size = 200, 200
         file_name = self.request.get("filename")
         q = Pinned_Item.gql("WHERE item_filename = :1 ", file_name)
         content_index = q.get().content_index.key()
@@ -156,12 +162,12 @@ class getphotoHandler(BaseRequestHandler):
 
         self.response.headers['X-File-Type'] = str(file_type)
         self.response.headers['X-File-Name'] = str(file_name)
-        self.response.out.write(file_data)
+
+        #   self.response.out.write(makeThumb(file_data, (30, 30)))
+        self.response.out.write(makeThumb(file_data, (30, 30), str(file_name)))
 
 
 class xhr_pinboardHandler(webapp2.RequestHandler):
-
-
     def query_for_pinboard(self, url_key):
         q = Pinboard.gql("WHERE name = :1 ", url_key)
         pinboard = q.get()
@@ -175,7 +181,7 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
     def get(self):
 
 
-                # Set up headers for browser to correctly recognize ZIP file
+    # Set up headers for browser to correctly recognize ZIP file
         self.response.headers['Content-Type'] = 'application/zip'
         self.response.headers['Content-Disposition'] = \
             'attachment; filename="outfile.zip"'
@@ -183,38 +189,72 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
         pinboard_name = self.request.get("pinboard_url_id")
         pinboard = self.query_for_pinboard(pinboard_name)
 
-
-
-
-
         content_collection = self.return_pinboard_contents(pinboard)
         #with closing(ZipFile(StringIO(self.response.out), "w", ZIP_DEFLATED)) as outfile:
         #removed as doesn't work with contextmanager
-        f=StringIO()
+        f = StringIO()
         file = ZipFile(f, "w")
 
         for p in content_collection.run():
-                file_data = blobstore.BlobReader(p.content_index.key()).read()
-                file_type = p.item_filetype
-                file_name = p.item_filename
-                addResource2(file,file_data,p.item_filename.encode('utf-8'))
+            file_data = blobstore.BlobReader(p.content_index.key()).read()
+            file_type = p.item_filetype
+            file_name = p.item_filename
+            addResource2(file, makeThumb(file_data, (30, 30), p.item_filename.encode('utf-8')), p.item_filename.encode('utf-8'))
         file.close()
         f.seek(0)
 
         while True:
-            buf=f.read(2048)
-            if buf=="" : break
+            buf = f.read(2048)
+            if buf == "": break
             self.response.out.write(buf)
 
-        f.close()
+
+
+def makeThumb(imgblob, size, filename):
+    """
+    The input image is cropped and then resized by PILs thumbnail method.
+    """
+
+    img = images.Image(imgblob)
+    path = os.path.join(os.path.dirname(__file__), 'balls', 'polaroid_resize.jpg')
+  #  img2 = images.Image(file(path, 'rb').read())
+  #  img2.resize(width=200, height = 200)
+    img.resize(width=105, height=105)
+  #  img.vertical_flip()
+ #   picture = img2.execute_transforms(output_encoding=images.PNG)
+    thumbnail = img.execute_transforms(output_encoding=images.PNG)
+
+    #buf = StringIO()
+    # path = os.path.join(os.path.abspath(os.path.curdir) , 'balls', 'polaroid_resize.jpg')
+    #buf = open('polaroid_resize.jpg').read()
+    #f = open(path)
+
+
+
+
+    composite = images.composite(
+        [(images.Image(file(path, 'rb').read()), 0, 0, 1.0, images.TOP_LEFT),
+         (thumbnail, 6, 6, 1.0, images.TOP_LEFT)], 120,
+        145)
+
+    #f.close()
+
+    # f.seek(0)
+    #
+    # while True:
+    #     buf = f.read(2048)
+    #     if buf == "": break
+    #
+    # f.close()
+    #
+    # return buf
+    return composite
 
 def addResource2(zfile, data, fname):
-
-        # get the contents
-        #contents = urlfetch.fetch(url).content
-        # write the contents to the zip file
-        zfile.writestr(fname, data)
-
+    # get the contents
+    #contents = urlfetch.fetch(url).content
+    # write the contents to the zip file
+    zfile.writestr(fname, data)
 
 
 def transform(blob_key):
@@ -229,6 +269,51 @@ def transform(blob_key):
     #        f.write(thumbnail)
     #
     #    files.finalize(file_name)
+
+
+def boxParamsCenter(width, height):
+    """
+    Calculate the box parameters for cropping the center of an image based
+    on the image width and image height
+    """
+    if isLandscape(width, height):
+        upper_x = int((width / 2) - (height / 2))
+        upper_y = 0
+        lower_x = int((width / 2) + (height / 2))
+        lower_y = height
+        return upper_x, upper_y, lower_x, lower_y
+    else:
+        upper_x = 0
+        upper_y = int((height / 2) - (width / 2))
+        lower_x = width
+        lower_y = int((height / 2) + (width / 2))
+        return upper_x, upper_y, lower_x, lower_y
+
+
+def isLandscape(width, height):
+    """
+    Takes the image width and height and returns if the image is in landscape
+    or portrait mode.
+    """
+    if width >= height:
+        return True
+    else:
+        return False
+
+
+# def cropit(img, size):
+#     """
+#     Performs the cropping of the input image to generate a square thumbnail.
+#     It calculates the box parameters required by the PIL cropping method, crops
+#     the input image and returns the cropped square.
+#     """
+#     img_width, img_height = size
+#     upper_x, upper_y, lower_x, lower_y = boxParamsCenter(img.size[0], img.size[1])
+#     box = (upper_x, upper_y, lower_x, lower_y)
+#     region = img.crop(box)
+#     return region
+
+
 
 
 app = webapp2.WSGIApplication(

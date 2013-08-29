@@ -12,6 +12,9 @@ handlers:
 - url: /.*
   script: pyshoppe.app
 
+- url: /.imagedecorators
+  static_dir: imagedecorators
+
 inbound_services:
 - channel_presence
 - xmpp_message

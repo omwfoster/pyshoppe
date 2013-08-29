@@ -7,29 +7,91 @@ $(document).ready(function () {
 
 //     Kinetic js  stage initialisation
 
-
-    var pinboard_select, dropzone, downloadbtn, defaultdownloadbtn, globalblob;
-    var imgWidth = 180,
+    var pinboard_select, dropzone, downloadbtn, defaultdownloadbtn, globalblob,
+        imgWidth = 180,
         imgHeight = 180,
+        displayfile,
+        layer,
         zindex = 0;
 
-    var stage = new Kinetic.Stage({
+    stage = new Kinetic.Stage({
         container: 'canvasbag',
         width: 800,
         height: 538
     });
-    var layer = new Kinetic.Layer();
+    layer = new Kinetic.Layer();
+    displayfile = function (Image, filename, filetype) {
+
+
+        layer.clear();
+        var note = new Kinetic.Image({
+            x: stage.getWidth() / 2 - 200 / 2,
+            y: stage.getHeight() / 2 - 137 / 2,
+            image: Image,
+            width: Image.width,
+            height: Image.height,
+            draggable: true
+        });
+
+        // add cursor styling
+
+        note.on('mouseover', function () {
+            document.body.style.cursor = 'pointer';
+        });
+        note.on('mouseout', function () {
+            document.body.style.cursor = 'default';
+        });
+        // add the shape to the layer
+
+        layer.add(note);
+        stage.add(layer);
+        layer.draw();
+        // add the layer to the stage
+
+    };
+
+
+    var model = (function () {
+
+        return {
+            getEntries: function (file, onend) {
+                zip.createReader(new zip.BlobReader(file), function (zipReader) {
+                    zipReader.getEntries(onend);
+                }, onerror);
+            },
+            getEntryFile: function (entry, creationMethod, onend, onprogress) {
+                var writer, zipFileEntry;
+                var url = window.URL || window.webkitURL;
+
+
+                function getData() {
+                    entry.getData(writer, function (blob) {
+                        var imageObj = new Image();
+                        imageObj.onload = function () {
+                            displayfile(this, entry.filename);
+                        };
+
+                        imageObj.src = url.createObjectURL(blob);
+
+                    }, onprogress);
+                }
+
+                writer = new zip.BlobWriter();
+                getData();
+            }
+        };
+    })();
 
 
     //    appengine channels api
     channel = new goog.appengine.Channel(token);
     socket = channel.open();
     socket.onopen = function () {
-        //          add_message('Channel established.');
+                  outputtoconsole('Channel established.');
     };
     socket.onmessage = function (message) {
         console.log(message);
-        var data = jQuery.parseJSON(message.data)
+        var data = jQuery.parseJSON(message.data);
 //            var row = $('<tr />');
 //            for(var i = 0; i < columns.length; i++) {
 //                $('<td />', {
@@ -39,17 +101,18 @@ $(document).ready(function () {
 //            row.appendTo('#results');
     };
     socket.onerror = function (error) {
-        //       add_message('Channel error: ' + error.description);
+               outputtoconsole('Channel error: ' + error.description);
     };
     socket.onclose = function () {
-        //       add_message('Channel closed.');
+               outputtoconsole('Channel closed.');
     };
 
     // appengine channels api
 
     pinboard_select = $('#pinboard_select');
     pinboard_select.change(function () {
-
+        layer.clear()
+        layer.draw()
         //change the pinboard context
         downloadPinboard();
     });
@@ -90,7 +153,7 @@ $(document).ready(function () {
         xhr_post.send(file);
 
         xhr_post.onreadystatechange = function (e) {
-            if (4 == this.readyState) {
+            if (4 === this.readyState) {
                 downloadImage(file.name);
             }
         };
@@ -105,7 +168,6 @@ $(document).ready(function () {
         }
         return file.name;
     };
-
     /* random change */
     var downloadImage = function (arg_filename) {
         var myURL = window.URL || window.webkitURL;
@@ -128,8 +190,8 @@ $(document).ready(function () {
                 var imageObj = new Image();
 
                 imageObj.onload = function () {
-                    displayfile(this, filename, filetype);
-                }
+                    displayfile(this, filename);
+                };
 
                 imageObj.src = myURL.createObjectURL(blob);
 
@@ -141,6 +203,14 @@ $(document).ready(function () {
 
     };
 
+    function unzip(zip) {
+        model.getEntries(zip, function (entries) {
+            entries.forEach(function (entry) {
+                model.getEntryFile(entry, "Blob");
+            });
+        });
+
+    }
 
     var downloadPinboard = function (arg_filename) {
         var myURL = window.URL || window.webkitURL;
@@ -158,82 +228,12 @@ $(document).ready(function () {
                 filetype = xhr_get.getResponseHeader("X-File-Type");
                 blob = new Blob([this.response], {type: filetype});
                 filename = xhr_get.getResponseHeader("X-File-Name");
-
-
-
-
-                    // use a BlobReader to read the zip from a Blob object
-                    zip.createReader(new zip.BlobReader(blob), function (reader) {
-
-                        // get all entries from the zip
-                        reader.getEntries(function (entries) {
-                            if (entries.length) {
-
-                                // get first entry content as text
-                                entries[0].getData(new zip.TextWriter(), function (text) {
-                                    // text contains the entry data as a String
-                                    displayfile(this, filename, filetype);
-                                    console.log(text);
-
-                                    // close the zip reader
-                                    reader.close(function () {
-                                        // onclose callback
-                                    });
-
-                                }, function (current, total) {
-                                    // onprogress callback
-                                });
-                            }
-                        });
-                    }, function (error) {
-                        // onerror callback
-                    });
-
-
-
-
-
+                unzip(blob);
             }
+
         };
-
         xhr_get.send();
-
-
     };
-
-
-    var displayfile;
-    displayfile = function (Image, filename, filetype) {
-
-
-        layer.clear();
-        var note = new Kinetic.Image({
-            x: stage.getWidth() / 2 - 200 / 2,
-            y: stage.getHeight() / 2 - 137 / 2,
-            image: Image,
-            width: 100,
-            height: 100,
-            draggable: true
-        });
-
-        // add cursor styling
-
-        note.on('mouseover', function () {
-            document.body.style.cursor = 'pointer';
-        });
-        note.on('mouseout', function () {
-            document.body.style.cursor = 'default';
-        });
-        // add the shape to the layer
-
-        layer.add(note);
-        stage.add(layer);
-        layer.draw();
-        // add the layer to the stage
-
-    };
-
-
     var processFiles = function (files) {
         if (files && typeof FileReader !== "undefined") {
             for (var i = 0; i < files.length; i++) {
@@ -323,6 +323,7 @@ $(document).ready(function () {
         // write the ArrayBuffer to a blob, and you're done
         var bb = new BlobBuilder();
         bb.append(ab);
+
         return bb.getBlob(mimeString);
     }
 
@@ -338,7 +339,7 @@ $(document).ready(function () {
             pix[i + 2] = grayscale;
         }
         context.putImageData(imgd, 0, 0);
-    }
+    };
 
     //canvas-blur effect
     //by Matt Riggott - http://www.flother.com/
@@ -355,7 +356,7 @@ $(document).ready(function () {
             }
         }
         context.globalAlpha = 1.0;
-    }
+    };
 
 
     /*****************************
@@ -363,8 +364,7 @@ $(document).ready(function () {
      *****************************/
     var getCanvasImage = function (image) {
         //get selected effect
-        var effect = $('input[name=effect]:checked').val();
-        var croping = $('input[name=croping]:checked').val();
+
 
         //define canvas
         var canvas = document.createElement('canvas');
@@ -392,7 +392,7 @@ $(document).ready(function () {
 
         //convert canvas to jpeg url
         return canvas.toDataURL("image/jpeg");
-    }
+    };
 
 
     /*****************************
@@ -406,13 +406,7 @@ $(document).ready(function () {
         imageObj.fileOriSize = convertToKBytes(file.size);
         imageObj.fileUploadSize = convertToKBytes(dataURItoBlob(newURL).size); //convert new image URL to blob to get file.size
 
-        //extend filename
-        var effect = $('input[name=effect]:checked').val();
-        if (effect == 'grayscale') {
-            imageObj.fileName += " (Grayscale)";
-        } else if (effect == 'blurry') {
-            imageObj.fileName += " (Blurry)";
-        }
+
         //append new image through jQuery Template
         var randvalue = Math.floor(Math.random() * 31) - 15;  //random number
         var img = $("#imageTemplate").tmpl(imageObj).prependTo("#result")
@@ -433,4 +427,9 @@ $(document).ready(function () {
     }
 
 
-})
+
+
+
+});
+
+
