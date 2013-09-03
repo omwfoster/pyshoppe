@@ -20,10 +20,10 @@ $(document).ready(function () {
         height: 538
     });
     layer = new Kinetic.Layer();
+    stage.add(layer);
     displayfile = function (Image, filename, filetype) {
 
 
-        layer.clear();
         var note = new Kinetic.Image({
             x: stage.getWidth() / 2 - 200 / 2,
             y: stage.getHeight() / 2 - 137 / 2,
@@ -37,6 +37,7 @@ $(document).ready(function () {
 
         note.on('mouseover', function () {
             document.body.style.cursor = 'pointer';
+            this.moveToTop();
         });
         note.on('mouseout', function () {
             document.body.style.cursor = 'default';
@@ -44,7 +45,7 @@ $(document).ready(function () {
         // add the shape to the layer
 
         layer.add(note);
-        stage.add(layer);
+      //  stage.add(layer);
         layer.draw();
         // add the layer to the stage
 
@@ -111,8 +112,8 @@ $(document).ready(function () {
 
     pinboard_select = $('#pinboard_select');
     pinboard_select.change(function () {
-        layer.clear()
-        layer.draw()
+        layer.clear();
+        layer.draw();
         //change the pinboard context
         downloadPinboard();
     });
@@ -133,6 +134,7 @@ $(document).ready(function () {
         e.stopPropagation();
         e.preventDefault();
         dropzone.removeClass('hover');
+        layer.clear();
         var files = e.originalEvent.dataTransfer.files;
         processFiles(files);
 
@@ -148,7 +150,7 @@ $(document).ready(function () {
         xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
         xhr_post.setRequestHeader("X-File-Name", file.name);
         xhr_post.setRequestHeader("X-File-Type", file.type);
-        xhr_post.setRequestHeader("X-pinboard", pinboard_url_id);
+        xhr_post.setRequestHeader("X-pinboard", pinboard_select.val());
         xhr_post.setRequestHeader("X-token", token);
         xhr_post.send(file);
 
@@ -204,6 +206,7 @@ $(document).ready(function () {
     };
 
     function unzip(zip) {
+  //      layer.removeChildren();
         model.getEntries(zip, function (entries) {
             entries.forEach(function (entry) {
                 model.getEntryFile(entry, "Blob");
@@ -221,6 +224,7 @@ $(document).ready(function () {
         var xhr_get = new XMLHttpRequest();
         xhr_get.open('GET', '/pinboard' + "?" + "pinboard_url_id=" + pinboard_select.val(), true);
         xhr_get.responseType = 'blob';
+        layer.clear()
 
 
         xhr_get.onload = function (e) {

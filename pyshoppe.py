@@ -1,6 +1,6 @@
 import os
-
 import webapp2
+import StringIO
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.ext import blobstore
@@ -8,23 +8,13 @@ from google.appengine.api import files
 from google.appengine.api import images
 from google.appengine.api import channel
 from google.appengine.api import users
-import StringIO
-from google.appengine.api import images
-from contextlib import closing
-from zipfile import ZipFile, ZIP_DEFLATED
 from StringIO import StringIO
-
-from google.appengine.ext import webapp
-from google.appengine.api import urlfetch
-
 from zipfile import ZipFile, ZIP_DEFLATED
-
 from imagedb import Pinboard
 from imagedb import Pinned_Item
 from imagedb import User
 
 
-# class xhr_pinboard_zipper():
 
 
 
@@ -41,23 +31,24 @@ class BaseRequestHandler(webapp2.RequestHandler):
         pinboard_url_id = self.request.get('pinboard_url_id')
         pinboard = None
         if user:
-            if not pinboard_url_id:
-                pinboard_url_id = os.urandom(16).encode('hex')
-                pinboard = Pinboard(name=pinboard_url_id, owner=self.createUserentry())
-                pinboard.put()
-            else:
-                pinboard = Pinboard.get_by_key_name(pinboard_url_id)
+            if pinboard_url_id:
                 pinboard = self.getPinboardfromurlkey(pinboard_url_id)
                 if not pinboard.owner:
                     pinboard.owner = self.createUserentry()
                     pinboard.put()
 
-            pinboard_link = 'http://localhost:8080/?pinboard_url_id=' + pinboard.name
+            else:
+                pinboard = self.locateUserPinboard()
+                if not pinboard:
+                    pinboard = self.createUserPinboard()
+            pinboard_url_id = pinboard.name
+
 
             if pinboard:
                 token = channel.create_channel(os.urandom(16).encode('hex'))
-                ###token = channel.create_channel(user.user_id() + pinboard)
-                template_values = {'token': "token",
+                # token = channel.create_channel(user.user_id() + pinboard)
+                pinboards = Pinboard.all()
+                template_values = {'token': token,
                                    'me': user.user_id(),
                                    'pinboard_url_id': pinboard_url_id,
                                    'pinboards': pinboards
@@ -67,13 +58,12 @@ class BaseRequestHandler(webapp2.RequestHandler):
                 self.response.out.write(template.render(path, template_values))
             else:
                 self.response.out.write('balls')
+
         else:
             self.redirect(users.create_login_url(self.request.uri))
 
     def getMask(self):
-
         return
-
 
     def getPinboardfromurlkey(self, urlPinboardkey):
         q = Pinboard.gql("WHERE name = :1 ", urlPinboardkey)
@@ -85,11 +75,20 @@ class BaseRequestHandler(webapp2.RequestHandler):
         u = q.get()
         return u
 
-
     def createUserentry(self):
         user1 = User(user_id=users.get_current_user().user_id(), name="oliver")
         user1.put()
         return user1
+
+    def locateUserPinboard(self):
+        q = Pinboard.gql("WHERE owner = :1 ",
+                         User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()).get()
+        return q
+
+    def createUserPinboard(self):
+        Pin1 = Pinboard(name=(os.urandom(16).encode('hex')), owner=self.createUserentry())
+        Pin1.put()
+        return Pin1
 
 
 class startpage(BaseRequestHandler):
@@ -162,8 +161,6 @@ class getphotoHandler(BaseRequestHandler):
 
         self.response.headers['X-File-Type'] = str(file_type)
         self.response.headers['X-File-Name'] = str(file_name)
-
-        #   self.response.out.write(makeThumb(file_data, (30, 30)))
         self.response.out.write(makeThumb(file_data, (30, 30), str(file_name)))
 
 
@@ -190,8 +187,6 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
         pinboard = self.query_for_pinboard(pinboard_name)
 
         content_collection = self.return_pinboard_contents(pinboard)
-        #with closing(ZipFile(StringIO(self.response.out), "w", ZIP_DEFLATED)) as outfile:
-        #removed as doesn't work with contextmanager
         f = StringIO()
         file = ZipFile(f, "w")
 
@@ -199,7 +194,8 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
             file_data = blobstore.BlobReader(p.content_index.key()).read()
             file_type = p.item_filetype
             file_name = p.item_filename
-            addResource2(file, makeThumb(file_data, (30, 30), p.item_filename.encode('utf-8')), p.item_filename.encode('utf-8'))
+            addResource2(file, makeThumb(file_data, (30, 30), p.item_filename.encode('utf-8')),
+                         p.item_filename.encode('utf-8'))
         file.close()
         f.seek(0)
 
@@ -209,7 +205,6 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
             self.response.out.write(buf)
 
 
-
 def makeThumb(imgblob, size, filename):
     """
     The input image is cropped and then resized by PILs thumbnail method.
@@ -217,38 +212,18 @@ def makeThumb(imgblob, size, filename):
 
     img = images.Image(imgblob)
     path = os.path.join(os.path.dirname(__file__), 'balls', 'polaroid_resize.jpg')
-  #  img2 = images.Image(file(path, 'rb').read())
-  #  img2.resize(width=200, height = 200)
-    img.resize(width=105, height=105)
-  #  img.vertical_flip()
- #   picture = img2.execute_transforms(output_encoding=images.PNG)
+
+    img.resize(width=110, height=105)
+    #  img.vertical_flip()
     thumbnail = img.execute_transforms(output_encoding=images.PNG)
-
-    #buf = StringIO()
-    # path = os.path.join(os.path.abspath(os.path.curdir) , 'balls', 'polaroid_resize.jpg')
-    #buf = open('polaroid_resize.jpg').read()
-    #f = open(path)
-
-
-
 
     composite = images.composite(
         [(images.Image(file(path, 'rb').read()), 0, 0, 1.0, images.TOP_LEFT),
-         (thumbnail, 6, 6, 1.0, images.TOP_LEFT)], 120,
+         (thumbnail, 6, 15, 1.0, images.TOP_LEFT)], 120,
         145)
 
-    #f.close()
-
-    # f.seek(0)
-    #
-    # while True:
-    #     buf = f.read(2048)
-    #     if buf == "": break
-    #
-    # f.close()
-    #
-    # return buf
     return composite
+
 
 def addResource2(zfile, data, fname):
     # get the contents
