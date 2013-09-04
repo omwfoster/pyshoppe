@@ -45,7 +45,7 @@ $(document).ready(function () {
         // add the shape to the layer
 
         layer.add(note);
-      //  stage.add(layer);
+        //  stage.add(layer);
         layer.draw();
         // add the layer to the stage
 
@@ -88,7 +88,7 @@ $(document).ready(function () {
     channel = new goog.appengine.Channel(token);
     socket = channel.open();
     socket.onopen = function () {
-                  outputtoconsole('Channel established.');
+        outputtoconsole('Channel established.');
     };
     socket.onmessage = function (message) {
         console.log(message);
@@ -102,10 +102,10 @@ $(document).ready(function () {
 //            row.appendTo('#results');
     };
     socket.onerror = function (error) {
-               outputtoconsole('Channel error: ' + error.description);
+        outputtoconsole('Channel error: ' + error.description);
     };
     socket.onclose = function () {
-               outputtoconsole('Channel closed.');
+        outputtoconsole('Channel closed.');
     };
 
     // appengine channels api
@@ -113,10 +113,21 @@ $(document).ready(function () {
     pinboard_select = $('#pinboard_select');
     pinboard_select.change(function () {
         layer.clear();
-        layer.draw();
+        layer.removeChildren();
+
         //change the pinboard context
         downloadPinboard();
+        layer.draw();
     });
+//    pinboard_select.(function () {
+//        layer.clear();
+//
+//        //change the pinboard context
+//        downloadPinboard();
+//        layer.draw();
+//
+//
+//    });
     dropzone = $('#canvasbag');
     downloadbtn = $('#downloadbtn');
     dropzone.on('dragover', function () {
@@ -206,7 +217,7 @@ $(document).ready(function () {
     };
 
     function unzip(zip) {
-  //      layer.removeChildren();
+        //      layer.removeChildren();
         model.getEntries(zip, function (entries) {
             entries.forEach(function (entry) {
                 model.getEntryFile(entry, "Blob");
@@ -397,38 +408,6 @@ $(document).ready(function () {
         //convert canvas to jpeg url
         return canvas.toDataURL("image/jpeg");
     };
-
-
-    /*****************************
-     Draw Image Preview
-     *****************************/
-    var createPreview = function (file, newURL) {
-        //populate jQuery Template binding object
-        var imageObj = {};
-        imageObj.filePath = newURL;
-        imageObj.fileName = file.name.substr(0, file.name.lastIndexOf('.')); //subtract file extension
-        imageObj.fileOriSize = convertToKBytes(file.size);
-        imageObj.fileUploadSize = convertToKBytes(dataURItoBlob(newURL).size); //convert new image URL to blob to get file.size
-
-
-        //append new image through jQuery Template
-        var randvalue = Math.floor(Math.random() * 31) - 15;  //random number
-        var img = $("#imageTemplate").tmpl(imageObj).prependTo("#result")
-            .hide()
-            .css({
-                'Transform': 'scale(1) rotate(' + randvalue + 'deg)',
-                'msTransform': 'scale(1) rotate(' + randvalue + 'deg)',
-                'MozTransform': 'scale(1) rotate(' + randvalue + 'deg)',
-                'webkitTransform': 'scale(1) rotate(' + randvalue + 'deg)',
-                'OTransform': 'scale(1) rotate(' + randvalue + 'deg)',
-                'z-index': zindex++
-            })
-            .show();
-
-        if (isNaN(imageObj.fileUploadSize)) {
-            $('.imageholder span').last().hide();
-        }
-    }
 
 
 
