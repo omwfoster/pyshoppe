@@ -66,7 +66,7 @@ def cropit(img, size):
     the input image and returns the cropped square.
     """
     img_width, img_height = size
-    upper_x, upper_y, lower_x, lower_y = boxParamsCenter(img.size[0], img.size[1])
+    upper_x, upper_y, lower_x, lower_y = boxParamsCenter(size[0], size[1])
     box = (upper_x, upper_y, lower_x, lower_y)
     region = img.crop(box)
     return region

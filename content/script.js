@@ -409,8 +409,26 @@ $(document).ready(function () {
         return canvas.toDataURL("image/jpeg");
     };
 
+    function createJSON(layer) {
+        jsonObj = [];
+        layer.children.forEach(function () {
+
+            var id = $(this).attr("title");
+            var email = $(this).val();
+
+            item = {}
+            item ["title"] = id;
+            item ["email"] = email;
 
 
+            jsonObj.push(item);
+            jsonObj.stringify(
+                JSON.stringify()
+            )
+        });
+
+        return jsonObjsonObj;
+    }
 
 
 });

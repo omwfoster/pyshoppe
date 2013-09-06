@@ -161,7 +161,7 @@ class getphotoHandler(BaseRequestHandler):
 
         self.response.headers['X-File-Type'] = str(file_type)
         self.response.headers['X-File-Name'] = str(file_name)
-        self.response.out.write(makeThumb(file_data, (30, 30), str(file_name)))
+        self.response.out.write(makeThumb(file_data, (110, 105), str(file_name)))
 
 
 class xhr_pinboardHandler(webapp2.RequestHandler):
@@ -194,7 +194,7 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
             file_data = blobstore.BlobReader(p.content_index.key()).read()
             file_type = p.item_filetype
             file_name = p.item_filename
-            addResource2(file, makeThumb(file_data, (30, 30), p.item_filename.encode('utf-8')),
+            addResource2(file, makeThumb(file_data, (110, 105), p.item_filename.encode('utf-8')),
                          p.item_filename.encode('utf-8'))
         file.close()
         f.seek(0)
@@ -213,13 +213,18 @@ def makeThumb(imgblob, size, filename):
     img = images.Image(imgblob)
     path = os.path.join(os.path.dirname(__file__), 'balls', 'polaroid_resize.jpg')
 
-    img.resize(width=110, height=105)
+    cropped_img = cropit(img, size)
+
+    #cropped_img.thumbnail(size, Image.ANTIALIAS)
+    #return cropped_img
+
+    img.resize(width=118, height=107)
     #  img.vertical_flip()
     thumbnail = img.execute_transforms(output_encoding=images.PNG)
 
     composite = images.composite(
         [(images.Image(file(path, 'rb').read()), 0, 0, 1.0, images.TOP_LEFT),
-         (thumbnail, 6, 15, 1.0, images.TOP_LEFT)], 120,
+         (thumbnail, 5,10, 1.0, images.TOP_LEFT)], 120,
         145)
 
     return composite
@@ -232,37 +237,23 @@ def addResource2(zfile, data, fname):
     zfile.writestr(fname, data)
 
 
-def transform(blob_key):
-    img = images.Image(blob_key=global_blobkey)
-
-    #    img.resize(width=32, height=32)
-    #    img.horizontal_flip()
-    #    thumbnail = img.execute_transforms(output_encoding=images.JPEG)
-    #    file_name = files.blobstore.create(mime_type='image/jpeg')#file to write to
-    #    blob_key = files.blobstore.get_blob_key(file_name)
-    #    with files.open(file_name, 'a') as f:
-    #        f.write(thumbnail)
-    #
-    #    files.finalize(file_name)
-
-
 def boxParamsCenter(width, height):
     """
     Calculate the box parameters for cropping the center of an image based
     on the image width and image height
     """
-    if isLandscape(width, height):
-        upper_x = int((width / 2) - (height / 2))
-        upper_y = 0
-        lower_x = int((width / 2) + (height / 2))
-        lower_y = height
-        return upper_x, upper_y, lower_x, lower_y
+    if  isLandscape(width, height):
+        left_x = float(0)
+        top_y = ((width - height)/(2 * float(width)))
+        right_x = float(1)
+        bottom_y = (1 - ((width - height)/(2 * float(width))))
+        return left_x, top_y, right_x, bottom_y
     else:
-        upper_x = 0
-        upper_y = int((height / 2) - (width / 2))
-        lower_x = width
-        lower_y = int((height / 2) + (width / 2))
-        return upper_x, upper_y, lower_x, lower_y
+        left_x = (1 - ((height - width)/(2 * float(height))))
+        top_y = float(0)
+        right_x = ((height - width)/(2 * float(height)))
+        bottom_y = float(1)
+        return left_x, top_y, right_x, bottom_y
 
 
 def isLandscape(width, height):
@@ -276,17 +267,16 @@ def isLandscape(width, height):
         return False
 
 
-# def cropit(img, size):
-#     """
-#     Performs the cropping of the input image to generate a square thumbnail.
-#     It calculates the box parameters required by the PIL cropping method, crops
-#     the input image and returns the cropped square.
-#     """
-#     img_width, img_height = size
-#     upper_x, upper_y, lower_x, lower_y = boxParamsCenter(img.size[0], img.size[1])
-#     box = (upper_x, upper_y, lower_x, lower_y)
-#     region = img.crop(box)
-#     return region
+def cropit(img, size):
+    """
+    Performs the cropping of the input image to generate a square thumbnail.
+    It calculates the box parameters required by the PIL cropping method, crops
+    the input image and returns the cropped square.
+    """
+    img_width, img_height = size
+    left_x, top_y, right_x, bottom_y = boxParamsCenter(img.width, img.height)
+    region = img.crop(top_y, left_x, bottom_y, right_x)
+    return region
 
 
 
