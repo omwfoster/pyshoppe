@@ -145,7 +145,6 @@ $(document).ready(function () {
         e.stopPropagation();
         e.preventDefault();
         dropzone.removeClass('hover');
-        layer.clear();
         var files = e.originalEvent.dataTransfer.files;
         processFiles(files);
 

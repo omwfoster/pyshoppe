@@ -249,9 +249,9 @@ def boxParamsCenter(width, height):
         bottom_y = (1 - ((width - height)/(2 * float(width))))
         return left_x, top_y, right_x, bottom_y
     else:
-        left_x = (1 - ((height - width)/(2 * float(height))))
+        left_x = ((height - width)/(2 * float(height)))
         top_y = float(0)
-        right_x = ((height - width)/(2 * float(height)))
+        right_x = (1 - ((height - width)/(2 * float(height))))
         bottom_y = float(1)
         return left_x, top_y, right_x, bottom_y
 
