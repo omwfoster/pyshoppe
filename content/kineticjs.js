@@ -9944,6 +9944,7 @@ var Kinetic = {};
             
             // call super constructor
             Kinetic.Shape.call(this, config);
+            config
 
             // overrides
             // TODO: shouldn't this be on the prototype?

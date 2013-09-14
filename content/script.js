@@ -1,12 +1,29 @@
-/****************************
- server communication
- ****************************/
+(function () {
+
+    Kinetic.pinnedItem = function (config) {
+        this._initItem(config);
+    };
+    Kinetic.pinnedItem.prototype = {
+        _initItem: function (config) {
+            this.createAttrs();
+            // call super constructor
+            this.cock = "cock"
+            this.balls = "balls"
+            Kinetic.Image.call(this, config);
+        },
+        drawFunc: function (canvas) {
+            /*some code*/
+            this.cock = "cock2"
+        }
+        /* more methods*/
+    };
+    Kinetic.Util.extend(Kinetic.pinnedItem, Kinetic.Image);
+})();
 
 
 $(document).ready(function () {
 
 //     Kinetic js  stage initialisation
-
     var pinboard_select, dropzone, downloadbtn, defaultdownloadbtn, globalblob,
         imgWidth = 180,
         imgHeight = 180,
@@ -32,6 +49,7 @@ $(document).ready(function () {
             height: Image.height,
             draggable: true
         });
+
 
         // add cursor styling
 
@@ -203,6 +221,8 @@ $(document).ready(function () {
 
                 imageObj.onload = function () {
                     displayfile(this, filename);
+                    var pinItem = new Kinetic.pinnedimageClass();
+
                 };
 
                 imageObj.src = myURL.createObjectURL(blob);
@@ -412,12 +432,12 @@ $(document).ready(function () {
         jsonObj = [];
         layer.children.forEach(function () {
 
-            var id = $(this).attr("title");
-            var email = $(this).val();
 
             item = {}
-            item ["title"] = id;
-            item ["email"] = email;
+            item ["noteID"] = noteID;
+            item ["filename"] = itemFilename;
+            item ["pinneditem"] = pinnedItem;
+            item ["pinboardID"] = pinboardID;
 
 
             jsonObj.push(item);
@@ -426,7 +446,7 @@ $(document).ready(function () {
             )
         });
 
-        return jsonObjsonObj;
+        return jsonObj;
     }
 
 
