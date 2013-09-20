@@ -6,22 +6,20 @@
     Kinetic.pinnedItem.prototype = {
         _initItem: function (config) {
             this.createAttrs();
-            // call super constructor
-            this.cock = "cock"
-            this.balls = "balls"
+            this.filename = config.filename;
+            //         this.item_id = config.item_id;
             Kinetic.Image.call(this, config);
-        },
-        drawFunc: function (canvas) {
-            /*some code*/
-            this.cock = "cock2"
         }
-        /* more methods*/
     };
+
     Kinetic.Util.extend(Kinetic.pinnedItem, Kinetic.Image);
 })();
 
 
 $(document).ready(function () {
+
+
+
 
 //     Kinetic js  stage initialisation
     var pinboard_select, dropzone, downloadbtn, defaultdownloadbtn, globalblob,
@@ -29,82 +27,11 @@ $(document).ready(function () {
         imgHeight = 180,
         displayfile,
         layer,
-        zindex = 0;
-
-    stage = new Kinetic.Stage({
-        container: 'canvasbag',
-        width: 800,
-        height: 538
-    });
-    layer = new Kinetic.Layer();
-    stage.add(layer);
-    displayfile = function (Image, filename, filetype) {
+        zindex = 0,
+        channel = new goog.appengine.Channel(token),
+        socket = channel.open();
 
 
-        var note = new Kinetic.Image({
-            x: stage.getWidth() / 2 - 200 / 2,
-            y: stage.getHeight() / 2 - 137 / 2,
-            image: Image,
-            width: Image.width,
-            height: Image.height,
-            draggable: true
-        });
-
-
-        // add cursor styling
-
-        note.on('mouseover', function () {
-            document.body.style.cursor = 'pointer';
-            this.moveToTop();
-        });
-        note.on('mouseout', function () {
-            document.body.style.cursor = 'default';
-        });
-        // add the shape to the layer
-
-        layer.add(note);
-        //  stage.add(layer);
-        layer.draw();
-        // add the layer to the stage
-
-    };
-
-
-    var model = (function () {
-
-        return {
-            getEntries: function (file, onend) {
-                zip.createReader(new zip.BlobReader(file), function (zipReader) {
-                    zipReader.getEntries(onend);
-                }, onerror);
-            },
-            getEntryFile: function (entry, creationMethod, onend, onprogress) {
-                var writer, zipFileEntry;
-                var url = window.URL || window.webkitURL;
-
-
-                function getData() {
-                    entry.getData(writer, function (blob) {
-                        var imageObj = new Image();
-                        imageObj.onload = function () {
-                            displayfile(this, entry.filename);
-                        };
-
-                        imageObj.src = url.createObjectURL(blob);
-
-                    }, onprogress);
-                }
-
-                writer = new zip.BlobWriter();
-                getData();
-            }
-        };
-    })();
-
-
-    //    appengine channels api
-    channel = new goog.appengine.Channel(token);
-    socket = channel.open();
     socket.onopen = function () {
         outputtoconsole('Channel established.');
     };
@@ -126,8 +53,6 @@ $(document).ready(function () {
         outputtoconsole('Channel closed.');
     };
 
-    // appengine channels api
-
     pinboard_select = $('#pinboard_select');
     pinboard_select.change(function () {
         layer.clear();
@@ -137,15 +62,7 @@ $(document).ready(function () {
         downloadPinboard();
         layer.draw();
     });
-//    pinboard_select.(function () {
-//        layer.clear();
-//
-//        //change the pinboard context
-//        downloadPinboard();
-//        layer.draw();
-//
-//
-//    });
+
     dropzone = $('#canvasbag');
     downloadbtn = $('#downloadbtn');
     dropzone.on('dragover', function () {
@@ -168,6 +85,85 @@ $(document).ready(function () {
 
         return false;
     });
+
+    stage = new Kinetic.Stage({
+        container: 'canvasbag',
+        width: 800,
+        height: 538
+    });
+
+
+    layer = new Kinetic.Layer();
+    stage.add(layer);
+
+
+    displayfile = function (Image, filename, filetype) {
+
+
+        var note = new Kinetic.pinnedItem({
+            x: stage.getWidth() / 2 - 200 / 2,
+            y: stage.getHeight() / 2 - 137 / 2,
+            filename: filename,
+            //          item_id: item_id,
+            image: Image,
+            width: Image.width,
+            height: Image.height,
+            draggable: true
+        });
+
+        note.on('mouseover', function () {
+            document.body.style.cursor = 'pointer';
+            this.moveToTop();
+        });
+        note.on('mouseout', function () {
+            document.body.style.cursor = 'default';
+        });
+        layer.add(note);
+        //  stage.add(layer);
+        layer.draw();
+        // add the layer to the stage
+        return JSON.stringify(note);
+
+    };
+
+
+    var model = (function () {
+        var contents_as_array = [];
+        return {
+            getEntries: function (file, onend) {
+                zip.createReader(new zip.BlobReader(file), function (zipReader) {
+                    zipReader.getEntries(onend);
+                }, onerror);
+            },
+            getEntryFile: function (entry, creationMethod, onend, onprogress) {
+                var writer, zipFileEntry;
+                var url = window.URL || window.webkitURL;
+
+
+                function getData() {
+                    entry.getData(writer, function (blob) {
+                        var imageObj = new Image();
+                        imageObj.onload = function () {
+                            displayfile(this, entry.filename);
+                            
+                        };
+
+                        imageObj.src = url.createObjectURL(blob);
+
+                    }, onprogress);
+                }
+
+                writer = new zip.BlobWriter();
+                getData();
+            }
+        };
+    })();
+
+
+    //    appengine channels api
+
+
+    // appengine channels api
 
 
     var uploadToServer = function (file) {
@@ -221,7 +217,6 @@ $(document).ready(function () {
 
                 imageObj.onload = function () {
                     displayfile(this, filename);
-                    var pinItem = new Kinetic.pinnedimageClass();
 
                 };
 

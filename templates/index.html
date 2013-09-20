@@ -9,10 +9,11 @@
     <meta name="viewport" content="width=device-width"/>
 
     <link rel="stylesheet" media="all" href="../content/base.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-    <script src="../content/kineticjs.js"></script>
+    {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>#}
+    {#    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>#}
+    <script type="text/javascript" src="../content/kineticjs.js"></script>
     <script type="text/javascript" src="../content/zip.js"></script>
+    <script type="text/javascript" src="../content/jquery-2.0.3.js"></script>
     <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script type="text/javascript" src="https://talkgadget.google.com/talkgadget/channel.js"></script>
     <!--[if lt IE 9]>
@@ -52,9 +53,9 @@
                     <div id="canvasbag"></div>
                     <form name="select_pinboard" type="post" action="" method="post">
                         <select id="pinboard_select">
-                        {% for Pinboard  in pinboards %}
-                            <option  value="{{ Pinboard.name }}" >{{ Pinboard.name }}</option>
-                        {% endfor %}
+                            {% for Pinboard  in pinboards %}
+                                <option value="{{ Pinboard.name }}">{{ Pinboard.name }}</option>
+                            {% endfor %}
                         </select>
                     </form>
 
