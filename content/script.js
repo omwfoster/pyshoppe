@@ -83,19 +83,19 @@ $(document).ready(function () {
 
 
     socket.onopen = function () {
-        outputtoconsole('Channel established.');
+        //outputtoconsole('Channel established.');
     };
     socket.onmessage = function (message) {
         console.log(message);
         var data = jQuery.parseJSON(message.data);
     };
     socket.onerror = function (error) {
-        outputtoconsole('Channel error: ' + error.description);
+      //  outputtoconsole('Channel error: ' + error.description);
     };
     socket.onclose = function () {
-        outputtoconsole('Channel closed.');
+      //  outputtoconsole('Channel closed.');
     };
-
+//readsgfdghfhgf
     pinboard_select = $('#pinboard_select');
     pinboard_select.change(function () {
         layer.clear();
