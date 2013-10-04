@@ -1,4 +1,8 @@
 (function () {
+    /**
+     *
+     * @param config
+     */
 
     Kinetic.pinnedItem = function (config) {
         this._initItem(config);
@@ -16,6 +20,52 @@
 })();
 
 
+function Model(file, callback) {
+
+    /**
+     *
+     * @type {Array}
+     */
+
+    var contents_as_array = [];
+
+
+    this.getEntries = function (file, onend) {
+        zip.createReader(new zip.BlobReader(file), function (zipReader) {
+            zipReader.getEntries(onend);
+        }, onerror);
+    };
+
+
+    this.getData = function (entry, writer) {
+        var url = window.URL || window.webkitURL;
+        entry.getData(writer, function (blob) {
+            var imageObj = new Image();
+            imageObj.onload = function () {
+                callback(this, {x: 20, y: 20});
+            };
+            imageObj.src = url.createObjectURL(blob);
+
+        }, onprogress);
+    };
+
+    this.getEntryFile = function (entry, creationMethod, onend, onprogress) {
+        var writer, zipFileEntry;
+
+
+        writer = new zip.BlobWriter();
+        this.getData(entry, writer);
+
+    }
+
+
+}
+
+var outputtoconsole = function () {
+    console.log("test console output");
+}
+
+
 $(document).ready(function () {
 
 
@@ -28,7 +78,7 @@ $(document).ready(function () {
         displayfile,
         layer,
         zindex = 0,
-        channel = new goog.appengine.Channel(token),
+        channel = new goog.appengine.Channel(window.token),
         socket = channel.open();
 
 
@@ -38,13 +88,6 @@ $(document).ready(function () {
     socket.onmessage = function (message) {
         console.log(message);
         var data = jQuery.parseJSON(message.data);
-//            var row = $('<tr />');
-//            for(var i = 0; i < columns.length; i++) {
-//                $('<td />', {
-//                    'text': data.data[columns[i]],
-//                }).appendTo(row);
-//            }
-//            row.appendTo('#results');
     };
     socket.onerror = function (error) {
         outputtoconsole('Channel error: ' + error.description);
@@ -81,10 +124,20 @@ $(document).ready(function () {
         e.preventDefault();
         dropzone.removeClass('hover');
         var files = e.originalEvent.dataTransfer.files;
-        processFiles(files);
+        var pos = getMousePos(this, e)
+        processFiles(files, pos);
 
         return false;
     });
+
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getClientRects();
+
+        return {
+            x: evt.originalEvent.clientX - rect[0].left,
+            y: evt.originalEvent.clientY - rect[0].top
+        };
+    }
 
     stage = new Kinetic.Stage({
         container: 'canvasbag',
@@ -97,13 +150,13 @@ $(document).ready(function () {
     stage.add(layer);
 
 
-    displayfile = function (Image, filename, filetype) {
+    displayfile = function (Image, position) {
 
 
         var note = new Kinetic.pinnedItem({
-            x: stage.getWidth() / 2 - 200 / 2,
-            y: stage.getHeight() / 2 - 137 / 2,
-            filename: filename,
+            x: position.x,
+            y: position.y,
+            filename: Image.name,
             //          item_id: item_id,
             image: Image,
             width: Image.width,
@@ -122,101 +175,35 @@ $(document).ready(function () {
         //  stage.add(layer);
         layer.draw();
         // add the layer to the stage
-        return JSON.stringify(note);
+        //return JSON.stringify(note);
 
     };
 
-
-    var model = (function () {
-        var contents_as_array = [];
-        return {
-            getEntries: function (file, onend) {
-                zip.createReader(new zip.BlobReader(file), function (zipReader) {
-                    zipReader.getEntries(onend);
-                }, onerror);
-            },
-            getEntryFile: function (entry, creationMethod, onend, onprogress) {
-                var writer, zipFileEntry;
-                var url = window.URL || window.webkitURL;
-
-
-                function getData() {
-                    entry.getData(writer, function (blob) {
-                        var imageObj = new Image();
-                        imageObj.onload = function () {
-                            displayfile(this, entry.filename);
-                            
-                        };
-
-                        imageObj.src = url.createObjectURL(blob);
-
-                    }, onprogress);
-                }
-
-                writer = new zip.BlobWriter();
-                getData();
-            }
-        };
-    })();
-
-
-    //    appengine channels api
-
-
-    // appengine channels api
-
-
-    var uploadToServer = function (file) {
-        var filename = null;
-        var xhr_post = new XMLHttpRequest();
-        xhr_post.open("post", "/upload", true);
-        //     xhr_post.open("post", "/upload" + "?" + "token=" + token , true);
-        xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
-        xhr_post.setRequestHeader("X-File-Name", file.name);
-        xhr_post.setRequestHeader("X-File-Type", file.type);
-        xhr_post.setRequestHeader("X-pinboard", pinboard_select.val());
-        xhr_post.setRequestHeader("X-token", token);
-        xhr_post.send(file);
-
-        xhr_post.onreadystatechange = function (e) {
-            if (4 === this.readyState) {
-                downloadImage(file.name);
-            }
-        };
-
-        if (typeof FileReader === "undefined") {
-            //$('.extra').hide();
-            $('#err').html('Hey! Your browser does not support <strong>HTML5 File API</strong> <br/>Try using Chrome or Firefox to have it works!');
-        } else if (!Modernizr.draganddrop) {
-            $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
-        } else {
-            $('#err').text('');
-        }
-        return file.name;
-    };
     /* random change */
-    var downloadImage = function (arg_filename) {
+    var downloadImage = function (arg_UID, callback) {
         var myURL = window.URL || window.webkitURL;
         var filetype;
         var filename;
         var pinboard_url_id;
-        var token;
+//        var token;
         var xhr_get = new XMLHttpRequest();
-        xhr_get.open('GET', '/canvas' + "?" + "filename=" + arg_filename, true);
+        xhr_get.open('GET', '/canvas' + "?" + "UID=" + arg_UID, true);
         xhr_get.responseType = 'blob';
 
 
         xhr_get.onload = function (e) {
             if (this.status == 200) {
                 pinboard_url_id = xhr_get.getResponseHeader("X-pinboard");
-                token = xhr_get.getResponseHeader("X-token");
-                filetype = xhr_get.getResponseHeader("X-File-Type");
+//                token = xhr_get.getResponseHeader("X-token");
+//                filetype = xhr_get.getResponseHeader("X-File-Type");
                 blob = new Blob([this.response], {type: filetype});
-                filename = xhr_get.getResponseHeader("X-File-Name");
+//                filename = xhr_get.getResponseHeader("X-File-Name");
+                var position = {x: parseInt(xhr_get.getResponseHeader("X-xpos")), y: parseInt(xhr_get.getResponseHeader("X-ypos"))};
                 var imageObj = new Image();
 
                 imageObj.onload = function () {
-                    displayfile(this, filename);
+
+                    callback(this, position);
 
                 };
 
@@ -227,11 +214,13 @@ $(document).ready(function () {
 
         xhr_get.send();
 
-
     };
 
-    function unzip(zip) {
-        //      layer.removeChildren();
+    function unzip(zip, CALLBACK) {
+        var model = new Model(zip, CALLBACK);
+        model.getEntries(function (entries) {
+        });
+
         model.getEntries(zip, function (entries) {
             entries.forEach(function (entry) {
                 model.getEntryFile(entry, "Blob");
@@ -240,46 +229,47 @@ $(document).ready(function () {
 
     }
 
-    var downloadPinboard = function (arg_filename) {
-        var myURL = window.URL || window.webkitURL;
-        var filetype;
-        var filename;
-        var pinboard_url_id;
-        var token;
-        var xhr_get = new XMLHttpRequest();
-        xhr_get.open('GET', '/pinboard' + "?" + "pinboard_url_id=" + pinboard_select.val(), true);
+    var downloadPinboard = function () {
+        var myURL = window.URL || window.webkitURL,
+            filetype,
+            filename,
+            pinboard_url_id,
+            xhr_get = new XMLHttpRequest();
+        xhr_get.open('GET', encodeURI('/pinboard' + "?" + "pinboard_url_id=" + pinboard_select.val() + '&' + 'token=' + window.token), true);
         xhr_get.responseType = 'blob';
-        layer.clear()
+        layer.clear();
 
 
         xhr_get.onload = function (e) {
-            if (this.status == 200) {
+            if (this.status === 200) {
                 filetype = xhr_get.getResponseHeader("X-File-Type");
                 blob = new Blob([this.response], {type: filetype});
                 filename = xhr_get.getResponseHeader("X-File-Name");
-                unzip(blob);
+                unzip(blob, displayfile);
             }
 
         };
         xhr_get.send();
+
+
+
+
     };
-    var processFiles = function (files) {
+    var processFiles = function (files, pos) {
+//        pos = {x: e.clientX, y: e.clientY};
         if (files && typeof FileReader !== "undefined") {
             for (var i = 0; i < files.length; i++) {
-                readFile(files[i]);
+                readFile(files[i], pos, displayfile);
             }
         } else {
 
         }
     };
 
-    var outputtoconsole = function () {
+    var readFile = function (file, pos, callback) {
 
 
-        console.log("test console output");
-    };
-
-    var readFile = function (file) {
+        //   var local_callback = callback
         if (!(/image/i).test(file.type)) {
             //some message for wrong file format
             $('#err').text('*Selected file format not supported!');
@@ -291,7 +281,9 @@ $(document).ready(function () {
                     .load(function () {
 //                        var newimageurl = getCanvasImage(this);
 //                        createPreview(file, newimageurl);
-                        var local_filename = uploadToServer(file);
+//                        callback((uploadToServer(file, pos)), pos);
+                        uploadToServer(file, pos);
+
 
                     })
                     .attr('src', e.target.result);
@@ -303,7 +295,46 @@ $(document).ready(function () {
         }
     };
 
-    //Bytes to KiloBytes conversion
+
+    var uploadToServer = function (file, pos) {
+        var UUIDv4 = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+
+        //      var imageobj = new image(file)
+        var xhr_post = new XMLHttpRequest();
+        xhr_post.open("post", "/upload", true);
+        xhr_post.setRequestHeader("Content-Type", "multipart/form-data");
+        xhr_post.setRequestHeader("X-File-Name", file.name);
+        xhr_post.setRequestHeader("X-File-Type", file.type);
+        xhr_post.setRequestHeader("X-pinboard", pinboard_select.val());
+        xhr_post.setRequestHeader("X-token", token);
+        xhr_post.setRequestHeader("X-xpos", pos.x);
+        xhr_post.setRequestHeader("X-ypos", pos.y);
+        xhr_post.setRequestHeader("X-UID", UUIDv4);
+
+
+        xhr_post.send(file);
+
+        xhr_post.onreadystatechange = function (e) {
+            if (4 === this.readyState) {
+                return downloadImage(UUIDv4, displayfile);
+            }
+        };
+
+        if (typeof FileReader === "undefined") {
+            //$('.extra').hide();
+            $('#err').html('Hey! Your browser does not support <strong>HTML5 File API</strong> <br/>Try using Chrome or Firefox to have it works!');
+        } else if (!Modernizr.draganddrop) {
+            $('#err').html('Ops! Look like your browser does not support <strong>Drag and Drop API</strong>! <br/>Still, you are able to use \'<em>Select Files</em>\' button to upload file =)');
+        } else {
+            $('#err').text('');
+        }
+
+    };
+
+//Bytes to KiloBytes conversion
     function convertToKBytes(number) {
         return (number / 1024).toFixed(1);
     }
@@ -321,7 +352,7 @@ $(document).ready(function () {
     }
 
 
-    //convert datauri to blob
+//convert datauri to blob
     function dataURItoBlob(dataURI) {
         var BlobBuilder = window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder;
 
@@ -356,8 +387,8 @@ $(document).ready(function () {
         return bb.getBlob(mimeString);
     }
 
-    //Black & White image effect
-    //by Marco Lisci - http://badsharkco.com/
+//Black & White image effect
+//by Marco Lisci - http://badsharkco.com/
     var grayscale = function (context) {
         var imgd = context.getImageData(0, 0, imgWidth, imgHeight);
         var pix = imgd.data;
@@ -370,8 +401,8 @@ $(document).ready(function () {
         context.putImageData(imgd, 0, 0);
     };
 
-    //canvas-blur effect
-    //by Matt Riggott - http://www.flother.com/
+//canvas-blur effect
+//by Matt Riggott - http://www.flother.com/
     var blurry = function (context, image, diff) {
         var i, x, y,
             blureffect = 4;
@@ -429,7 +460,7 @@ $(document).ready(function () {
 
 
             item = {}
-            item ["noteID"] = noteID;
+            item ["noteUID"] = noteID;
             item ["filename"] = itemFilename;
             item ["pinneditem"] = pinnedItem;
             item ["pinboardID"] = pinboardID;
@@ -445,6 +476,7 @@ $(document).ready(function () {
     }
 
 
-});
+})
+;
 
 

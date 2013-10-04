@@ -2,9 +2,7 @@
 <html lang="en-US">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>virtual pinboard</title>
     <meta name="description" content="virtual pinboard"/>
-    <meta name="keywords" content="demonstration,demo,html5,file upload,canvas"/>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
 
@@ -23,9 +21,9 @@
     <script src="../content/script.js"></script>
     <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script>
-        var token = "{{ token }}";
-        var pinboard_url_id = "{{ pinboard_url_id }}"
-        var me = "{{ me }}"
+        window.token = "{{ token }}";
+        var pinboard_url_id = "{{ pinboard_url_id }}";
+        var me = "{{ me }}";
         var stage;
     </script>
 </head>
