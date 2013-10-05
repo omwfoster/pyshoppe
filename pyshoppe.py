@@ -24,11 +24,20 @@ class BaseRequestHandler(webapp2.RequestHandler):
         global pinboard
         #@global_blobkey
         pinboards = Pinboard.all()
-
         user = users.get_current_user()
         pinboard_url_id = self.request.get('pinboard_url_id')
         pinboard = None
         if user:
+            token = self.get_Token()
+
+            if not token:
+                token = channel.create_channel(os.urandom(16).encode('hex'))
+                user_session = User_Session(token=token,
+                                            user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
+                                            user=self.locateUser()
+                )
+                user_session.put()
+
             if pinboard_url_id:
                 pinboard = self.getPinboardfromurlkey(pinboard_url_id)
                 if not pinboard.owner:
@@ -43,7 +52,7 @@ class BaseRequestHandler(webapp2.RequestHandler):
             pinboard_url_id = pinboard.name
 
             if pinboard:
-                token = channel.create_channel(os.urandom(16).encode('hex'))
+
                 # token = channel.create_channel(user.user_id() + pinboard)
                 pinboards = Pinboard.all()
                 template_values = {'token': token,
@@ -51,12 +60,6 @@ class BaseRequestHandler(webapp2.RequestHandler):
                                    'pinboard_url_id': pinboard_url_id,
                                    'pinboards': pinboards
                 }
-
-                user_session = User_Session(token=token,
-                                            user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
-                                            user=self.locateUser()
-                )
-                user_session.put()
 
                 path = os.path.join(os.path.dirname(__file__), 'templates', filename)
                 self.response.out.write(template.render(path, template_values))
@@ -87,7 +90,7 @@ class BaseRequestHandler(webapp2.RequestHandler):
     def locateUserPinboard(self):
         q = Pinboard.gql("WHERE owner = :1 ",
                          User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()).get()
-        return
+        return q
 
     def locateUser(self):
         q = User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()
@@ -105,6 +108,10 @@ class BaseRequestHandler(webapp2.RequestHandler):
 
     def getSessions_from_pinboard(self, pinboard):
         q = User_Session.gql("WHERE pinboard = :1", pinboard)
+        return q
+
+    def get_Token(self):
+        q = User_Session.gql("WHERE user = :1", self.locateUser())
         return q
 
 
