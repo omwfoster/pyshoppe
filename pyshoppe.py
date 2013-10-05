@@ -55,8 +55,8 @@ class BaseRequestHandler(webapp2.RequestHandler):
 
                 # token = channel.create_channel(user.user_id() + pinboard)
                 pinboards = Pinboard.all()
-                template_values = {'token': token,
-                                   'me': user.user_id(),
+                template_values = {'token': token.token,
+                                   'me': user.user_id,
                                    'pinboard_url_id': pinboard_url_id,
                                    'pinboards': pinboards
                 }
@@ -107,11 +107,11 @@ class BaseRequestHandler(webapp2.RequestHandler):
         return Session1
 
     def getSessions_from_pinboard(self, pinboard):
-        q = User_Session.gql("WHERE pinboard = :1", pinboard)
+        q = (User_Session.gql("WHERE pinboard = :1", pinboard)).get()
         return q
 
     def get_Token(self):
-        q = User_Session.gql("WHERE user = :1", self.locateUser())
+        q = (User_Session.gql("WHERE user = :1", self.locateUser())).get()
         return q
 
 
