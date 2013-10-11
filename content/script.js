@@ -11,6 +11,8 @@
         _initItem: function (config) {
             this.createAttrs();
             this.filename = config.filename;
+            this.UID = config.UID;
+            this._id = config.UID;
             //         this.item_id = config.item_id;
             Kinetic.Image.call(this, config);
         }
@@ -42,7 +44,7 @@ function Model(file, callback) {
         entry.getData(writer, function (blob) {
             var imageObj = new Image();
             imageObj.onload = function () {
-                callback(this, {x: 20, y: 20});
+                callback(this, {x: 20, y: 20}, entry.filename);
             };
             imageObj.src = url.createObjectURL(blob);
 
@@ -68,7 +70,15 @@ var outputtoconsole = function () {
 
 $(document).ready(function () {
 
+    stage = new Kinetic.Stage({
+        container: 'canvasbag',
+        width: 800,
+        height: 538
+    });
 
+
+    layer = new Kinetic.Layer();
+    stage.add(layer);
 
 
 //     Kinetic js  stage initialisation
@@ -86,14 +96,36 @@ $(document).ready(function () {
         alert("open");
     };
     socket.onmessage = function (message) {
-        alert("message");
         var data = jQuery.parseJSON(message.data);
+        var contents = layer.getChildren();
+        data.map(function (item) {
+
+            for (var i = 0; i < contents.length; ++i) {
+                if (contents[i].hasOwnProperty('UID')) {
+                    if (contents[i].UID == item.UID) {
+//
+
+                        (function (node, posx, posy) {
+                            var tween = new Kinetic.Tween({
+                                node: node,
+                                x: posx,
+                                y: posy,
+                                rotation: 2,
+                                duration: 1
+                            });
+                            tween.play();
+                        })(contents[i], item.item_xpos, item.item_ypos)
+                    }
+                }
+            }
+        })
+        layer.draw()
     };
     socket.onerror = function (error) {
-      alert("balls");
+        alert("balls");
     };
     socket.onclose = function () {
-     alert("bye");
+        alert("bye");
     };
 //readsgfdghfhgf
     pinboard_select = $('#pinboard_select');
@@ -139,23 +171,13 @@ $(document).ready(function () {
         };
     }
 
-    stage = new Kinetic.Stage({
-        container: 'canvasbag',
-        width: 800,
-        height: 538
-    });
-
-
-    layer = new Kinetic.Layer();
-    stage.add(layer);
-
-
-    displayfile = function (Image, position) {
+    displayfile = function (Image, position, UID) {
 
 
         var note = new Kinetic.pinnedItem({
             x: position.x,
             y: position.y,
+            UID: UID,
             filename: Image.name,
             //          item_id: item_id,
             image: Image,
@@ -171,11 +193,16 @@ $(document).ready(function () {
         note.on('mouseout', function () {
             document.body.style.cursor = 'default';
         });
+
+        note.on('dragend', function () {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "/relocate");
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.send(JSON.stringify({"xpos": this.getPosition().x, "ypos": this.getPosition().y, "UID": UID}));
+        });
         layer.add(note);
         //  stage.add(layer);
         layer.draw();
-        // add the layer to the stage
-        //return JSON.stringify(note);
 
     };
 
@@ -185,7 +212,6 @@ $(document).ready(function () {
         var filetype;
         var filename;
         var pinboard_url_id;
-//        var token;
         var xhr_get = new XMLHttpRequest();
         xhr_get.open('GET', '/canvas' + "?" + "UID=" + arg_UID, true);
         xhr_get.responseType = 'blob';
@@ -194,21 +220,14 @@ $(document).ready(function () {
         xhr_get.onload = function (e) {
             if (this.status == 200) {
                 pinboard_url_id = xhr_get.getResponseHeader("X-pinboard");
-//                token = xhr_get.getResponseHeader("X-token");
-//                filetype = xhr_get.getResponseHeader("X-File-Type");
                 blob = new Blob([this.response], {type: filetype});
-//                filename = xhr_get.getResponseHeader("X-File-Name");
                 var position = {x: parseInt(xhr_get.getResponseHeader("X-xpos")), y: parseInt(xhr_get.getResponseHeader("X-ypos"))};
                 var imageObj = new Image();
 
                 imageObj.onload = function () {
-
-                    callback(this, position);
-
+                    callback(this, position, arg_UID);
                 };
-
                 imageObj.src = myURL.createObjectURL(blob);
-
             }
         };
 
@@ -252,8 +271,6 @@ $(document).ready(function () {
         xhr_get.send();
 
 
-
-
     };
     var processFiles = function (files, pos) {
 //        pos = {x: e.clientX, y: e.clientY};
@@ -266,7 +283,7 @@ $(document).ready(function () {
         }
     };
 
-    var readFile = function (file, pos, callback) {
+    var readFile = function (file, pos) {
 
 
         //   var local_callback = callback
@@ -279,12 +296,7 @@ $(document).ready(function () {
             reader.onload = function (e) {
                 var image = $('<img/>')
                     .load(function () {
-//                        var newimageurl = getCanvasImage(this);
-//                        createPreview(file, newimageurl);
-//                        callback((uploadToServer(file, pos)), pos);
                         uploadToServer(file, pos);
-
-
                     })
                     .attr('src', e.target.result);
             };
@@ -309,7 +321,7 @@ $(document).ready(function () {
         xhr_post.setRequestHeader("X-File-Name", file.name);
         xhr_post.setRequestHeader("X-File-Type", file.type);
         xhr_post.setRequestHeader("X-pinboard", pinboard_select.val());
-        xhr_post.setRequestHeader("X-token", token);
+//        xhr_post.setRequestHeader("X-token", token);
         xhr_post.setRequestHeader("X-xpos", pos.x);
         xhr_post.setRequestHeader("X-ypos", pos.y);
         xhr_post.setRequestHeader("X-UID", UUIDv4);
