@@ -110,8 +110,11 @@ $(document).ready(function () {
                                 node: node,
                                 x: posx,
                                 y: posy,
-                                rotation: 2,
-                                duration: 1
+                                rotationDeg: function (min, max) {
+                                    return ~~(Math.random() * (max - min + 1)) + min
+                                }(-30,30),
+                                duration: 1,
+                                easing: Kinetic.Easings.ElasticEaseOut
                             });
                             tween.play();
                         })(contents[i], item.item_xpos, item.item_ypos)

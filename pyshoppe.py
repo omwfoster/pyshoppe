@@ -8,6 +8,7 @@ from google.appengine.api import files
 from google.appengine.api import images
 from google.appengine.api import channel
 from google.appengine.api import users
+import json
 from StringIO import StringIO
 from zipfile import ZipFile, ZIP_DEFLATED
 from imagedb import Pinboard
@@ -17,13 +18,9 @@ from imagedb import User_Session
 
 
 class BaseRequestHandler(webapp2.RequestHandler):
-    pinboard = None
-    token = None
-
     def render_template2(self, filename, template_args=None):
-        global pinboard
+
         #@global_blobkey
-        pinboards = Pinboard.all()
         user = users.get_current_user()
         pinboard_url_id = self.request.get('pinboard_url_id')
         pinboard = None
@@ -31,12 +28,8 @@ class BaseRequestHandler(webapp2.RequestHandler):
             token = self.get_Token()
 
             if not token:
-                token = channel.create_channel(os.urandom(16).encode('hex'))
-                user_session = User_Session(token=token,
-                                            user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
-                                            user=self.locateUser()
-                )
-                user_session.put()
+                # user_chanel_id = os.urandom(16).encode('hex')
+                token = channel.create_channel(user.user_id())
 
             if pinboard_url_id:
                 pinboard = self.getPinboardfromurlkey(pinboard_url_id)
@@ -49,16 +42,21 @@ class BaseRequestHandler(webapp2.RequestHandler):
                 if not pinboard:
                     pinboard = self.createUserPinboard()
 
-            pinboard_url_id = pinboard.name
+                pinboard_url_id = pinboard.name
 
             if pinboard:
 
+                user_session = User_Session(token=token,
+                                            user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
+                                            user=self.locateUser()
+                )
+                user_session.put()
+
                 # token = channel.create_channel(user.user_id() + pinboard)
-                pinboards = Pinboard.all()
-                template_values = {'token': token.token,
+                template_values = {'token': token,
                                    'me': user.user_id,
                                    'pinboard_url_id': pinboard_url_id,
-                                   'pinboards': pinboards
+                                   'pinboards': Pinboard.all()
                 }
 
                 path = os.path.join(os.path.dirname(__file__), 'templates', filename)
@@ -112,7 +110,10 @@ class BaseRequestHandler(webapp2.RequestHandler):
 
     def get_Token(self):
         q = (User_Session.gql("WHERE user = :1", self.locateUser())).get()
-        return q
+        if isinstance(q, User):
+            return q.token
+        else:
+            return
 
 
 class startpage(BaseRequestHandler):
@@ -134,7 +135,7 @@ class upload(BaseRequestHandler):
         """
 
         pinboard_url_id = self.request.headers['X-pinboard']
-        token = self.request.headers['X-token']
+        # token = self.request.headers['X-token']
         mime_type = self.request.headers['X-File-Type']
         file_name = self.request.headers['X-File-Name']
         x_pos = self.request.headers['X-xpos']
@@ -157,7 +158,7 @@ class upload(BaseRequestHandler):
                            item_ypos=int(y_pos))
 
         pin1.put()
-        channel.send_message(token, 'hOORAH')
+
 
     def sendupdateMsg(self):
         """
@@ -229,7 +230,7 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
             file_type = p.item_filetype
             file_name = p.item_filename
             addResource2(file, makeThumb(file_data, (110, 105), p.item_filename.encode('utf-8')),
-                         p.item_filename.encode('utf-8'))
+                         p.item_UID.encode('utf-8'))
         file.close()
         f.seek(0)
 
@@ -239,7 +240,21 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
             self.response.out.write(buf)
 
         json_output = pinboard.get_json()
-        channel.send_message(token, json_output)
+        channel.send_message(users.get_current_user().user_id(), json_output)
+        # channel.send_message(users.get_current_user().user_id(), 'hOORAH')
+
+
+class xhr_relocate(webapp2.RequestHandler):
+    def post(self):
+        jsondata = json.loads(self.request.body)
+
+        q = Pinned_Item.gql("WHERE item_UID = :1 ", jsondata['UID'])
+        moved_item = q.get()
+        moved_item.item_xpos = jsondata['xpos']
+        moved_item.item_ypos = jsondata['ypos']
+        moved_item.put()
+
+        return
 
 
 def makeThumb(imgblob, size, filename):
@@ -317,6 +332,9 @@ def cropit(img, size):
 
 
 app = webapp2.WSGIApplication(
-    [('/', startpage), ('/upload', upload), ('/canvas', getphotoHandler), ('/pinboard', xhr_pinboardHandler)],
+    [('/', startpage), ('/upload', upload),
+     ('/canvas', getphotoHandler),
+     ('/pinboard', xhr_pinboardHandler),
+     ('/relocate', xhr_relocate)],
     debug=True)
 
