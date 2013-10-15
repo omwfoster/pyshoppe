@@ -58,7 +58,7 @@ class BaseRequestHandler(webapp2.RequestHandler):
                     user_session.put()
                     # token = channel.create_channel(user.user_id() + pinboard)
                     template_values = {'token': token,
-                                       'me': users.get_current_user().user_id(),
+                                       'me': str(users.get_current_user().user_id()),
                                        'pinboard_url_id': pinboard_url_id,
                                        'pinboards': Pinboard.all()
                     }
