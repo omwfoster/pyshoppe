@@ -69,53 +69,53 @@ class BaseRequestHandler(webapp2.RequestHandler):
             else:
                 self.redirect(users.create_login_url(self.request.uri))
 
-        def getMask(self):
+    def getMask(self):
+        return
+
+    def getPinboardfromurlkey(self, urlPinboardkey):
+        q = Pinboard.gql("WHERE name = :1 ", urlPinboardkey)
+        pinboard = q.get()
+        return pinboard
+
+    def getUserobjectfromID(self):
+        q = User.gql("WHERE name = :1 ", users.get_current_user().user_id())
+        u = q.get()
+        return u
+
+    def createUserentry(self):
+        user1 = User(user_id=users.get_current_user().user_id(), name="oliver")
+        user1.put()
+        return user1
+
+    def locateUserPinboard(self):
+        q = Pinboard.gql("WHERE owner = :1 ",
+                         User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()).get()
+        return q
+
+    def locateUser(self):
+        q = User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()
+        return q
+
+    def createUserPinboard(self):
+        Pin1 = Pinboard(name=(os.urandom(16).encode('hex')), owner=self.createUserentry())
+        Pin1.put()
+        return Pin1
+
+    def createSession(self, token, user, pinboard):
+        Session1 = User_Session(user=user, token=token, pinboard=pinboard)
+        Session1.put()
+        return Session1
+
+    def getSessions_from_pinboard(self, pinboard):
+        q = (User_Session.gql("WHERE pinboard = :1", pinboard)).get()
+        return q
+
+    def get_Token(self):
+        q = (User_Session.gql("WHERE user = :1", self.locateUser())).get()
+        if isinstance(q, User):
+            return q.token
+        else:
             return
-
-        def getPinboardfromurlkey(self, urlPinboardkey):
-            q = Pinboard.gql("WHERE name = :1 ", urlPinboardkey)
-            pinboard = q.get()
-            return pinboard
-
-        def getUserobjectfromID(self):
-            q = User.gql("WHERE name = :1 ", users.get_current_user().user_id())
-            u = q.get()
-            return u
-
-        def createUserentry(self):
-            user1 = User(user_id=users.get_current_user().user_id(), name="oliver")
-            user1.put()
-            return user1
-
-        def locateUserPinboard(self):
-            q = Pinboard.gql("WHERE owner = :1 ",
-                             User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()).get()
-            return q
-
-        def locateUser(self):
-            q = User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()
-            return q
-
-        def createUserPinboard(self):
-            Pin1 = Pinboard(name=(os.urandom(16).encode('hex')), owner=self.createUserentry())
-            Pin1.put()
-            return Pin1
-
-        def createSession(self, token, user, pinboard):
-            Session1 = User_Session(user=user, token=token, pinboard=pinboard)
-            Session1.put()
-            return Session1
-
-        def getSessions_from_pinboard(self, pinboard):
-            q = (User_Session.gql("WHERE pinboard = :1", pinboard)).get()
-            return q
-
-        def get_Token(self):
-            q = (User_Session.gql("WHERE user = :1", self.locateUser())).get()
-            if isinstance(q, User):
-                return q.token
-            else:
-                return
 
 
 class startpage(BaseRequestHandler):
