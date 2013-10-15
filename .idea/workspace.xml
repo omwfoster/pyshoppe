@@ -6,12 +6,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="251def8e-103d-4e3a-accf-9e1afd56c72f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pyshoppe.py" afterPath="$PROJECT_DIR$/pyshoppe.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="pyshoppe.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381854323695" ignored="false" />
+    <file path="/Dummy.txt" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381863229600" ignored="false" />
     <file path="/script.js" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381517744961" ignored="false" />
     <file path="/index.html" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1380825892229" ignored="false" />
     <file path="/base.css" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1364000925411" ignored="false" />
@@ -56,7 +55,7 @@
       <file leaf-file-name="pyshoppe.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pyshoppe.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="246" column="38" selection-start="8398" selection-end="8398" vertical-scroll-proportion="0.65606934">
+            <state line="246" column="38" selection-start="8398" selection-end="8398" vertical-scroll-proportion="0.6878788">
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -164,10 +163,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="784" />
+    <option name="x" value="158" />
+    <option name="y" value="124" />
+    <option name="width" value="1137" />
+    <option name="height" value="768" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -269,19 +268,19 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="68" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="360" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="57" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="291" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="245" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="199" />
     <property name="recentsLimit" value="5" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.idea" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="87" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="541" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="762" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="247" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="244" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="72" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="435" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="612" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="200" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="198" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
@@ -645,7 +644,11 @@
       <created>1381854335932</created>
       <updated>1381854335932</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Sorting out sessions. Reloading page shouldn't create new session entry&#10;int the datastore. ONE USER = ONE CHANNEL">
+      <created>1381863232620</created>
+      <updated>1381863232620</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -669,7 +672,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <frame x="158" y="124" width="1137" height="768" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3301282" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -678,12 +681,12 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.52302027" sideWeight="0.5060606" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.6805112" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13636364" sideWeight="0.5769231" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1530303" sideWeight="0.67628205" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18790698" sideWeight="0.6677632" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.035256412" sideWeight="0.9987342" order="10" side_tool="false" content_ui="tabs" x="-92" y="301" width="1320" height="177" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3098485" sideWeight="0.6805112" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3258786" sideWeight="0.505303" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35416666" sideWeight="0.40378788" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32371795" sideWeight="0.4878788" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33223686" sideWeight="0.4878788" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -885,7 +888,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pyshoppe.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="246" column="38" selection-start="8398" selection-end="8398" vertical-scroll-proportion="0.65606934">
+        <state line="246" column="38" selection-start="8398" selection-end="8398" vertical-scroll-proportion="0.6878788">
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
