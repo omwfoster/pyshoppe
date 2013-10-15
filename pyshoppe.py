@@ -34,7 +34,7 @@ class BaseRequestHandler(webapp2.RequestHandler):
                 try:
                     token = channel.create_channel(user.user_id())
                 except channel.InvalidChannelTokenDurationError:
-                    logging.CRITICAL('message not sent: InvalidChannelTokenDuration')
+                    logging.critical('message not sent: InvalidChannelTokenDuration')
 
                 if pinboard_url_id:
                     pinboard = self.getPinboardfromurlkey(pinboard_url_id)
@@ -244,11 +244,11 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
         try:
             json_output = pinboard.get_json()
             channel.send_message(users.get_current_user().user_id(), json_output)
-            logging.INFO('message sent')
+            logging.warning('sent')
             # channel.send_message(users.get_current_user().user_id(), 'hOORAH')
 
         except channel.InvalidChannelTokenDurationError:
-            logging.CRITICAL('message not sent: InvalidChannelTokenDuration')
+            logging.critical('message not sent: InvalidChannelTokenDuration')
 
 
 class xhr_relocate(webapp2.RequestHandler):

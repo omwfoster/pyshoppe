@@ -93,7 +93,7 @@ $(document).ready(function () {
 
 
     socket.onopen = function () {
-        alert("open");
+//        alert("open");
     };
     socket.onmessage = function (message) {
         var data = jQuery.parseJSON(message.data);
