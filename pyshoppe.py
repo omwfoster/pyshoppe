@@ -244,7 +244,7 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
         try:
             json_output = pinboard.get_json()
             channel.send_message(users.get_current_user().user_id(), json_output)
-            logging.warning('sent')
+            logging.warning('sent:' + str(users.get_current_user().user_id()))
             # channel.send_message(users.get_current_user().user_id(), 'hOORAH')
 
         except channel.InvalidChannelTokenDurationError:
