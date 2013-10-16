@@ -34,7 +34,6 @@ class Pinboard(db.Model):
         return json.dumps(json_pinboard)
 
 
-
 class User_Session(db.Model):
     user = db.ReferenceProperty(User)
     user_pinboard = db.ReferenceProperty(Pinboard)

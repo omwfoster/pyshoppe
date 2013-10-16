@@ -161,7 +161,6 @@ class upload(BaseRequestHandler):
 
         pin1.put()
 
-
     def sendupdateMsg(self):
         """
             send update message using channels api
