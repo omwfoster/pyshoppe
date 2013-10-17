@@ -38,6 +38,7 @@ class User_Session(db.Model):
     user = db.ReferenceProperty(User)
     user_pinboard = db.ReferenceProperty(Pinboard)
     token = db.StringProperty()
+    login_user = db.StringProperty()
 
 
 class Pinned_Item(db.Model):

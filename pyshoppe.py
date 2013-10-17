@@ -53,7 +53,8 @@ class BaseRequestHandler(webapp2.RequestHandler):
 
                     user_session = User_Session(token=token,
                                                 user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
-                                                user=self.locateUser()
+                                                user=self.locateUser(),
+                                                login_user=str(users.get_current_user().user_id())
                     )
                     user_session.put()
                     # token = channel.create_channel(user.user_id() + pinboard)
@@ -337,10 +338,23 @@ def cropit(img, size):
     return region
 
 
+def get_Session(self):
+    q = (User_Session.gql("WHERE login_user = :1", users.get_current_user().user_id())).get()
+    return q
+
+
+class app_signout(webapp2.RequestHandler):
+    def get(self):
+        get_Session().delete()
+
+        self.redirect(users.create_logout_url(self.request.uri))
+
+
 app = webapp2.WSGIApplication(
     [('/', startpage), ('/upload', upload),
      ('/canvas', getphotoHandler),
      ('/pinboard', xhr_pinboardHandler),
-     ('/relocate', xhr_relocate)],
+     ('/relocate', xhr_relocate),
+     ('/signout', app_signout)],
     debug=True)
 
