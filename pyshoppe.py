@@ -66,8 +66,8 @@ class BaseRequestHandler(webapp2.RequestHandler):
                     self.response.out.write(template.render(path, template_values))
                 else:
                     self.response.out.write('balls')
-            else:
-                self.redirect(users.create_login_url(self.request.uri))
+        else:
+            self.redirect(users.create_login_url(self.request.uri))
 
     def getMask(self):
         return
