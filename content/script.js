@@ -125,7 +125,7 @@ $(document).ready(function () {
         layer.draw()
     };
     socket.onerror = function (error) {
-        alert("balls");
+        alert();
     };
     socket.onclose = function () {
         alert("bye");
