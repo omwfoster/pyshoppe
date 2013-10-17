@@ -6,22 +6,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="251def8e-103d-4e3a-accf-9e1afd56c72f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pyshoppe.py" afterPath="$PROJECT_DIR$/pyshoppe.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/script.js" afterPath="$PROJECT_DIR$/content/script.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.yaml" afterPath="$PROJECT_DIR$/app.yaml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="pyshoppe.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381863842304" ignored="false" />
+    <file path="/Dummy.txt" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381969536906" ignored="false" />
     <file path="/script.js" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381517744961" ignored="false" />
     <file path="/index.html" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1380825892229" ignored="false" />
     <file path="/base.css" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1364000925411" ignored="false" />
-    <file path="/pyshoppe.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381864368141" ignored="false" />
+    <file path="/pyshoppe.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381864864831" ignored="false" />
     <file path="/imagedb.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1380844177550" ignored="false" />
     <file path="/fragment.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381503714738" ignored="false" />
     <file path="/wsgi.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1366573344129" ignored="false" />
     <file path="$APPLICATION_HOME_DIR$/lib/pycharm.jar!/resources/relaxng.rng" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1367093643452" ignored="false" />
-    <file path="/app.yaml" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1376754165654" ignored="false" />
+    <file path="/app.yaml" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381972308015" ignored="false" />
     <file path="/webapp2.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1374086714158" ignored="false" />
     <file path="/fragment.js" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381190965507" ignored="false" />
     <file path="/style.css" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1375989355779" ignored="false" />
@@ -57,7 +56,7 @@
       <file leaf-file-name="pyshoppe.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pyshoppe.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="32" selection-start="568" selection-end="568" vertical-scroll-proportion="0.0">
+            <state line="49" column="6" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -65,53 +64,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="app.yaml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app.yaml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="8" selection-start="321" selection-end="321" vertical-scroll-proportion="0.62541807">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="imagedb.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/imagedb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="12" selection-start="1147" selection-end="1155" vertical-scroll-proportion="0.0">
+            <state line="35" column="0" selection-start="903" selection-end="903" vertical-scroll-proportion="0.0">
               <folding />
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="webapp2.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Program Files (x86)/Google/google_appengine/lib/webapp2-2.3/webapp2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1253" column="0" selection-start="43826" selection-end="43826" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="jsapi" pinned="false" current="false" current-in-tab="false">
-        <entry file="http://127.0.0.1:8080/_ah/channel/jsapi">
-          <provider selected="true" editor-type-id="httpFileEditor">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="script.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/content/script.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="96" column="6" selection-start="2123" selection-end="2123" vertical-scroll-proportion="0.98504674">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="13" selection-start="1443" selection-end="1445" vertical-scroll-proportion="-5.230769">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="kineticjs.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="http://127.0.0.1:8080/content/kineticjs.js">
-          <provider selected="true" editor-type-id="httpFileEditor">
-            <state />
           </provider>
         </entry>
       </file>
@@ -145,22 +112,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="C:/Program Files (x86)/Google/google_appengine/google/appengine/api/images/__init__.py" />
         <option value="C:/Python27/Lib/StringIO.py" />
         <option value="127.0.0.1:8080/content/zip.js" />
         <option value="127.0.0.1:8080/content/base.css" />
         <option value="$PROJECT_DIR$/content/base.css" />
         <option value="C:/Program Files (x86)/Google/google_appengine/google/appengine/ext/db/__init__.py" />
-        <option value="$PROJECT_DIR$/thumbnail.py" />
         <option value="$PROJECT_DIR$/content/kineticjs.js" />
         <option value="127.0.0.1:8080/content/jquery-2.0.3.js" />
-        <option value="$PROJECT_DIR$/imagedb.py" />
         <option value="127.0.0.1:8080/" />
         <option value="127.0.0.1:8080/content/kineticjs.js" />
         <option value="127.0.0.1:8080/content/script.js" />
         <option value="$PROJECT_DIR$/templates/index.html" />
-        <option value="$PROJECT_DIR$/pyshoppe.py" />
         <option value="$PROJECT_DIR$/content/script.js" />
+        <option value="$PROJECT_DIR$/imagedb.py" />
+        <option value="$PROJECT_DIR$/thumbnail.py" />
+        <option value="$PROJECT_DIR$/pyshoppe.py" />
+        <option value="$PROJECT_DIR$/app.yaml" />
       </list>
     </option>
   </component>
@@ -172,24 +139,7 @@
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State>
-            <id />
-          </State>
-          <State>
-            <id>GeneralJavaScript</id>
-          </State>
-          <State>
-            <id>JavaScript</id>
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>JSValidateTypes</id>
-          </State>
-        </selected-state>
-      </profile-state>
+      <profile-state />
     </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -266,24 +216,62 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="Default">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pyshoppe">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Problems" />
+        <subPane subId="Changed Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pyshoppe">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pyshoppe">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="68" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="360" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="158" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="245" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="2" />
     <property name="recentsLimit" value="5" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="245" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.idea" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="87" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="360" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="691" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="541" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="762" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="247" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="244" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="1" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="FullScreen" value="false" />
@@ -292,7 +280,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="options.lastSelected" value="project.propDebugger" />
+    <property name="options.lastSelected" value="reference.idesettings.quicklists" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="options.searchVisible" value="true" />
   </component>
@@ -370,29 +358,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pyshoppe" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -414,6 +379,29 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pyshoppe" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -658,7 +646,23 @@
       <created>1381863847683</created>
       <updated>1381863847683</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Sorting out sessions. Reloading page shouldn't create new session entry&#10;int the datastore. ONE USER = ONE CHANNEL">
+      <created>1381864442581</created>
+      <updated>1381864442581</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Sorting out sessions. Reloading page shouldn't create new session entry&#10;int the datastore. ONE USER = ONE CHANNEL">
+      <created>1381864853168</created>
+      <updated>1381864853168</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Sorting out sessions. Reloading page shouldn't create new session entry&#10;int the datastore. ONE USER = ONE CHANNEL">
+      <created>1381964971415</created>
+      <updated>1381964971415</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Sorting out sessions. Reloading page shouldn't create new session entry&#10;int the datastore. ONE USER = ONE CHANNEL">
+      <created>1381969503820</created>
+      <updated>1381969503820</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -685,21 +689,21 @@
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3301282" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44871795" sideWeight="0.34621212" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34871796" sideWeight="0.49436393" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.52302027" sideWeight="0.5060606" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34775642" sideWeight="0.49436393" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.6805112" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13636364" sideWeight="0.5769231" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1530303" sideWeight="0.67628205" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.035256412" sideWeight="0.9987342" order="10" side_tool="false" content_ui="tabs" x="-92" y="301" width="1320" height="177" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38333333" sideWeight="0.65953946" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34046054" sideWeight="0.9987342" order="10" side_tool="false" content_ui="tabs" x="-92" y="301" width="1320" height="177" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3098485" sideWeight="0.6805112" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3258786" sideWeight="0.505303" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35416666" sideWeight="0.40378788" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32371795" sideWeight="0.4878788" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36348686" sideWeight="0.40378788" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31410256" sideWeight="0.4878788" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.52302027" sideWeight="0.5060606" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.6266026" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41025642" sideWeight="0.49469697" order="4" side_tool="false" content_ui="tabs" />
@@ -798,6 +802,11 @@
           <line>2110</line>
           <option name="timeStamp" value="522" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/pyshoppe.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="537" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -809,50 +818,10 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="537" />
+      <option name="time" value="538" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/api/images/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="214" column="0" selection-start="6029" selection-end="6029" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/ext/db/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="602" column="0" selection-start="17728" selection-end="17728" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="http://127.0.0.1:8080/">
-      <provider selected="true" editor-type-id="httpFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/api/files/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="0" selection-start="634" selection-end="634" vertical-scroll-proportion="0.6632997" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1235" column="0" selection-start="51376" selection-end="51376" vertical-scroll-proportion="0.36393443" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/python/runtime.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="149" column="10" selection-start="5327" selection-end="5327" vertical-scroll-proportion="0.66" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/wsgi_server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="0" selection-start="4559" selection-end="4559" vertical-scroll-proportion="0.028333334" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/shutdown.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="19" selection-start="1369" selection-end="1369" vertical-scroll-proportion="0.60333335" />
-      </provider>
-    </entry>
     <entry file="http://127.0.0.1:8080/_ah/channel/jsapi">
       <provider selected="true" editor-type-id="httpFileEditor">
         <state />
@@ -860,7 +829,7 @@
     </entry>
     <entry file="file://C:/Program Files (x86)/Google/google_appengine/lib/webapp2-2.3/webapp2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1253" column="0" selection-start="43826" selection-end="43826" vertical-scroll-proportion="0.0">
+        <state line="1253" column="0" selection-start="43826" selection-end="43826" vertical-scroll-proportion="0.044854883">
           <folding />
         </state>
       </provider>
@@ -877,30 +846,78 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="1443" selection-end="1445" vertical-scroll-proportion="-5.230769">
+        <state line="25" column="13" selection-start="1443" selection-end="1445" vertical-scroll-proportion="0.38526914" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="96" column="6" selection-start="2123" selection-end="2123" vertical-scroll-proportion="1.6677215" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/pictureframer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thumbnail.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="4" selection-start="883" selection-end="883" vertical-scroll-proportion="-5.4344263" />
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/tee.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="0" selection-start="1187" selection-end="1187" vertical-scroll-proportion="0.90074444">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/python/runtime.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="145" column="0" selection-start="5244" selection-end="5244" vertical-scroll-proportion="0.32754344">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/shutdown.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="0" selection-start="1273" selection-end="1273" vertical-scroll-proportion="0.32754344">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/wsgi_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="144" column="0" selection-start="4559" selection-end="4559" vertical-scroll-proportion="0.32754344">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1235" column="0" selection-start="51376" selection-end="51376" vertical-scroll-proportion="0.32754344">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/imagedb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="12" selection-start="1147" selection-end="1155" vertical-scroll-proportion="0.0">
+        <state line="35" column="0" selection-start="903" selection-end="903" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pyshoppe.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="32" selection-start="568" selection-end="568" vertical-scroll-proportion="0.0">
+        <state line="49" column="6" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/content/script.js">
+    <entry file="file://$PROJECT_DIR$/app.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="6" selection-start="2123" selection-end="2123" vertical-scroll-proportion="0.98504674">
+        <state line="22" column="8" selection-start="321" selection-end="321" vertical-scroll-proportion="0.62541807">
           <folding />
         </state>
       </provider>
