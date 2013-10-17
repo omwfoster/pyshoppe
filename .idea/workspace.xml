@@ -11,7 +11,7 @@
     </list>
     <ignored path="pyshoppe.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381969536906" ignored="false" />
+    <file path="/Dummy.txt" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381972739755" ignored="false" />
     <file path="/script.js" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381517744961" ignored="false" />
     <file path="/index.html" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1380825892229" ignored="false" />
     <file path="/base.css" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1364000925411" ignored="false" />
@@ -20,7 +20,7 @@
     <file path="/fragment.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381503714738" ignored="false" />
     <file path="/wsgi.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1366573344129" ignored="false" />
     <file path="$APPLICATION_HOME_DIR$/lib/pycharm.jar!/resources/relaxng.rng" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1367093643452" ignored="false" />
-    <file path="/app.yaml" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381972308015" ignored="false" />
+    <file path="/app.yaml" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381972716902" ignored="false" />
     <file path="/webapp2.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1374086714158" ignored="false" />
     <file path="/fragment.js" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381190965507" ignored="false" />
     <file path="/style.css" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1375989355779" ignored="false" />
@@ -67,7 +67,7 @@
       <file leaf-file-name="app.yaml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="8" selection-start="321" selection-end="321" vertical-scroll-proportion="0.62541807">
+            <state line="7" column="8" selection-start="103" selection-end="103" vertical-scroll-proportion="0.19899665">
               <folding />
             </state>
           </provider>
@@ -662,7 +662,15 @@
       <created>1381969503820</created>
       <updated>1381969503820</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="'working' version">
+      <created>1381972488704</created>
+      <updated>1381972488704</updated>
+    </task>
+    <task id="LOCAL-00039" summary="'working' version">
+      <created>1381972744020</created>
+      <updated>1381972744020</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -694,7 +702,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34775642" sideWeight="0.49436393" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.6805112" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13636364" sideWeight="0.5769231" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38333333" sideWeight="0.65953946" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38333333" sideWeight="0.65953946" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34046054" sideWeight="0.9987342" order="10" side_tool="false" content_ui="tabs" x="-92" y="301" width="1320" height="177" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3098485" sideWeight="0.6805112" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3258786" sideWeight="0.505303" order="9" side_tool="true" content_ui="tabs" />
@@ -751,7 +759,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sorting out sessions. Reloading page shouldn't create new session entry&#10;int the datastore. ONE USER = ONE CHANNEL" />
+    <option name="LAST_COMMIT_MESSAGE" value="'working' version" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -783,6 +791,7 @@
     <MESSAGE value="PAssing location through xhr request and channel calls server side.&#10;&#10;Tweening new locations.&#10;&#10;COde in place but needs cleaning up and testing" />
     <MESSAGE value="added logging to channel and message creation. Works on local devserver, but need to log cloud deploment" />
     <MESSAGE value="Sorting out sessions. Reloading page shouldn't create new session entry&#10;int the datastore. ONE USER = ONE CHANNEL" />
+    <MESSAGE value="'working' version" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -917,7 +926,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="8" selection-start="321" selection-end="321" vertical-scroll-proportion="0.62541807">
+        <state line="7" column="8" selection-start="103" selection-end="103" vertical-scroll-proportion="0.19899665">
           <folding />
         </state>
       </provider>
