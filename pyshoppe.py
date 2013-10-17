@@ -345,8 +345,9 @@ def get_Session(self):
 
 class app_signout(webapp2.RequestHandler):
     def get(self):
-        get_Session().delete()
-
+        result = get_Session(self)
+        if result:
+            result.delete()
         self.redirect(users.create_logout_url(self.request.uri))
 
 
