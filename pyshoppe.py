@@ -371,11 +371,11 @@ class EchoHandler(webapp2.RequestHandler):
         else:
             self.response.set_status(401)
 
-    app = webapp2.WSGIApplication(
-        [('/', startpage), ('/upload', upload),
-         ('/canvas', getphotoHandler),
-         ('/pinboard', xhr_pinboardHandler),
-         ('/relocate', xhr_relocate),
-         ('/signout', app_signout)],
-        debug=True)
+app = webapp2.WSGIApplication(
+    [('/', startpage), ('/upload', upload),
+     ('/canvas', getphotoHandler),
+     ('/pinboard', xhr_pinboardHandler),
+     ('/relocate', xhr_relocate),
+     ('/signout', app_signout)],
+    debug=True)
 
