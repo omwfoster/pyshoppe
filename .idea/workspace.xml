@@ -5,19 +5,19 @@
     <option name="CUSTOM_SCOPE_NAME" value="Selected Files" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="251def8e-103d-4e3a-accf-9e1afd56c72f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.yaml" afterPath="$PROJECT_DIR$/app.yaml" />
+    <list default="true" id="251def8e-103d-4e3a-accf-9e1afd56c72f" name="Default" comment="'working' version">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/script.js" afterPath="$PROJECT_DIR$/content/script.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="pyshoppe.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381972739755" ignored="false" />
-    <file path="/script.js" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381517744961" ignored="false" />
+    <file path="/Dummy.txt" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1382201484597" ignored="false" />
+    <file path="/script.js" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1382143643657" ignored="false" />
     <file path="/index.html" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1380825892229" ignored="false" />
     <file path="/base.css" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1364000925411" ignored="false" />
-    <file path="/pyshoppe.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381864864831" ignored="false" />
-    <file path="/imagedb.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1380844177550" ignored="false" />
-    <file path="/fragment.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381503714738" ignored="false" />
+    <file path="/pyshoppe.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1382201403499" ignored="false" />
+    <file path="/imagedb.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1382022472979" ignored="false" />
+    <file path="/fragment.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1382036427050" ignored="false" />
     <file path="/wsgi.py" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1366573344129" ignored="false" />
     <file path="$APPLICATION_HOME_DIR$/lib/pycharm.jar!/resources/relaxng.rng" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1367093643452" ignored="false" />
     <file path="/app.yaml" changelist="251def8e-103d-4e3a-accf-9e1afd56c72f" time="1381972716902" ignored="false" />
@@ -56,7 +56,7 @@
       <file leaf-file-name="pyshoppe.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pyshoppe.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="6" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.0">
+            <state line="349" column="90" selection-start="11893" selection-end="11893" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -67,7 +67,25 @@
       <file leaf-file-name="app.yaml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="8" selection-start="103" selection-end="103" vertical-scroll-proportion="0.19899665">
+            <state line="17" column="17" selection-start="226" selection-end="243" vertical-scroll-proportion="0.7768817">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="script.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/content/script.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="90" column="44" selection-start="1985" selection-end="2007" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="36" selection-start="1079" selection-end="1079" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -76,7 +94,16 @@
       <file leaf-file-name="imagedb.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/imagedb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="0" selection-start="903" selection-end="903" vertical-scroll-proportion="0.0">
+            <state line="10" column="16" selection-start="274" selection-end="278" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="zip-ext.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/content/zip-ext.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="20" selection-start="493" selection-end="493" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -123,11 +150,11 @@
         <option value="127.0.0.1:8080/content/kineticjs.js" />
         <option value="127.0.0.1:8080/content/script.js" />
         <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/thumbnail.py" />
+        <option value="$PROJECT_DIR$/app.yaml" />
         <option value="$PROJECT_DIR$/content/script.js" />
         <option value="$PROJECT_DIR$/imagedb.py" />
-        <option value="$PROJECT_DIR$/thumbnail.py" />
         <option value="$PROJECT_DIR$/pyshoppe.py" />
-        <option value="$PROJECT_DIR$/app.yaml" />
       </list>
     </option>
   </component>
@@ -168,6 +195,45 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Default">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pyshoppe">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Problems" />
+        <subPane subId="Changed Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pyshoppe">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pyshoppe">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -212,45 +278,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="content" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Default">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pyshoppe">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="Problems" />
-        <subPane subId="Changed Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pyshoppe">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="All">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pyshoppe">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -670,7 +697,27 @@
       <created>1381972744020</created>
       <updated>1381972744020</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="'working' version">
+      <created>1381973109890</created>
+      <updated>1381973109890</updated>
+    </task>
+    <task id="LOCAL-00041" summary="'working' version">
+      <created>1382030568297</created>
+      <updated>1382030568297</updated>
+    </task>
+    <task id="LOCAL-00042" summary="'working' version">
+      <created>1382030594781</created>
+      <updated>1382030594781</updated>
+    </task>
+    <task id="LOCAL-00043" summary="'working' version">
+      <created>1382031892568</created>
+      <updated>1382031892568</updated>
+    </task>
+    <task id="LOCAL-00044" summary="tidy up session code.">
+      <created>1382201495768</created>
+      <updated>1382201495768</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -699,14 +746,14 @@
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44871795" sideWeight="0.34621212" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34775642" sideWeight="0.49436393" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34664536" sideWeight="0.49436393" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.6805112" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13636364" sideWeight="0.5769231" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38333333" sideWeight="0.65953946" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34046054" sideWeight="0.9987342" order="10" side_tool="false" content_ui="tabs" x="-92" y="301" width="1320" height="177" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13636364" sideWeight="0.63782054" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40151516" sideWeight="0.63782054" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34134614" sideWeight="0.9987342" order="10" side_tool="false" content_ui="tabs" x="-92" y="301" width="1320" height="177" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3098485" sideWeight="0.6805112" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3258786" sideWeight="0.505303" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36348686" sideWeight="0.40378788" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3621795" sideWeight="0.40378788" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31410256" sideWeight="0.4878788" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -759,7 +806,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="'working' version" />
+    <option name="LAST_COMMIT_MESSAGE" value="tidy up session code." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -792,6 +839,7 @@
     <MESSAGE value="added logging to channel and message creation. Works on local devserver, but need to log cloud deploment" />
     <MESSAGE value="Sorting out sessions. Reloading page shouldn't create new session entry&#10;int the datastore. ONE USER = ONE CHANNEL" />
     <MESSAGE value="'working' version" />
+    <MESSAGE value="tidy up session code." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -816,6 +864,16 @@
           <line>24</line>
           <option name="timeStamp" value="537" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/pyshoppe.py</url>
+          <line>349</line>
+          <option name="timeStamp" value="540" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/pyshoppe.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="541" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -827,22 +885,10 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="538" />
+      <option name="time" value="543" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="http://127.0.0.1:8080/_ah/channel/jsapi">
-      <provider selected="true" editor-type-id="httpFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Google/google_appengine/lib/webapp2-2.3/webapp2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1253" column="0" selection-start="43826" selection-end="43826" vertical-scroll-proportion="0.044854883">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="http://127.0.0.1:8080/content/script.js">
       <provider selected="true" editor-type-id="httpFileEditor">
         <state />
@@ -853,21 +899,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="1443" selection-end="1445" vertical-scroll-proportion="0.38526914" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/content/script.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="6" selection-start="2123" selection-end="2123" vertical-scroll-proportion="1.6677215" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/content/pictureframer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/thumbnail.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="37" column="4" selection-start="883" selection-end="883" vertical-scroll-proportion="-5.4344263" />
@@ -875,49 +906,70 @@
     </entry>
     <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/tee.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="0" selection-start="1187" selection-end="1187" vertical-scroll-proportion="0.90074444">
-          <folding />
-        </state>
+        <state line="43" column="0" selection-start="1187" selection-end="1187" vertical-scroll-proportion="0.90074444" />
       </provider>
     </entry>
     <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/python/runtime.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="0" selection-start="5244" selection-end="5244" vertical-scroll-proportion="0.32754344">
-          <folding />
-        </state>
+        <state line="145" column="0" selection-start="5244" selection-end="5244" vertical-scroll-proportion="0.32754344" />
       </provider>
     </entry>
     <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/shutdown.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="0" selection-start="1273" selection-end="1273" vertical-scroll-proportion="0.32754344">
-          <folding />
-        </state>
+        <state line="50" column="0" selection-start="1273" selection-end="1273" vertical-scroll-proportion="0.32754344" />
       </provider>
     </entry>
     <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/wsgi_server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="0" selection-start="4559" selection-end="4559" vertical-scroll-proportion="0.32754344">
-          <folding />
-        </state>
+        <state line="144" column="0" selection-start="4559" selection-end="4559" vertical-scroll-proportion="0.32754344" />
       </provider>
     </entry>
     <entry file="file://C:/Program Files (x86)/Google/google_appengine/google/appengine/tools/devappserver2/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1235" column="0" selection-start="51376" selection-end="51376" vertical-scroll-proportion="0.32754344">
+        <state line="1235" column="0" selection-start="51376" selection-end="51376" vertical-scroll-proportion="0.32754344" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/pictureframer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="0" selection-start="0" selection-end="27" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Google/google_appengine/lib/webapp2-2.3/webapp2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1088" column="20" selection-start="37943" selection-end="37943" vertical-scroll-proportion="0.46493506" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="36" selection-start="1079" selection-end="1079" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/zip-ext.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="20" selection-start="493" selection-end="493" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/imagedb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="0" selection-start="903" selection-end="903" vertical-scroll-proportion="0.0">
+        <state line="10" column="16" selection-start="274" selection-end="278" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/content/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="90" column="44" selection-start="1985" selection-end="2007" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pyshoppe.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="6" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.0">
+        <state line="349" column="90" selection-start="11893" selection-end="11893" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -926,7 +978,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="8" selection-start="103" selection-end="103" vertical-scroll-proportion="0.19899665">
+        <state line="17" column="17" selection-start="226" selection-end="243" vertical-scroll-proportion="0.7768817">
           <folding />
         </state>
       </provider>

@@ -93,7 +93,7 @@ $(document).ready(function () {
 
 
     socket.onopen = function () {
-//        alert("open");
+        alert("open");
     };
     socket.onmessage = function (message) {
         var data = jQuery.parseJSON(message.data);
@@ -112,7 +112,7 @@ $(document).ready(function () {
                                 y: posy,
                                 rotationDeg: function (min, max) {
                                     return ~~(Math.random() * (max - min + 1)) + min
-                                }(-30,30),
+                                }(-30, 30),
                                 duration: 1,
                                 easing: Kinetic.Easings.ElasticEaseOut
                             });
@@ -125,7 +125,7 @@ $(document).ready(function () {
         layer.draw()
     };
     socket.onerror = function (error) {
-        alert();
+        alert(error);
     };
     socket.onclose = function () {
         alert("bye");
