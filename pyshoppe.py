@@ -36,37 +36,37 @@ class BaseRequestHandler(webapp2.RequestHandler):
                 except channel.InvalidChannelTokenDurationError:
                     logging.critical('message not sent: InvalidChannelTokenDuration')
 
-                if pinboard_url_id:
-                    pinboard = self.getPinboardfromurlkey(pinboard_url_id)
-                    if not pinboard.owner:
-                        pinboard.owner = self.createUserentry()
-                        pinboard.put()
+            if pinboard_url_id:
+                pinboard = self.getPinboardfromurlkey(pinboard_url_id)
+                if not pinboard.owner:
+                    pinboard.owner = self.createUserentry()
+                    pinboard.put()
 
-                else:
-                    pinboard = self.locateUserPinboard()
-                    if not pinboard:
-                        pinboard = self.createUserPinboard()
+            else:
+                pinboard = self.locateUserPinboard()
+                if not pinboard:
+                    pinboard = self.createUserPinboard()
 
-                    pinboard_url_id = pinboard.name
+                pinboard_url_id = pinboard.name
 
-                if pinboard:
-                    if not get_Session(self):
-                        user_session = User_Session(token=token,
-                                                    user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
-                                                    user=self.locateUser(),
-                                                    login_user=str(users.get_current_user().user_id())
-                        )
-                        user_session.put()
-                        # token = channel.create_channel(user.user_id() + pinboard)
-                    template_values = {'token': token,
-                                       'me': str(users.get_current_user().user_id()),
-                                       'pinboard_url_id': pinboard_url_id,
-                                       'pinboards': Pinboard.all()
-                    }
-                    path = os.path.join(os.path.dirname(__file__), 'templates', filename)
-                    self.response.out.write(template.render(path, template_values))
-                else:
-                    self.response.out.write('balls')
+            if pinboard:
+                if not get_Session(self):
+                    user_session = User_Session(token=token,
+                                                user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
+                                                user=self.locateUser(),
+                                                login_user=str(users.get_current_user().user_id())
+                    )
+                    user_session.put()
+                    # token = channel.create_channel(user.user_id() + pinboard)
+                template_values = {'token': token,
+                                   'me': str(users.get_current_user().user_id()),
+                                   'pinboard_url_id': pinboard_url_id,
+                                   'pinboards': Pinboard.all()
+                }
+                path = os.path.join(os.path.dirname(__file__), 'templates', filename)
+                self.response.out.write(template.render(path, template_values))
+            else:
+                self.response.out.write('balls')
         else:
             self.redirect(users.create_login_url(self.request.uri))
 
