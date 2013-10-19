@@ -14,7 +14,7 @@ from StringIO import StringIO
 from zipfile import ZipFile, ZIP_DEFLATED
 from imagedb import Pinboard
 from imagedb import Pinned_Item
-from imagedb import User
+from imagedb import pinboard_User
 from imagedb import User_Session
 
 
@@ -30,7 +30,7 @@ class BaseRequestHandler(webapp2.RequestHandler):
 
             if not token:
                 # user_chanel_id = os.urandom(16).encode('hex')
-
+            #todo remove confusion over appengine user object and datastore users entry
                 try:
                     token = channel.create_channel(user.user_id())
                 except channel.InvalidChannelTokenDurationError:
@@ -50,14 +50,14 @@ class BaseRequestHandler(webapp2.RequestHandler):
                     pinboard_url_id = pinboard.name
 
                 if pinboard:
-
-                    user_session = User_Session(token=token,
-                                                user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
-                                                user=self.locateUser(),
-                                                login_user=str(users.get_current_user().user_id())
-                    )
-                    user_session.put()
-                    # token = channel.create_channel(user.user_id() + pinboard)
+                    if not get_Session(self):
+                        user_session = User_Session(token=token,
+                                                    user_pinboard=self.getPinboardfromurlkey(pinboard_url_id),
+                                                    user=self.locateUser(),
+                                                    login_user=str(users.get_current_user().user_id())
+                        )
+                        user_session.put()
+                        # token = channel.create_channel(user.user_id() + pinboard)
                     template_values = {'token': token,
                                        'me': str(users.get_current_user().user_id()),
                                        'pinboard_url_id': pinboard_url_id,
@@ -79,22 +79,22 @@ class BaseRequestHandler(webapp2.RequestHandler):
         return pinboard
 
     def getUserobjectfromID(self):
-        q = User.gql("WHERE name = :1 ", users.get_current_user().user_id())
+        q = pinboard_User.gql("WHERE name = :1 ", users.get_current_user().user_id())
         u = q.get()
         return u
 
     def createUserentry(self):
-        user1 = User(user_id=users.get_current_user().user_id(), name="oliver")
+        user1 = pinboard_User(user_id=users.get_current_user().user_id(), name="oliver")
         user1.put()
         return user1
 
     def locateUserPinboard(self):
         q = Pinboard.gql("WHERE owner = :1 ",
-                         User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()).get()
+                         pinboard_User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()).get()
         return q
 
     def locateUser(self):
-        q = User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()
+        q = pinboard_User.gql("WHERE user_id =:1", users.get_current_user().user_id()).get()
         return q
 
     def createUserPinboard(self):
@@ -113,7 +113,14 @@ class BaseRequestHandler(webapp2.RequestHandler):
 
     def get_Token(self):
         q = (User_Session.gql("WHERE user = :1", self.locateUser())).get()
-        if isinstance(q, User):
+        if isinstance(q, pinboard_User):
+            return q.token
+        else:
+            return
+
+    def get_All_Tokens(self):
+        q = (User_Session.gql("WHERE user = :1", self.locateUser())).get()
+        if isinstance(q, pinboard_User):
             return q.token
         else:
             return
@@ -212,7 +219,6 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
 
     def get(self):
 
-
     # Set up headers for browser to correctly recognize ZIP file
         self.response.headers['Content-Type'] = 'application/zip'
         self.response.headers['Content-Disposition'] = \
@@ -235,6 +241,8 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
                          p.item_UID.encode('utf-8'))
         file.close()
         f.seek(0)
+
+        #TODO change channel from user ID to session ID
 
         while True:
             buf = f.read(2048)
@@ -339,7 +347,8 @@ def cropit(img, size):
 
 
 def get_Session(self):
-    q = (User_Session.gql("WHERE login_user = :1", users.get_current_user().user_id())).get()
+    q = (User_Session.gql("WHERE login_user = :1", str(users.get_current_user().user_id()))).get()
+
     return q
 
 
@@ -351,11 +360,22 @@ class app_signout(webapp2.RequestHandler):
         self.redirect(users.create_logout_url(self.request.uri))
 
 
-app = webapp2.WSGIApplication(
-    [('/', startpage), ('/upload', upload),
-     ('/canvas', getphotoHandler),
-     ('/pinboard', xhr_pinboardHandler),
-     ('/relocate', xhr_relocate),
-     ('/signout', app_signout)],
-    debug=True)
+class EchoHandler(webapp2.RequestHandler):
+
+
+    def post(self):
+        channel_id = self.request.get('channel_id')
+        if channel_id:
+            # message = cgi.escape(self.request.body)
+            channel.send_message(channel_id, "test response")
+        else:
+            self.response.set_status(401)
+
+    app = webapp2.WSGIApplication(
+        [('/', startpage), ('/upload', upload),
+         ('/canvas', getphotoHandler),
+         ('/pinboard', xhr_pinboardHandler),
+         ('/relocate', xhr_relocate),
+         ('/signout', app_signout)],
+        debug=True)
 

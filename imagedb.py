@@ -8,14 +8,14 @@ from google.appengine.api import users
 #
 
 
-class User(db.Model):
+class pinboard_User(db.Model):
     user_id = db.StringProperty()
     user_name = db.StringProperty()
 
 
 class Pinboard(db.Model):
     name = db.StringProperty()
-    owner = db.ReferenceProperty(User)
+    owner = db.ReferenceProperty(pinboard_User)
 
     def get_contents(self):
         contents_list = self.all().order("-timestamp").fetch(20)
@@ -35,7 +35,7 @@ class Pinboard(db.Model):
 
 
 class User_Session(db.Model):
-    user = db.ReferenceProperty(User)
+    user = db.ReferenceProperty(pinboard_User)
     user_pinboard = db.ReferenceProperty(Pinboard)
     token = db.StringProperty()
     login_user = db.StringProperty()
