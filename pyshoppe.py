@@ -1,6 +1,7 @@
 import os
 import webapp2
 import StringIO
+from random import randint
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.ext import blobstore
@@ -32,9 +33,10 @@ class BaseRequestHandler(webapp2.RequestHandler):
                 # user_chanel_id = os.urandom(16).encode('hex')
             #todo remove confusion over appengine user object and datastore users entry
                 try:
-                    token = channel.create_channel(user.user_id())
-                except channel.InvalidChannelTokenDurationError:
-                    logging.critical('message not sent: InvalidChannelTokenDuration')
+                    token = channel.create_channel(user.user_id() + str(randint(2,9)))
+                except channel.InvalidChannelClientIdError:
+                    logging.critical('message not sent: InvalidChannelClientIdError')
+
 
             if pinboard_url_id:
                 pinboard = self.getPinboardfromurlkey(pinboard_url_id)
