@@ -254,7 +254,7 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
             json_output = pinboard.get_json()
             #channel.connect(users.get_current_user().user_id(), json_output)
             channel.send_message(token, json_output)
-            logging.warning('sent:' + str(json_output))
+            logging.warning('sent:' + str(token))
 
 
         except channel.InvalidChannelClientIdError:
