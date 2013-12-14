@@ -220,7 +220,6 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
         return q
 
     def get(self):
-
     # Set up headers for browser to correctly recognize ZIP file
         self.response.headers['Content-Type'] = 'application/zip'
         self.response.headers['Content-Disposition'] = \
@@ -253,12 +252,12 @@ class xhr_pinboardHandler(webapp2.RequestHandler):
 
         try:
             json_output = pinboard.get_json()
-            channel.send_message(users.get_current_user().user_id(), json_output)
+            #channel.connect(users.get_current_user().user_id(), json_output)
             logging.warning('sent:' + str(users.get_current_user().user_id()))
-            # channel.send_message(users.get_current_user().user_id(), 'hOORAH')
+            channel.send_message(token, json_output)
 
-        except channel.InvalidChannelTokenDurationError:
-            logging.critical('message not sent: InvalidChannelTokenDuration')
+        except channel.InvalidChannelClientIdError:
+            logging.critical('message not sent: InvalidChannelClientIdError')
 
 
 class xhr_relocate(webapp2.RequestHandler):
